@@ -1,19 +1,19 @@
 var config = {
     api: {
-        postOuterEquipAndLocation: 'http://ibp/api/public/index.php/api/v1/outerequipwithlocation',
-        postInnerEquipByOuterId:'http://ibp/api/public/index.php/api/v1/innerequip',
+        postOuterEquipAndLocation: 'http://127.0.0.1:8000/api/outerequipwithlocation',
+        postInnerEquipByOuterId:'http://127.0.0.1:8000/api/innerequip',
 
-        deleteOuterEquipAndItsLocation: 'http://ibp/api/public/index.php/api/v1/outerequipwithlocation',
-        deleteInnerEquip: 'http://ibp/api/public/index.php/api/v1/innerequip',
+        deleteOuterEquipAndItsLocation: 'http://127.0.0.1:8000/api/outerequipwithlocation',
+        deleteInnerEquip: 'http://127.0.0.1:8000/api/innerequip',
 
-        getDataBuildingAndOuter: 'http://ibp/api/public/index.php/api/v1/indexbuildingouter',
-        getDataBuildingInnerAndOuter: 'http://ibp/api/public/index.php/api/v1/indexbuildingouterinner',
-        getDataBuildingInnerAndOuterByOuterId: 'http://ibp/api/public/index.php/api/v1/indexbuildingouterinner',
-        getDataListOfObjects: 'http://ibp/api/public/index.php/api/v1/listofobjects',
-        getInnerByOuterId: 'http://ibp/api/public/index.php/api/v1/showinnerbyouterid',
+        getDataBuildingAndOuter: 'http://127.0.0.1:8000/api/indexbuildingouter',
+        getDataBuildingInnerAndOuter: 'http://127.0.0.1:8000/api/indexbuildingouterinner',
+        getDataBuildingInnerAndOuterByOuterId: 'http://127.0.0.1:8000/api/indexbuildingouterinner',
+        getDataListOfObjects: 'http://127.0.0.1:8000/api/listofobjects',
+        getInnerByOuterId: 'http://127.0.0.1:8000/api/showinnerbyouterid',
 
-        setOuterEquipmentRowById: 'http://ibp/api/public/index.php/api/v1/outerequip',
-        setInnerEquipmentRowById: 'http://ibp/api/public/index.php/api/v1/innerequip'
+        setOuterEquipmentRowById: 'http://127.0.0.1:8000/api/outerequip',
+        setInnerEquipmentRowById: 'http://127.0.0.1:8000/api/innerequip'
     }
 };
 

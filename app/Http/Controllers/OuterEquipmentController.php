@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OuterEquipment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OuterEquipmentController extends Controller
@@ -36,12 +37,16 @@ class OuterEquipmentController extends Controller
 
     public function indexBuildingOuter()
     {
-        $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw('*'))
-            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
-            ->orderBy('id_outer_equip', 'ASC')
-            ->get();
-        return response()->json($outerEquipment);
+//        if (Auth::check()) {
+            $outerEquipment = DB::table('outer_equipment')
+                ->select(DB::raw('*'))
+                ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
+                ->orderBy('id_outer_equip', 'ASC')
+                ->get();
+            return response()->json($outerEquipment);
+//        }
+
+//        return response()->json('access denied',401);
     }
 
     public function showInnerByOuterId($idOuter)

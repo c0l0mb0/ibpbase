@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\BuildingsController;
+use App\Http\Controllers\InnerEquipmentController;
+use App\Http\Controllers\OuterEquipmentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::name('user.')->group(function() {
     Route::view('/table','table')->middleware('auth')->name('table');
 
@@ -33,4 +33,6 @@ Route::name('user.')->group(function() {
         Auth::logout();
         return redirect('/login');
     })->name('logout');
+    
 });
+
