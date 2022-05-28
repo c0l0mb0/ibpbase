@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\BuildingsController;
+use App\Http\Controllers\InnerEquipmentController;
+use App\Http\Controllers\OuterEquipmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

@@ -50,21 +50,6 @@ function setRowById(idRow, data, url) {
     });
 }
 
-function getEquipmentByFirstLevelName(FirstLevelName) {
-
-    $.ajax({
-        url: "http://ibp/api/public/index.php/api/v1/indexouterandinnerbyfirstlevvalue",
-        type: "POST",
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify({"place_first_lev": FirstLevelName}),
-        success: function (data) {
-            renderOuterInterTableStatement(data);
-        }, error: function (xhr, resp, text) {
-            // console.log(xhr, resp, text);
-        }
-    });
-}
 
 function deleteById(id, succesDelCallback, url) {
 
