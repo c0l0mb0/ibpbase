@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Вход</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/table.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/table/table.css') }}">
 
 </head>
 <body>
@@ -62,15 +62,15 @@
                 <div class="row-menue">
                     <button type="button" class="btn new-table-row" data-bs-toggle="modal" data-bs-trigger="hover"
                             data-bs-placement="bottom" title="Добавить" data-bs-target="#modal-new-inner-equip">
-                        <img src="src/icon/plus-svgrepo-com.svg" class="row-menue__icon">
+                        <img src="{{ asset('icon/plus-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn show-inner" data-bs-toggle="tooltip" data-bs-placement="bottom"
                             title="Элементы">
-                        <img src="src/icon/arrow-return-left.svg" class="row-menue__icon">
+                        <img src="{{ asset('icon/arrow-return-left.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn delete-table-row" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Удалить">
-                        <img src="src/icon/trash.svg" class="row-menue__icon">
+                        <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
                     </button>
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
@@ -106,7 +106,7 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul class="nav navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">выйти</a>
+                            <a class="nav-link" href="/logout">выйти</a>
                         </li>
                     </ul>
                 </div>
@@ -131,11 +131,11 @@
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 
-<script src="{{ asset('src/js/table/app.js') }}"></script>
-<script src="{{ asset('src/js/table/side_bar.js') }}"></script>`
-<script src="{{ asset('src/js/table/modal.js') }}"></script>
-<script src="{{ asset('src/js/table/action_menu.js') }}"></script>
-<script src="{{ asset('src/js/table/equipments_dto.js') }}"></script>
-<script src="{{ asset('src/js/table/aggrid.js') }}"></script>
+<script src="{{ asset('js/table/app.js') }}"></script>
+<script src="{{ asset('js/table/side_bar.js') }}"></script>`
+<script src="{{ asset('js/table/modal.js') }}"></script>
+<script src="{{ asset('js/table/action_menu.js') }}"></script>
+<script src="{{ asset('js/table/equipments_dto.js') }}"></script>
+<script src="{{ asset('js/table/aggrid.js') }}"></script>
 </body>
 </html>
