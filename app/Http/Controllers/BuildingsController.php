@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Buildings;
+
+use App\Models\Buildings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
@@ -27,10 +29,12 @@ class BuildingsController extends Controller
     {
         $place_first_lev = DB::table('buildings')
             ->select('place_first_lev')
+            ->leftJoin('outer_equipment', 'outer_equipment.id_build', '=', 'buildings.id_build')
+            ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
+            ->where('users.role', Auth::user()->role)
             ->distinct()
             ->get();
         return response()->json($place_first_lev);
-
     }
 
 

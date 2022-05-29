@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\InnerEquipment;
-use App\OuterEquipment;
+use App\Models\InnerEquipment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 
 class InnerEquipmentController extends Controller
@@ -43,9 +41,9 @@ class InnerEquipmentController extends Controller
         return response()->json($innerEquipments);
     }
 
-    public function update($id, Request $request )
+    public function update($id, Request $request)
     {
-        $innerEquipments= InnerEquipment::find($id);
+        $innerEquipments = InnerEquipment::find($id);
         $innerEquipments->update($request->all());
         return response()->json($innerEquipments);
     }

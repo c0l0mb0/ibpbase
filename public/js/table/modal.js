@@ -34,9 +34,15 @@ function getInputsArr() {
     return inputValues;
 }
 
+function addCSRF(inputValues) {
+    var CSRF = $('meta[name=csrf-token]').attr('content');
+    if (CSRF !== undefined && CSRF !== "") {
+        inputValues.push({name: '_token', value: CSRF});
+        return inputValues;
+    }
+}
+
 function setFormSubmitHandler(form, postUrl, getUrl) {
-    console.log(getUrl)
-    console.log(form)
     form.submit(event => {
         event.preventDefault();
         let inputValues = getInputsArr();
@@ -44,6 +50,7 @@ function setFormSubmitHandler(form, postUrl, getUrl) {
         if (currentIdOuter !== undefined) {
             inputValues.push({name: 'id_outer', value: currentIdOuter});
         }
+        inputValues = addCSRF(inputValues);
         $.ajax({
             url: postUrl,
             method: 'POST',
@@ -55,7 +62,7 @@ function setFormSubmitHandler(form, postUrl, getUrl) {
                 form.modal('hide');
                 form.trigger("reset");
                 if (ibpAgGrid.isReady === true) {
-                    if (currentIdOuter == undefined) {
+                    if (currentIdOuter === undefined) {
                         ibpAgGrid.setGridData(getData(getUrl));
                     } else {
                         ibpAgGrid.setGridData(getData(getUrl + '/' + currentIdOuter));
@@ -276,21 +283,29 @@ function setModalOuterFormHtml() {
                 </div>
                 <form class="modal-form needs-validation" id="form_outer-equipment-and-location">
                     <div class="modal-body">
-                        <div class="row p-2">
-                            <div class="col-3">
-                                <label for="place_zero_lev" class="col-form-label">Уренгой|Ямб</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" class="form-control" id="place_zero_lev" name="place_zero_lev">
-                            </div>
-                        </div>
+<!--                        <div class="row p-2">-->
+<!--                            <div class="col-3">-->
+<!--                                <label for="place_zero_lev" class="col-form-label">Уренгой|Ямб</label>-->
+<!--                            </div>-->
+<!--                            <div class="col-9">-->
+<!--                                <input type="text" class="form-control" id="place_zero_lev" name="place_zero_lev">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row p-2">-->
+<!--                            <div class="col-3">-->
+<!--                                <label for="place_first_lev" class="col-form-label">Расположение</label>-->
+<!--                            </div>-->
+<!--                            <div class="col-9">-->
+<!--                                <select class="form-select modal__place_first_lev-select" id="place_first_lev" name="place_first_lev">-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="row p-2">
                             <div class="col-3">
                                 <label for="place_first_lev" class="col-form-label">Расположение</label>
                             </div>
                             <div class="col-9">
-                                <select class="form-select modal__place_first_lev-select" id="place_first_lev" name="place_first_lev">
-                                </select>
+                                <input type="text" class="form-control" id="place_first_lev" name="place_first_lev">
                             </div>
                         </div>
                         <div class="row p-2">

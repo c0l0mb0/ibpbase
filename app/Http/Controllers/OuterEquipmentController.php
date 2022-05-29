@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buildings;
 use App\Models\OuterEquipment;
+use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +22,8 @@ class OuterEquipmentController extends Controller
 
     public function index(Request $request)
     {
-        $outerEquipments = OuterEquipment::all()->sortBy("id_outer_equip");
+        $outerEquipments = OuterEquipment::all()
+            ->sortBy("id_outer_equip");
         return response()->json($outerEquipments);
     }
 
@@ -30,6 +33,7 @@ class OuterEquipmentController extends Controller
             ->select(DB::raw('*'))
             ->leftJoin('inner_equipment', 'outer_equipment.id_outer_equip', '=', 'inner_equipment.id_outer')
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
+            ->where('users.role', getUserRole())
             ->orderBy('id_outer_equip', 'ASC')
             ->get();
         return response()->json($outerEquipment);
@@ -37,16 +41,15 @@ class OuterEquipmentController extends Controller
 
     public function indexBuildingOuter()
     {
-        if (Auth::check()) {
-            $outerEquipment = DB::table('outer_equipment')
-                ->select(DB::raw('*'))
-                ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
-                ->orderBy('id_outer_equip', 'ASC')
-                ->get();
-            return response()->json($outerEquipment);
-        }
 
-        return response()->json('access denied',401);
+        $outerEquipment = DB::table('outer_equipment')
+            ->select(DB::raw('*'))
+            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
+            ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
+            ->where('users.role', $this->getUserRole())
+            ->orderBy('id_outer_equip', 'ASC')
+            ->get();
+        return $outerEquipment;
     }
 
     public function showInnerByOuterId($idOuter)
@@ -68,6 +71,13 @@ class OuterEquipmentController extends Controller
         return response()->json($outerEquipment);
     }
 
+    private function getUserRole()
+    {
+        $userId = Auth::user()->getAuthIdentifier();
+        $user = Users::find($userId);
+        return $user->role;
+    }
+
     public function createWithLocation(Request $request)
     {
         $this->validate($request, [
@@ -77,26 +87,26 @@ class OuterEquipmentController extends Controller
             'place_third_lev' => 'required'
         ]);
 
-
         if (OuterEquipment::where('factory_number', $request->factory_number)->exists()) {
             return ('factory_number already exists');
-        } else {
-            $building = new Buildings;
-            $building->place_first_lev = $request->place_first_lev;
-            $building->place_third_lev = $request->place_third_lev;
-            $building->place_zero_lev = $request->place_zero_lev;
-            $building->save();
-
-            $requestArray = $request->all();
-            $requestArray['id_build'] = $building->id_build;
-            $outerEquipmnet = OuterEquipment::create($requestArray);
-            return response()->json('equipment added successfully');
         }
+        $building = new Buildings;
+        $building->place_first_lev = $request->place_first_lev;
+        $building->place_third_lev = $request->place_third_lev;
+        $building->place_zero_lev = $request->place_zero_lev;
+        $building->save();
+
+        $requestArray = $request->all();
+        $requestArray['id_build'] = $building->id_build;
+        $requestArray['role'] = $this->getUserRole();
+        OuterEquipment::create($requestArray);
+        return response()->json('equipment added successfully');
     }
 
     public function show($id)
     {
-        $outerEquipment = OuterEquipment::find($id);
+        $outerEquipment = OuterEquipment::find($id)
+            ->where('users.role', $this->getUserRole());
 
         return response()->json($outerEquipment);
     }

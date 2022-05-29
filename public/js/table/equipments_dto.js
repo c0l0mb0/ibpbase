@@ -1,7 +1,7 @@
 var config = {
     api: {
         postOuterEquipAndLocation: 'http://127.0.0.1:8000/api/outerequipwithlocation',
-        postInnerEquipByOuterId:'http://127.0.0.1:8000/api/innerequip',
+        postInnerEquipByOuterId: 'http://127.0.0.1:8000/api/innerequip',
 
         deleteOuterEquipAndItsLocation: 'http://127.0.0.1:8000/api/outerequipwithlocation',
         deleteInnerEquip: 'http://127.0.0.1:8000/api/innerequip',
@@ -19,7 +19,6 @@ var config = {
 
 
 function getData(url) {
-    var data = {};
     $.ajax({
         url: url,
         type: 'GET',
@@ -35,7 +34,7 @@ function getData(url) {
 
 
 function setRowById(idRow, data, url) {
-
+    data._token = $('meta[name=csrf-token]').attr('content');
     $.ajax({
         url: url + '/' + idRow,
         type: "PUT",
@@ -52,11 +51,15 @@ function setRowById(idRow, data, url) {
 
 
 function deleteById(id, succesDelCallback, url) {
-
+    let data = [{
+        name: 'id',
+        value: id
+    }];
+    data = addCSRF(data)
     $.ajax({
         url: url + '/' + id,
         method: 'DELETE',
-        data: id,
+        data: data,
         contentType: 'application/x-www-form-urlencoded',
         dataType: 'json'
     }).done(function (response) {

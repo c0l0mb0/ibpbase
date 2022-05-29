@@ -3,9 +3,7 @@
 use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\InnerEquipmentController;
 use App\Http\Controllers\OuterEquipmentController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +16,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('outerequipall', [OuterEquipmentController::class, 'index']);
     Route::get('indexbuildingouterinner', [OuterEquipmentController::class, 'indexBuildingOuterInner']);
@@ -44,6 +40,8 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::get('listofobjects', [BuildingsController::class, 'listOfObjects']);
 });
+
+
 
 
 

@@ -1,7 +1,5 @@
 jQuery(function ($) {
     actionMenu.hideALl();
-    // addApplicationConteinerHTML();
-    // changePageTitle("Все оборудовние и компоненты");
     $('.all-equip').hide();
     $('.edit-elements').hide();
     $('#dropdownMenuView').hide();
