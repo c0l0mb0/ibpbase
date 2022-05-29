@@ -37,16 +37,16 @@ class OuterEquipmentController extends Controller
 
     public function indexBuildingOuter()
     {
-//        if (Auth::check()) {
+        if (Auth::check()) {
             $outerEquipment = DB::table('outer_equipment')
                 ->select(DB::raw('*'))
                 ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
                 ->orderBy('id_outer_equip', 'ASC')
                 ->get();
             return response()->json($outerEquipment);
-//        }
+        }
 
-//        return response()->json('access denied',401);
+        return response()->json('access denied',401);
     }
 
     public function showInnerByOuterId($idOuter)
