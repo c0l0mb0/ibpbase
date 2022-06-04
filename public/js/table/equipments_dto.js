@@ -11,9 +11,12 @@ var config = {
         getDataBuildingInnerAndOuterByOuterId: 'http://127.0.0.1:8000/api/indexbuildingouterinner',
         getDataListOfObjects: 'http://127.0.0.1:8000/api/listofobjects',
         getInnerByOuterId: 'http://127.0.0.1:8000/api/showinnerbyouterid',
+        getListLocations: 'http://127.0.0.1:8000/api/listoflocations',
+        getListStates: 'http://127.0.0.1:8000/api/listofstates',
 
         setOuterEquipmentRowById: 'http://127.0.0.1:8000/api/outerequip',
-        setInnerEquipmentRowById: 'http://127.0.0.1:8000/api/innerequip'
+        setInnerEquipmentRowById: 'http://127.0.0.1:8000/api/innerequip',
+
     }
 };
 
@@ -62,9 +65,21 @@ function deleteById(id, succesDelCallback, url) {
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         dataType: 'json'
-    }).done(function (response) {
+    }).done(function () {
         succesDelCallback();
     }).fail(function (jqXHR, textStatus, errorThrown) {
 
     });
+}
+
+function postData (data, url,callBackSuccess, callBackError) {
+    $.ajax({
+        url: url,
+        method: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        dataType: 'json',
+        success: callBackSuccess,
+        error: callBackError
+    }).done(callBackSuccess).fail(callBackError);
 }

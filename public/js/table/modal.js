@@ -51,39 +51,44 @@ function setFormSubmitHandler(form, postUrl, getUrl) {
             inputValues.push({name: 'id_outer', value: currentIdOuter});
         }
         inputValues = addCSRF(inputValues);
-        $.ajax({
-            url: postUrl,
-            method: 'POST',
-            data: inputValues,
-            contentType: 'application/x-www-form-urlencoded',
-            dataType: 'json',
-            success: () => {
-                _hideError()
-                form.modal('hide');
-                form.trigger("reset");
-                if (ibpAgGrid.isReady === true) {
-                    if (currentIdOuter === undefined) {
-                        ibpAgGrid.setGridData(getData(getUrl));
-                    } else {
-                        ibpAgGrid.setGridData(getData(getUrl + '/' + currentIdOuter));
-                    }
+
+        let successFunct = () => {
+            _hideError()
+            form.modal('hide');
+            form.trigger("reset");
+            if (ibpAgGrid.isReady === true) {
+                if (currentIdOuter === undefined) {
+                    ibpAgGrid.setGridData(getData(getUrl));
+                } else {
+                    ibpAgGrid.setGridData(getData(getUrl + '/' + currentIdOuter));
                 }
-                actionMenu.hideOneRowAction();
-            },
-            error: function (response) {
-                console.log(response)
-                _showError("Ошибка, попробуйте еще раз");
             }
-        });
+            actionMenu.hideOneRowAction();
+        }
+
+        let errorFunct = (response) => {
+            console.log(response)
+            _showError("Ошибка, попробуйте еще раз");
+        }
+        postData(inputValues, postUrl, successFunct, errorFunct);
     });
 }
+
 
 function createModalEquipLocationList(data) {
     let selectHtml = '';
     $.each(data, function (key, val) {
-        selectHtml += `<option>` + val.place_first_lev + `</option>`
+        selectHtml += `<option>` + val.location + `</option>`
     });
-    $(".modal__place_first_lev-select").append(selectHtml);
+    $("#place_first_lev").append(selectHtml);
+}
+
+function createModalEquipStateList(data) {
+    let selectHtml = '';
+    $.each(data, function (key, val) {
+        selectHtml += `<option>` + val.state + `</option>`
+    });
+    $("#state_tech_condition").append(selectHtml);
 }
 
 
@@ -93,7 +98,7 @@ function setModalInnerFormHtml() {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-new-equipInnerLabel">Добавить прибор</h5>
+                    <h5 class="modal-title" id="modal-new-equipInnerLabel">Добавить элемент'</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form class="modal-form needs-validation" id="form_inner-equipment">
@@ -116,10 +121,50 @@ function setModalInnerFormHtml() {
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="state_zip" class="col-form-label">ЗИП</label>
+                                <label for="faсtory_number_inner" class="col-form-label">ЗавНомер</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="state_zip" name="state_zip">
+                                <input type="text" class="form-control" id="faсtory_number_inner" name="faсtory_number_inner">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="year_issue" class="col-form-label">Выпуск</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="date" class="form-control" id="year_issue" name="year_issue">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="inventory_number" class="col-form-label">ИнвНомер</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="inventory_number" name="inventory_number">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="faсtory_name" class="col-form-label">Производитель</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="faсtory_name" name="faсtory_name">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="voltage" class="col-form-label">Напряжение</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="voltage" name="voltage">
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="purpose" class="col-form-label">Назначение</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="purpose" name="purpose">
                             </div>
                         </div>
                         <div class="row p-2">
@@ -156,10 +201,18 @@ function setModalInnerFormHtml() {
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="tehn_obsl_hours" class="col-form-label">ТОчасы</label>
+                                <label for="to_four" class="form-check-label">ТО4</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="tehn_obsl_hours" name="tehn_obsl_hours">
+                                <input type="checkbox" class="form-check-input" id="to_four" name="to_four">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="to_five" class="form-check-label">ТО5</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="checkbox" class="form-check-input" id="to_five" name="to_five">
                             </div>
                         </div>
                         <div class="row p-2">
@@ -183,7 +236,7 @@ function setModalInnerFormHtml() {
                                 <label for="fault_reason" class="col-form-label">ПричинаПоломки</label>
                             </div>
                             <div class="col-9">
-                                <input type="date" class="form-control" id="fault_reason" name="fault_reason">
+                                <input type="text" class="form-control" id="fault_reason" name="fault_reason">
                             </div>
                         </div>
                         <div class="row p-2">
@@ -196,46 +249,6 @@ function setModalInnerFormHtml() {
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="faсtory_number_inner" class="col-form-label">ЗавНомер</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" class="form-control" id="faсtory_number_inner" name="faсtory_number_inner">
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-3">
-                                <label for="faсtory_name" class="col-form-label">Производитель</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" class="form-control" id="faсtory_name" name="faсtory_name">
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-3">
-                                <label for="purpose" class="col-form-label">Назначение</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" class="form-control" id="purpose" name="purpose">
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-3">
-                                <label for="inventory_number" class="col-form-label">ИнвНомер</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" class="form-control" id="inventory_number" name="inventory_number">
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-3">
-                                <label for="year_issue" class="col-form-label">Выпуск</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="date" class="form-control" id="year_issue" name="year_issue">
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-3">
                                 <label for="year_exploitation" class="col-form-label">ЭксплСтарт</label>
                             </div>
                             <div class="col-9">
@@ -244,13 +257,14 @@ function setModalInnerFormHtml() {
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="voltage" class="col-form-label">Напряжение</label>
+                                <label for="state_zip" class="col-form-label">ЗИП</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="voltage" name="voltage">
+                                <input type="text" class="form-control" id="state_zip" name="state_zip">
                             </div>
                         </div>
                     </div>
+
                     <div class="row" style="margin: 0;">
                         <mark id="form_outer-equipment-and-location__error" class="inline-block secondary d-none" >Текст
                             ошибки
@@ -283,29 +297,13 @@ function setModalOuterFormHtml() {
                 </div>
                 <form class="modal-form needs-validation" id="form_outer-equipment-and-location">
                     <div class="modal-body">
-<!--                        <div class="row p-2">-->
-<!--                            <div class="col-3">-->
-<!--                                <label for="place_zero_lev" class="col-form-label">Уренгой|Ямб</label>-->
-<!--                            </div>-->
-<!--                            <div class="col-9">-->
-<!--                                <input type="text" class="form-control" id="place_zero_lev" name="place_zero_lev">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row p-2">-->
-<!--                            <div class="col-3">-->
-<!--                                <label for="place_first_lev" class="col-form-label">Расположение</label>-->
-<!--                            </div>-->
-<!--                            <div class="col-9">-->
-<!--                                <select class="form-select modal__place_first_lev-select" id="place_first_lev" name="place_first_lev">-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
                         <div class="row p-2">
                             <div class="col-3">
                                 <label for="place_first_lev" class="col-form-label">Расположение</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="place_first_lev" name="place_first_lev">
+                                <select class="form-select" id="place_first_lev" name="place_first_lev">
+                                </select>
                             </div>
                         </div>
                         <div class="row p-2">
@@ -417,7 +415,8 @@ function setModalOuterFormHtml() {
                                 <label for="state_tech_condition" class="col-form-label">Состояние</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="state_tech_condition" name="state_tech_condition">
+                                <select class="form-select" id="state_tech_condition" name="state_tech_condition">
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -440,6 +439,6 @@ function setModalOuterFormHtml() {
     ui.modalForm.modalClass = $('#modal-new-outer-equip');
     ui.modalForm.formClass = $('#form_outer-equipment-and-location');
     setFormSubmitHandler(ui.modalForm.modalClass, config.api.postOuterEquipAndLocation, config.api.getDataBuildingAndOuter);
-    var data = getData(config.api.getDataListOfObjects);
-    createModalEquipLocationList(data);
+    createModalEquipLocationList(getData(config.api.getListLocations));
+    createModalEquipStateList(getData(config.api.getListStates));
 }

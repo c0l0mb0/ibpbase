@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\InnerEquipmentController;
+use App\Http\Controllers\ListLocationsController;
+use App\Http\Controllers\ListStatesController;
 use App\Http\Controllers\OuterEquipmentController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +41,9 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::delete('innerequip/{id}', [InnerEquipmentController::class, 'destroy']);
 
     Route::get('listofobjects', [BuildingsController::class, 'listOfObjects']);
+
+    Route::get('listoflocations', [ListLocationsController::class, 'index']);
+    Route::get('listofstates', [ListStatesController::class, 'index']);
 });
 
 

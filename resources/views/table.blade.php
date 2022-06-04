@@ -66,22 +66,22 @@
                     </button>
                     <button type="button" class="btn show-inner" data-bs-toggle="tooltip" data-bs-placement="bottom"
                             title="Элементы">
-                        <img src="{{ asset('icon/arrow-return-left.svg') }}" class="row-menue__icon">
+                        <img src="{{ asset('icon/into.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn show-last-outer" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            title="Оборудование">
+                        <img src="{{ asset('icon/outer.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn delete-table-row" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Удалить">
                         <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
                     </button>
                     <div class="dropdown">
-                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        <button class="btn dropdown-toggle" type="button" id="dropdown-menu-button-locations"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             Объекты
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuBuildings">
-                            <li><a class="dropdown-item" href="#">ГП-1</a></li>
-                            <li><a class="dropdown-item" href="#">ГП-2</a></li>
-                            <li><a class="dropdown-item" href="#">ГП-3</a></li>
-                        </ul>
+                        <ul class="dropdown-menu" id="action-menu-dropdown-locations" aria-labelledby="dropdownMenuBuildings"></ul>
                     </div>
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="dropdownMenuView"
@@ -95,8 +95,6 @@
                         </ul>
                     </div>
                 </div>
-
-
                 <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -131,11 +129,12 @@
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 
-<script src="{{ asset('js/table/app.js') }}"></script>
-<script src="{{ asset('js/table/side_bar.js') }}"></script>`
+
+<script src="{{ asset('js/table/side_bar.js') }}"></script>
 <script src="{{ asset('js/table/modal.js') }}"></script>
 <script src="{{ asset('js/table/action_menu.js') }}"></script>
 <script src="{{ asset('js/table/equipments_dto.js') }}"></script>
 <script src="{{ asset('js/table/aggrid.js') }}"></script>
+<script src="{{ asset('js/table/app.js') }}"></script>
 </body>
 </html>

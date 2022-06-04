@@ -13,6 +13,7 @@ $('.edit_equip').on('click', () => {
     setModalOuterFormHtml()
     changePageTitle("Приборы");
     actionMenu.hideOneRowAction();
+    actionMenu.showLastOuter.hide();
 });
 
 $('.edit_elements').on('click', () => {

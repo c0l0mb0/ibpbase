@@ -1,6 +1,3 @@
-var ibpAgGrid;
-
-
 var innerEquipParameters = {
     gridOptions: {
         domLayout: 'autoHeight',
@@ -120,7 +117,8 @@ class IbpAgGrid {
         this.setDeleteButtonAction();
         this.setEditInnerAction();
 
-        actionMenu.showNewRowAction();
+        actionMenu.newTableRow.show();
+        actionMenu.listLocationsButton.show();
 
         this.isReady = true;
     }
@@ -147,15 +145,28 @@ class IbpAgGrid {
             let selectedRows = this.gridOptions.api.getSelectedRows()
             if (selectedRows.length > 0) {
                 let selectedRowId = selectedRows[0].id_outer_equip;
+
                 ibpAgGrid = new IbpAgGrid(innerEquipParameters.gridOptions,
-                    innerEquipParameters.getDataUrl + '/' + selectedRowId, innerEquipParameters.delUrl, innerEquipParameters.idFieldName);
+                    innerEquipParameters.getDataUrl + '/' +
+                    selectedRowId, innerEquipParameters.delUrl, innerEquipParameters.idFieldName);
                 ibpAgGrid.setCurrentIdOuter(selectedRowId)
                 changePageTitle("Элементы");
                 setModalInnerFormHtml();
                 actionMenu.hideOneRowAction();
-            } else {
-                return false;
+                actionMenu.listLocationsButton.hide();
+
+                actionMenu.showLastOuter.off('click');
+                actionMenu.showLastOuter.on('click', () => {
+                    ibpAgGrid = new IbpAgGrid(buildingAndOuterEquipParameters.gridOptions,
+                        buildingAndOuterEquipParameters.getDataUrl, buildingAndOuterEquipParameters.delUrl,
+                        buildingAndOuterEquipParameters.idFieldName);
+                    actionMenu.showLastOuter.hide();
+                    setModalOuterFormHtml();
+                });
+                actionMenu.showLastOuter.show();
             }
+            return false;
+
         });
     }
 
@@ -188,7 +199,6 @@ class IbpAgGrid {
                 return;
             }
             mutations_list.forEach(node => {
-                console.log(node);
                 if (node.removedNodes.length > 0) {
                     actionMenu.hideALl();
                     observer.disconnect();
