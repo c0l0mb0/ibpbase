@@ -117,8 +117,7 @@ class IbpAgGrid {
         this.setDeleteButtonAction();
         this.setEditInnerAction();
 
-        actionMenu.newTableRow.show();
-        actionMenu.listLocationsButton.show();
+
 
         this.isReady = true;
     }

@@ -7,6 +7,7 @@ var config = {
         deleteInnerEquip: 'http://127.0.0.1:8000/api/innerequip',
 
         getDataBuildingAndOuter: 'http://127.0.0.1:8000/api/indexbuildingouter',
+        getDataBuildingAndOuterById: 'http://127.0.0.1:8000/api/indexbuildingouterbyid',
         getDataBuildingInnerAndOuter: 'http://127.0.0.1:8000/api/indexbuildingouterinner',
         getDataBuildingInnerAndOuterByOuterId: 'http://127.0.0.1:8000/api/indexbuildingouterinner',
         getDataListOfObjects: 'http://127.0.0.1:8000/api/listofobjects',

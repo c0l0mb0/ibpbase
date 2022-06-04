@@ -1,4 +1,5 @@
 class ActionMenu {
+
     _newTableRow;
     _deleteTableRow;
     _showInner;
@@ -6,8 +7,17 @@ class ActionMenu {
     _listLocationUl;
     _listLocationsUrl;
     _listLocationsButton;
+    _ibpAgGrid;
 
     constructor() {
+    }
+
+    get ibpAgGrid() {
+        return this._ibpAgGrid;
+    }
+
+    set ibpAgGrid(value) {
+        this._ibpAgGrid = value;
     }
 
     hideALl() {
@@ -87,18 +97,32 @@ class ActionMenu {
     createOuterEquipLocationList() {
         if (this._listLocationsUrl !== undefined) {
             let data = getData(this._listLocationsUrl);
-            let selectHtml = '<li><a class="dropdown-item-location" id="all" href="#">Все</a></li>';
+            let selectHtml = '<li><a class="dropdown-item-location_all" id="all" href="#">Все</a></li>';
             $.each(data, function (key, val) {
-                selectHtml += `<li><a class="dropdown-item-location" id="` +
+                selectHtml += `<li><a class="dropdown-item-location_` + val.id + `" id="` +
                     val.id + `" href="#">` + val.location + `</a></li>`;
             });
-            this._listLocationUl.append(selectHtml);
-            let ul = document.querySelector("#action-menu-dropdown-locations");
-            if (!ul.childNodes || ul.childNodes.length === 0) return false;
-            for (let items = 0; items < ul.childNodes.length; items++) {
-                let item = ul.childNodes[items].firstChild;
-                if (item.nodeName === "A") {
+            this.listLocationUl.innerHTML = selectHtml;
+        }
+    }
 
+    assignOnClickAction() {
+        if (!this.listLocationUl.childNodes || this.listLocationUl.childNodes.length === 0) return false;
+        for (let items = 0; items < this.listLocationUl.childNodes.length; items++) {
+            let item = this.listLocationUl.childNodes[items].firstChild;
+            if (item.nodeName === "A") {
+                console.log(item)
+                let id = item.id;
+                if (id === 'all') {
+                    item.onclick = () => {
+                        this.ibpAgGrid.setGridData(getData(config.api.getDataBuildingAndOuter));
+                    }
+                } else {
+                    item.onclick = () => {
+                        let data = getData(config.api.getDataBuildingAndOuterById + '/' + id);
+                        this.ibpAgGrid.setGridData(data);
+                        changePageTitle('Приборы => ' + item.innerText);
+                    }
                 }
             }
         }

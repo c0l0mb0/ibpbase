@@ -129,7 +129,6 @@
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 
-
 <script src="{{ asset('js/table/side_bar.js') }}"></script>
 <script src="{{ asset('js/table/modal.js') }}"></script>
 <script src="{{ asset('js/table/action_menu.js') }}"></script>

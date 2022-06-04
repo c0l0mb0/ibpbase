@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buildings;
+use App\Models\ListLocations;
 use App\Models\OuterEquipment;
 use App\Models\Users;
 use Illuminate\Http\Request;
@@ -20,6 +21,20 @@ class OuterEquipmentController extends Controller
      */
 
 
+    public function indexBuildingOuterByListLocationId($id)
+    {
+        $locationFromLocationList = ListLocations::find($id)->location;
+        $outerEquipment = DB::table('outer_equipment')
+            ->select(DB::raw('*'))
+            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
+            ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
+            ->where('users.role', $this->getUserRole())
+            ->where('buildings.place_first_lev', $locationFromLocationList)
+            ->orderBy('id_outer_equip', 'ASC')
+            ->get();
+        return $outerEquipment;
+    }
+
     public function index(Request $request)
     {
         $outerEquipments = OuterEquipment::all()
@@ -33,7 +48,7 @@ class OuterEquipmentController extends Controller
             ->select(DB::raw('*'))
             ->leftJoin('inner_equipment', 'outer_equipment.id_outer_equip', '=', 'inner_equipment.id_outer')
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
-            ->where('users.role', getUserRole())
+            ->where('users.role', $this->getUserRole())
             ->orderBy('id_outer_equip', 'ASC')
             ->get();
         return response()->json($outerEquipment);

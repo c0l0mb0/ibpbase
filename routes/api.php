@@ -23,8 +23,14 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('outerequipall', [OuterEquipmentController::class, 'index']);
     Route::get('indexbuildingouterinner', [OuterEquipmentController::class, 'indexBuildingOuterInner']);
     Route::get('indexbuildingouter', [OuterEquipmentController::class, 'indexBuildingOuter']);
+    Route::get('indexbuildingouterbyid/{id}', [OuterEquipmentController::class, 'indexBuildingOuterByListLocationId']);
     Route::get('outerequip/{id}', [OuterEquipmentController::class, 'show']);
     Route::get('showinnerbyouterid/{id}', [OuterEquipmentController::class, 'showInnerByOuterId']);
+
+    Route::get('listofobjects', [BuildingsController::class, 'listOfObjects']);
+
+    Route::get('listoflocations', [ListLocationsController::class, 'index']);
+    Route::get('listofstates', [ListStatesController::class, 'index']);
 
     Route::post('outerequip', [OuterEquipmentController::class, 'create']);
     Route::post('outerequipwithlocation', [OuterEquipmentController::class, 'createWithLocation']);
@@ -40,10 +46,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::put('innerequip/{id}', [InnerEquipmentController::class, 'update']);
     Route::delete('innerequip/{id}', [InnerEquipmentController::class, 'destroy']);
 
-    Route::get('listofobjects', [BuildingsController::class, 'listOfObjects']);
 
-    Route::get('listoflocations', [ListLocationsController::class, 'index']);
-    Route::get('listofstates', [ListStatesController::class, 'index']);
 });
 
 
