@@ -42,7 +42,7 @@ function addCSRF(inputValues) {
     }
 }
 
-function setFormSubmitHandler(form, postUrl, getUrl) {
+function setFormSubmitHandler(form, postUrl) {
     form.submit(event => {
         event.preventDefault();
         let inputValues = getInputsArr();
@@ -58,9 +58,11 @@ function setFormSubmitHandler(form, postUrl, getUrl) {
             form.trigger("reset");
             if (ibpAgGrid.isReady === true) {
                 if (currentIdOuter === undefined) {
-                    ibpAgGrid.setGridData(getData(getUrl));
+                    debugger
+                    ibpAgGrid.setGridData(getData(ibpAgGrid.getDataUrl));
                 } else {
-                    ibpAgGrid.setGridData(getData(getUrl + '/' + currentIdOuter));
+                    debugger
+                    ibpAgGrid.setGridData(getData(ibpAgGrid.getDataUrl + '/' + currentIdOuter));
                 }
             }
             actionMenu.hideOneRowAction();

@@ -29,7 +29,7 @@ class BuildingsController extends Controller
     {
         $place_first_lev = DB::table('buildings')
             ->select('place_first_lev')
-            ->leftJoin('outer_equipment', 'outer_equipment.id_build', '=', 'buildings.id_build')
+            ->leftJoin('outer_equipment', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
             ->where('users.role', Auth::user()->role)
             ->distinct()

@@ -25,12 +25,12 @@ class OuterEquipmentController extends Controller
     {
         $locationFromLocationList = ListLocations::find($id)->location;
         $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw('*'))
-            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
+            ->select(DB::raw('outer_equipment.id as id_outer_equipment, *'))
+            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
             ->where('users.role', $this->getUserRole())
             ->where('buildings.place_first_lev', $locationFromLocationList)
-            ->orderBy('id_outer_equip', 'ASC')
+            ->orderBy('outer_equipment.id', 'ASC')
             ->get();
         return $outerEquipment;
     }
@@ -38,7 +38,7 @@ class OuterEquipmentController extends Controller
     public function index(Request $request)
     {
         $outerEquipments = OuterEquipment::all()
-            ->sortBy("id_outer_equip");
+            ->sortBy("id");
         return response()->json($outerEquipments);
     }
 
@@ -46,10 +46,10 @@ class OuterEquipmentController extends Controller
     {
         $outerEquipment = DB::table('outer_equipment')
             ->select(DB::raw('*'))
-            ->leftJoin('inner_equipment', 'outer_equipment.id_outer_equip', '=', 'inner_equipment.id_outer')
-            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
+            ->leftJoin('inner_equipment', 'outer_equipment.id', '=', 'inner_equipment.id_outer')
+            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->where('users.role', $this->getUserRole())
-            ->orderBy('id_outer_equip', 'ASC')
+            ->orderBy('outer_equipment.id', 'ASC')
             ->get();
         return response()->json($outerEquipment);
     }
@@ -58,11 +58,11 @@ class OuterEquipmentController extends Controller
     {
 
         $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw('*'))
-            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id_build')
+            ->select(DB::raw('outer_equipment.id as id_outer_equipment, * '))
+            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
             ->where('users.role', $this->getUserRole())
-            ->orderBy('id_outer_equip', 'ASC')
+            ->orderBy('id_outer_equipment', 'ASC')
             ->get();
         return $outerEquipment;
     }
@@ -108,11 +108,10 @@ class OuterEquipmentController extends Controller
         $building = new Buildings;
         $building->place_first_lev = $request->place_first_lev;
         $building->place_third_lev = $request->place_third_lev;
-        $building->place_zero_lev = $request->place_zero_lev;
         $building->save();
 
         $requestArray = $request->all();
-        $requestArray['id_build'] = $building->id_build;
+        $requestArray['id_build'] = $building->id;
         $requestArray['role'] = $this->getUserRole();
         OuterEquipment::create($requestArray);
         return response()->json('equipment added successfully');

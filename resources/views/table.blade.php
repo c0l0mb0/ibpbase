@@ -132,7 +132,7 @@
 <script src="{{ asset('js/table/side_bar.js') }}"></script>
 <script src="{{ asset('js/table/modal.js') }}"></script>
 <script src="{{ asset('js/table/action_menu.js') }}"></script>
-<script src="{{ asset('js/table/equipments_dto.js') }}"></script>
+<script src="{{ asset('js/table/equipment-dao.js') }}"></script>
 <script src="{{ asset('js/table/aggrid.js') }}"></script>
 <script src="{{ asset('js/table/app.js') }}"></script>
 </body>

@@ -44,7 +44,8 @@ a:focus {
 }
 
 #page-title {
-    font-size: 23px;
+    font-size: 17px;
+    margin-top: 7px;
 }
 
 /* ---------------------------------------------------

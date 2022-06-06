@@ -1,5 +1,8 @@
 let ibpAgGrid;
 let actionMenu = new ActionMenu();
+let agOuterId
+let agLocationFilterId
+let agLocationFilterText
 
 actionMenu.newTableRow = $('.new-table-row');
 actionMenu.deleteTableRow = $('.delete-table-row');
@@ -22,7 +25,6 @@ function changePageTitle(page_title) {
 
     document.title = page_title;
 }
-
 
 
 

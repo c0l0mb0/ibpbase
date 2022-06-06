@@ -10,16 +10,13 @@ $('.all-equip').on('click', function () {
 $('.edit_equip').on('click', () => {
 
     ibpAgGrid = new IbpAgGrid(buildingAndOuterEquipParameters.gridOptions,
-        buildingAndOuterEquipParameters.getDataUrl, buildingAndOuterEquipParameters.delUrl,buildingAndOuterEquipParameters.idFieldName);
-    setModalOuterFormHtml()
+        config.api.getDataBuildingAndOuter, config.api.deleteOuterEquipAndItsLocation,
+        buildingAndOuterEquipParameters.idFieldName);
+    setModalOuterFormHtml();
+    actionMenu.setEditInnerAction();
+    actionMenu.createLocationFilter();
     changePageTitle("Приборы");
-    actionMenu.hideOneRowAction();
-    actionMenu.showLastOuter.hide();
-    actionMenu.newTableRow.show();
-    actionMenu.listLocationsButton.show();
-    actionMenu.createOuterEquipLocationList();
-    actionMenu.ibpAgGrid = ibpAgGrid;
-    actionMenu.assignOnClickAction();
+
 });
 
 $('.edit_elements').on('click', () => {
