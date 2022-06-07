@@ -1,21 +1,23 @@
 class ActionMenu {
-
-
     _newTableRow;
     _deleteTableRow;
     _showInner;
-    _showLastOuter;
+    _returnToOuter;
     _listLocationUl;
     _listLocationsUrl;
     _listLocationsButton;
     _deleteAction;
+    agGridFilter = {
+        agLocationFilterId: undefined,
+        agLocationFilterText: undefined
+    }
 
 
     hideALl() {
         this._newTableRow.hide();
         this._deleteTableRow.hide();
         this._showInner.hide();
-        this._showLastOuter.hide();
+        this._returnToOuter.hide();
         this._listLocationsButton.hide();
     }
 
@@ -28,7 +30,6 @@ class ActionMenu {
         this._deleteTableRow.hide();
         this._showInner.hide();
     }
-
 
     get deleteAction() {
         return this._deleteAction;
@@ -86,12 +87,34 @@ class ActionMenu {
         this._showInner = value;
     }
 
-    get showLastOuter() {
-        return this._showLastOuter;
+    get returnToOuter() {
+        return this._returnToOuter;
     }
 
-    set showLastOuter(value) {
-        this._showLastOuter = value;
+    set returnToOuter(value) {
+        this._returnToOuter = value;
+    }
+
+    setReturnToOuterAction() {
+        this.returnToOuter.off('click');
+        this.returnToOuter.on('click', () => {
+            let getDataUrl;
+            if (this.agGridFilter.agLocationFilterId === undefined) {
+                getDataUrl = config.api.getDataBuildingAndOuter;
+                changePageTitle("Приборы");
+            } else {
+                getDataUrl = config.api.getDataBuildingAndOuterById + '/' + this.agGridFilter.agLocationFilterId;
+                changePageTitle("Приборы => " + this.agGridFilter.agLocationFilterText);
+            }
+            ibpAgGrid = new IbpAgGrid(buildingAndOuterEquipParameters.gridOptions,
+                getDataUrl, config.api.deleteOuterEquipAndItsLocation,
+                buildingAndOuterEquipParameters.idFieldName, buildingAndOuterEquipParameters.agName);
+            agOuterId = undefined;
+            this.returnToOuter.hide();
+            setModalOuterFormHtml();
+            this.createLocationFilter();
+        });
+        this.returnToOuter.show();
     }
 
     setEditInnerAction() {
@@ -100,41 +123,15 @@ class ActionMenu {
 
             let selectedRows = ibpAgGrid.gridOptions.api.getSelectedRows()
             if (selectedRows.length > 0) {
-                let selectedRowId = selectedRows[0][ibpAgGrid.idFieldName];
-
-                if (ibpAgGrid.locationText !== undefined && ibpAgGrid.listLocationId !== undefined) {
-                    this.agLocationText = ibpAgGrid.locationText;
-                    this.agListLocationId = ibpAgGrid.listLocationId;
-                }
-
+                agOuterId = selectedRows[0][ibpAgGrid.idFieldName];
                 ibpAgGrid = new IbpAgGrid(innerEquipParameters.gridOptions,
                     config.api.getInnerByOuterId + '/' +
-                    selectedRowId, config.api.deleteInnerEquip, innerEquipParameters.idFieldName);
-                ibpAgGrid.setCurrentIdOuter(selectedRowId)
+                    agOuterId, config.api.deleteInnerEquip, innerEquipParameters.idFieldName,innerEquipParameters.agName);
                 setModalInnerFormHtml();
-                changePageTitle("Элементы " + selectedRows[0].equip_name);
+                changePageTitle("Элементы => " + selectedRows[0].place_first_lev + " => " + selectedRows[0].equip_name);
                 this.hideOneRowAction();
                 this.listLocationsButton.hide();
-
-                this.showLastOuter.off('click');
-                this.showLastOuter.on('click', () => {
-                    let getDataUrlWhenClickOuter;
-                    if (this.agListLocationId === undefined) {
-                        getDataUrlWhenClickOuter = config.api.getDataBuildingAndOuter;
-                        changePageTitle("Приборы");
-                    } else {
-                        getDataUrlWhenClickOuter = config.api.getDataBuildingAndOuterById + '/' + this.agListLocationId;
-                        changePageTitle("Приборы => " + this.agLocationText);
-                    }
-                    ibpAgGrid = new IbpAgGrid(buildingAndOuterEquipParameters.gridOptions,
-                        getDataUrlWhenClickOuter, config.api.deleteOuterEquipAndItsLocation,
-                        buildingAndOuterEquipParameters.idFieldName);
-                    this.showLastOuter.hide();
-                    setModalOuterFormHtml();
-                    this.createListForLocationFilter();
-                    this.setLocationFilterOnClickAction();
-                });
-                this.showLastOuter.show();
+                this.setReturnToOuterAction();
             }
         });
     }
@@ -148,9 +145,11 @@ class ActionMenu {
         if (this._listLocationsUrl !== undefined) {
             let data = getData(this._listLocationsUrl);
             let selectHtml = '<li><a class="dropdown-item-location_all" id="all" href="#">Все</a></li>';
+            let locationCount = 0;
             $.each(data, function (key, val) {
-                selectHtml += `<li><a class="dropdown-item-location_` + val.id + `" id="` +
+                selectHtml += `<li><a class="dropdown-item-location_` + val.id + `"  id="` +
                     val.id + `" href="#">` + val.location + `</a></li>`;
+                locationCount++;
             });
             this.listLocationUl.innerHTML = selectHtml;
         }
@@ -164,20 +163,26 @@ class ActionMenu {
                 let id = item.id;
                 if (id === 'all') {
                     item.onclick = () => {
-                        ibpAgGrid.setGridData(getData(config.api.getDataBuildingAndOuter));
-                        agLocationFilterId = undefined;
-                        agLocationFilterText = undefined;
+                        ibpAgGrid.getDataUrl = config.api.getDataBuildingAndOuter;
+                        ibpAgGrid.refreshData();
+                        this.agGridFilter.agLocationFilterId = undefined;
+                        this.agGridFilter.agLocationFilterText = undefined;
                         changePageTitle('Приборы');
+                        setModalLocationByCurrenFilterValue();
                     }
                 } else {
                     item.onclick = () => {
-                        ibpAgGrid.setGridData(getData(config.api.getDataBuildingAndOuterById + '/' + id));
-                        agLocationFilterId = id;
-                        agLocationFilterText = item.innerText;
-                        changePageTitle('Приборы => ' + agLocationFilterText);
+                        ibpAgGrid.getDataUrl = config.api.getDataBuildingAndOuterById + '/' + id;
+                        ibpAgGrid.refreshData();
+                        this.agGridFilter.agLocationFilterId = id;
+                        this.agGridFilter.agLocationFilterText = item.innerText;
+                        changePageTitle('Приборы => ' + this.agGridFilter.agLocationFilterText);
+                        setModalLocationByCurrenFilterValue();
                     }
                 }
+
             }
         }
+
     }
 }

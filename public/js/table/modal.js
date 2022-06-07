@@ -18,12 +18,6 @@ function _hideError() {
     ui.modalForm.error.addClass('d-none');
 }
 
-function getAgGridCurrentIdOuter() {
-    if (ibpAgGrid.isReady === true) {
-        return ibpAgGrid.getCurrentIdOuter();
-    }
-}
-
 function getInputsArr() {
     let inputValues = ui.modalForm.formClass.serializeArray();
     for (let i = inputValues.length - 1; i >= 0; i--) {
@@ -46,30 +40,21 @@ function setFormSubmitHandler(form, postUrl) {
     form.submit(event => {
         event.preventDefault();
         let inputValues = getInputsArr();
-        let currentIdOuter = getAgGridCurrentIdOuter();
-        if (currentIdOuter !== undefined) {
-            inputValues.push({name: 'id_outer', value: currentIdOuter});
+        if (agOuterId !== undefined && ibpAgGrid.agName === "innerEquip") {
+            inputValues.push({name: 'id_outer', value: agOuterId});
         }
         inputValues = addCSRF(inputValues);
-
         let successFunct = () => {
             _hideError()
             form.modal('hide');
             form.trigger("reset");
             if (ibpAgGrid.isReady === true) {
-                if (currentIdOuter === undefined) {
-                    debugger
-                    ibpAgGrid.setGridData(getData(ibpAgGrid.getDataUrl));
-                } else {
-                    debugger
-                    ibpAgGrid.setGridData(getData(ibpAgGrid.getDataUrl + '/' + currentIdOuter));
-                }
+                ibpAgGrid.refreshData();
             }
             actionMenu.hideOneRowAction();
         }
 
         let errorFunct = (response) => {
-            console.log(response)
             _showError("Ошибка, попробуйте еще раз");
         }
         postData(inputValues, postUrl, successFunct, errorFunct);
@@ -78,9 +63,10 @@ function setFormSubmitHandler(form, postUrl) {
 
 
 function createModalEquipLocationList(data) {
+
     let selectHtml = '';
     $.each(data, function (key, val) {
-        selectHtml += `<option>` + val.location + `</option>`
+        selectHtml += `<option  value="` + val.location + `" id="` + val.id + `"> ` + val.location + `</option>`
     });
     $("#place_first_lev").append(selectHtml);
 }
@@ -288,6 +274,22 @@ function setModalInnerFormHtml() {
     setFormSubmitHandler(ui.modalForm.modalClass, config.api.postInnerEquipByOuterId, config.api.getInnerByOuterId);
 }
 
+function setModalLocationByCurrenFilterValue() {
+    let modalLocationOption = document.getElementById('place_first_lev');
+    if (!modalLocationOption.childNodes || modalLocationOption.childNodes.length === 0) return false;
+    if (actionMenu.agGridFilter.agLocationFilterId === undefined) {
+        modalLocationOption.selectedIndex = 0;
+        return;
+    }
+    for (let items = 0; items < modalLocationOption.length; items++) {
+        let item = modalLocationOption[items];
+        if (item.id === actionMenu.agGridFilter.agLocationFilterId) {
+            modalLocationOption.selectedIndex = items;
+            return
+        }
+    }
+}
+
 function setModalOuterFormHtml() {
     var modalOuterEquipBuild = `
         <div class="modal fade" id="modal-new-outer-equip" tabindex="-1" aria-labelledby="modal-new-equipLabel" aria-hidden="true">
@@ -390,7 +392,7 @@ function setModalOuterFormHtml() {
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="power" class="col-form-label">Мощнсоть</label>
+                                <label for="power" class="col-form-label">Мощноть</label>
                             </div>
                             <div class="col-9">
                                 <input type="text" class="form-control" id="power" name="power">
@@ -406,7 +408,7 @@ function setModalOuterFormHtml() {
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="voltage" class="col-form-label">Напруга</label>
+                                <label for="voltage" class="col-form-label">Напряжение</label>
                             </div>
                             <div class="col-9">
                                 <input type="text" class="form-control" id="voltage" name="voltage">

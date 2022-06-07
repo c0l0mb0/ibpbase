@@ -1,5 +1,6 @@
 let ibpAgGrid;
 let actionMenu = new ActionMenu();
+
 let agOuterId
 let agLocationFilterId
 let agLocationFilterText
@@ -7,7 +8,7 @@ let agLocationFilterText
 actionMenu.newTableRow = $('.new-table-row');
 actionMenu.deleteTableRow = $('.delete-table-row');
 actionMenu.showInner = $('.show-inner');
-actionMenu.showLastOuter = $('.show-last-outer');
+actionMenu.returnToOuter = $('.show-last-outer');
 actionMenu.listLocationsButton = $('#dropdown-menu-button-locations');
 actionMenu.listLocationUl= document.getElementById('action-menu-dropdown-locations');
 actionMenu.listLocationsUrl = config.api.getListLocations;

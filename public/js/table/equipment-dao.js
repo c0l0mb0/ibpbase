@@ -73,14 +73,12 @@ function deleteById(id, succesDelCallback, url) {
     });
 }
 
-function postData (data, url,callBackSuccess, callBackError) {
+function postData(data, url, callBackSuccess, callBackError) {
     $.ajax({
         url: url,
         method: 'POST',
         data: data,
         contentType: 'application/x-www-form-urlencoded',
-        dataType: 'json',
-        success: callBackSuccess,
-        error: callBackError
+        dataType: 'json'
     }).done(callBackSuccess).fail(callBackError);
 }

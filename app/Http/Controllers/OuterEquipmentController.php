@@ -103,7 +103,7 @@ class OuterEquipmentController extends Controller
         ]);
 
         if (OuterEquipment::where('factory_number', $request->factory_number)->exists()) {
-            return ('factory_number already exists');
+            return response()->json('factory_number already exists',409 );
         }
         $building = new Buildings;
         $building->place_first_lev = $request->place_first_lev;

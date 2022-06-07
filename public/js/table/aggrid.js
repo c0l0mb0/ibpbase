@@ -3,47 +3,49 @@ class IbpAgGrid {
     gridOptions;
     getDataUrl;
     delUrl;
-    isReady = true;
+    isReady = false;
     targetId = '#page-content';
+    agName;
 
-    constructor(gridOptions, getDataUrl, delUrl, idFieldName) {
+    constructor(gridOptions, getDataUrl, delUrl, idFieldName,agName) {
         this.gridOptions = gridOptions;
         this.getDataUrl = getDataUrl;
         this.delUrl = delUrl;
         this.idFieldName = idFieldName;
-        this.renderOuterTableAgGrid();
+        this.agName = agName;
+        this.renderAgGrid();
     }
 
-    renderOuterTableAgGrid() {
+    renderAgGrid() {
         this.prepareHtml();
         new agGrid.Grid(document.querySelector(this.targetId), this.gridOptions);
-
         this.setGridData(getData(this.getDataUrl));
-
         this.setGridCloseObserver();
-
         this.setDeleteButtonAction();
-        // this.setEditInnerAction();
 
         actionMenu.hideOneRowAction();
-        actionMenu.showLastOuter.hide();
+        actionMenu.returnToOuter.hide();
         actionMenu.newTableRow.show();
         actionMenu.listLocationsButton.show();
-
 
         this.isReady = true;
     }
 
 
     setGridData(data) {
+        if (data === null) {
+            throw 'setGridData data is null';
+        }
         this.gridOptions.api.setRowData(Object.values(data));
     }
 
-
+    refreshData() {
+        this.setGridData(getData(this.getDataUrl));
+    }
 
     setDeleteButtonAction() {
         let successDelete = () => {
-            this.setGridData(getData(this.getDataUrl));
+            this.refreshData() ;
         }
         actionMenu.deleteTableRow.off('click');
         actionMenu.deleteTableRow.on('click', () => {
@@ -60,9 +62,7 @@ class IbpAgGrid {
     }
 
     setGridCloseObserver() {
-        //close data editor observer
         const observer = new MutationObserver(function (mutations_list) {
-
             //if another one mutation observer has been started
             if (mutations_list.length > 1) {
                 observer.disconnect();
@@ -126,7 +126,8 @@ var innerEquipParameters = {
             params.api.sizeColumnsToFit();
         }
     },
-    idFieldName: 'id_inner_equip'
+    idFieldName: 'id_inner_equip',
+    agName: 'innerEquip'
 }
 
 
@@ -163,7 +164,8 @@ var buildingAndOuterEquipParameters = {
             params.api.sizeColumnsToFit();
         }
     },
-    idFieldName: 'id_outer_equipment'
+    idFieldName: 'id_outer_equipment',
+    agName: 'buildingAndOuterEquip'
 }
 
 

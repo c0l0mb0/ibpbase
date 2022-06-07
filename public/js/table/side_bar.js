@@ -11,7 +11,7 @@ $('.edit_equip').on('click', () => {
 
     ibpAgGrid = new IbpAgGrid(buildingAndOuterEquipParameters.gridOptions,
         config.api.getDataBuildingAndOuter, config.api.deleteOuterEquipAndItsLocation,
-        buildingAndOuterEquipParameters.idFieldName);
+        buildingAndOuterEquipParameters.idFieldName, buildingAndOuterEquipParameters.agName);
     setModalOuterFormHtml();
     actionMenu.setEditInnerAction();
     actionMenu.createLocationFilter();
