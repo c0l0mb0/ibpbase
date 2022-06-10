@@ -25,7 +25,7 @@ class OuterEquipmentController extends Controller
     {
         $locationFromLocationList = ListLocations::find($id)->location;
         $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw('outer_equipment.id as id_outer_equipment, *'))
+            ->select(DB::raw('* ,outer_equipment.id as id '))
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
             ->where('users.role', $this->getUserRole())
@@ -45,7 +45,7 @@ class OuterEquipmentController extends Controller
     public function indexBuildingOuterInner()
     {
         $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw('*'))
+            ->select(DB::raw('*, outer_equipment.id as id '))
             ->leftJoin('inner_equipment', 'outer_equipment.id', '=', 'inner_equipment.id_outer')
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->where('users.role', $this->getUserRole())
@@ -56,14 +56,13 @@ class OuterEquipmentController extends Controller
 
     public function indexBuildingOuter()
     {
-
         $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw('outer_equipment.id as id_outer_equipment, * '))
+            ->select(DB::raw(' * , outer_equipment.id as id '))
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
             ->where('users.role', $this->getUserRole())
-            ->orderBy('id_outer_equipment', 'ASC')
             ->get();
+
         return $outerEquipment;
     }
 
@@ -103,7 +102,7 @@ class OuterEquipmentController extends Controller
         ]);
 
         if (OuterEquipment::where('factory_number', $request->factory_number)->exists()) {
-            return response()->json('factory_number already exists',409 );
+            return response()->json('factory_number already exists', 409);
         }
         $building = new Buildings;
         $building->place_first_lev = $request->place_first_lev;

@@ -32,6 +32,7 @@ function getData(url) {
         data = response;
     }).fail(function (jqXHR, textStatus, errorThrown) {
         data = null;
+        throw ('data = null');
     });
     return data;
 }
@@ -44,12 +45,7 @@ function setRowById(idRow, data, url) {
         type: "PUT",
         dataType: 'json',
         contentType: 'application/json',
-        data: JSON.stringify(data),
-        success: function (data) {
-        },
-        error: function (xhr, resp, text) {
-            // console.log(xhr, resp, text);
-        }
+        data: JSON.stringify(data)
     });
 }
 

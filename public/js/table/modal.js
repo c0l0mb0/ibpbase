@@ -63,7 +63,6 @@ function setFormSubmitHandler(form, postUrl) {
 
 
 function createModalEquipLocationList(data) {
-
     let selectHtml = '';
     $.each(data, function (key, val) {
         selectHtml += `<option  value="` + val.location + `" id="` + val.id + `"> ` + val.location + `</option>`
@@ -77,6 +76,22 @@ function createModalEquipStateList(data) {
         selectHtml += `<option>` + val.state + `</option>`
     });
     $("#state_tech_condition").append(selectHtml);
+}
+
+function setModalLocationByCurrenFilterValue() {
+    let modalLocationOption = document.getElementById('place_first_lev');
+    if (!modalLocationOption.childNodes || modalLocationOption.childNodes.length === 0) return false;
+    if (actionMenu.agGridFilter.agLocationFilterId === undefined) {
+        modalLocationOption.selectedIndex = 0;
+        return;
+    }
+    for (let items = 0; items < modalLocationOption.length; items++) {
+        let item = modalLocationOption[items];
+        if (item.id === actionMenu.agGridFilter.agLocationFilterId) {
+            modalLocationOption.selectedIndex = items;
+            return
+        }
+    }
 }
 
 
@@ -274,21 +289,6 @@ function setModalInnerFormHtml() {
     setFormSubmitHandler(ui.modalForm.modalClass, config.api.postInnerEquipByOuterId, config.api.getInnerByOuterId);
 }
 
-function setModalLocationByCurrenFilterValue() {
-    let modalLocationOption = document.getElementById('place_first_lev');
-    if (!modalLocationOption.childNodes || modalLocationOption.childNodes.length === 0) return false;
-    if (actionMenu.agGridFilter.agLocationFilterId === undefined) {
-        modalLocationOption.selectedIndex = 0;
-        return;
-    }
-    for (let items = 0; items < modalLocationOption.length; items++) {
-        let item = modalLocationOption[items];
-        if (item.id === actionMenu.agGridFilter.agLocationFilterId) {
-            modalLocationOption.selectedIndex = items;
-            return
-        }
-    }
-}
 
 function setModalOuterFormHtml() {
     var modalOuterEquipBuild = `

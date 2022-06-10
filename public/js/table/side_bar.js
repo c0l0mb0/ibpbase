@@ -1,6 +1,6 @@
-$('#sidebarCollapse').on('click', function () {
-    $('#sidebar').toggleClass('active');
-});
+// document.getElementById('idebarCollapse').on('click', function () {
+//     $('#sidebar').toggleClass('active');
+// });
 
 $('.all-equip').on('click', function () {
     // ibpAgGridOuterAndLocation = new IbpAgGrid(buildingAndOuterGridOptions, getData(config.api.getDataBuildingAndOuter));
@@ -10,8 +10,7 @@ $('.all-equip').on('click', function () {
 $('.edit_equip').on('click', () => {
 
     ibpAgGrid = new IbpAgGrid(buildingAndOuterEquipParameters.gridOptions,
-        config.api.getDataBuildingAndOuter, config.api.deleteOuterEquipAndItsLocation,
-        buildingAndOuterEquipParameters.idFieldName, buildingAndOuterEquipParameters.agName);
+        config.api.getDataBuildingAndOuter, config.api.deleteOuterEquipAndItsLocation, buildingAndOuterEquipParameters.agName);
     setModalOuterFormHtml();
     actionMenu.setEditInnerAction();
     actionMenu.createLocationFilter();

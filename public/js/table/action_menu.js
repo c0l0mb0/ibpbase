@@ -14,21 +14,21 @@ class ActionMenu {
 
 
     hideALl() {
-        this._newTableRow.hide();
-        this._deleteTableRow.hide();
-        this._showInner.hide();
-        this._returnToOuter.hide();
-        this._listLocationsButton.hide();
+        this._newTableRow.style.display = 'none';
+        this._deleteTableRow.style.display = 'none';
+        this._showInner.style.display = 'none';
+        this._returnToOuter.style.display = 'none';
+        this._listLocationsButton.style.display = 'none';
     }
 
     showOneRowAction() {
-        this._deleteTableRow.show();
-        this._showInner.show();
+        this._deleteTableRow.style.display = 'block';
+        this._showInner.style.display = 'block';
     }
 
     hideOneRowAction() {
-        this._deleteTableRow.hide();
-        this._showInner.hide();
+        this._deleteTableRow.style.display = 'none';
+        this._showInner.style.display = 'none';
     }
 
     get deleteAction() {
@@ -95,9 +95,31 @@ class ActionMenu {
         this._returnToOuter = value;
     }
 
+    ///////////////////////////
+    ////inner outer actions////
+    ///////////////////////////
+
+    setEditInnerAction() {
+        // this.showInner.off('click');
+        this.showInner.onclick =() => {
+            let selectedRow = ibpAgGrid.getSelectedRow()
+            agOuterId = selectedRow.id;
+            ibpAgGrid = new IbpAgGrid(innerEquipParameters.gridOptions,
+                config.api.getInnerByOuterId + '/' +
+                agOuterId, config.api.deleteInnerEquip, innerEquipParameters.agName);
+            setModalInnerFormHtml();
+            changePageTitle("Элементы => " + selectedRow.place_first_lev + " => " +
+                selectedRow.equip_name);
+            this.hideOneRowAction();
+            this.listLocationsButton.style.display = 'none';
+            this.setReturnToOuterAction();
+
+        };
+    }
+
     setReturnToOuterAction() {
-        this.returnToOuter.off('click');
-        this.returnToOuter.on('click', () => {
+        // this.returnToOuter.off('click');
+        this.returnToOuter.onclick =() => {
             let getDataUrl;
             if (this.agGridFilter.agLocationFilterId === undefined) {
                 getDataUrl = config.api.getDataBuildingAndOuter;
@@ -107,35 +129,18 @@ class ActionMenu {
                 changePageTitle("Приборы => " + this.agGridFilter.agLocationFilterText);
             }
             ibpAgGrid = new IbpAgGrid(buildingAndOuterEquipParameters.gridOptions,
-                getDataUrl, config.api.deleteOuterEquipAndItsLocation,
-                buildingAndOuterEquipParameters.idFieldName, buildingAndOuterEquipParameters.agName);
+                getDataUrl, config.api.deleteOuterEquipAndItsLocation, buildingAndOuterEquipParameters.agName);
             agOuterId = undefined;
-            this.returnToOuter.hide();
+            this.returnToOuter.style.display = 'none';
             setModalOuterFormHtml();
             this.createLocationFilter();
-        });
-        this.returnToOuter.show();
+        };
+        this.returnToOuter.style.display = 'block';
     }
 
-    setEditInnerAction() {
-        this.showInner.off('click');
-        this.showInner.on('click', () => {
-
-            let selectedRows = ibpAgGrid.gridOptions.api.getSelectedRows()
-            if (selectedRows.length > 0) {
-                agOuterId = selectedRows[0][ibpAgGrid.idFieldName];
-                ibpAgGrid = new IbpAgGrid(innerEquipParameters.gridOptions,
-                    config.api.getInnerByOuterId + '/' +
-                    agOuterId, config.api.deleteInnerEquip, innerEquipParameters.idFieldName,innerEquipParameters.agName);
-                setModalInnerFormHtml();
-                changePageTitle("Элементы => " + selectedRows[0].place_first_lev + " => " + selectedRows[0].equip_name);
-                this.hideOneRowAction();
-                this.listLocationsButton.hide();
-                this.setReturnToOuterAction();
-            }
-        });
-    }
-
+    //////////////
+    ////filter////
+    //////////////
     createLocationFilter() {
         this.createListForLocationFilter();
         this.setLocationFilterOnClickAction();
