@@ -3,7 +3,7 @@ class IbpAgGrid {
     getDataUrl;
     delUrl;
     isReady = false;
-    targetId = '#page-content';
+    targetId = 'page-content';
     agName;
 
     constructor(gridOptions, getDataUrl, delUrl, agName) {
@@ -16,8 +16,8 @@ class IbpAgGrid {
 
     renderAgGrid() {
         this.prepareHtml();
-        new agGrid.Grid(document.querySelector(this.targetId), this.gridOptions);
-        this.setGridData(getData(this.getDataUrl));
+        new agGrid.Grid(document.getElementById(this.targetId), this.gridOptions);
+        this.setGridData();
         this.setGridCloseObserver();
         this.setDeleteButtonAction();
 
@@ -29,16 +29,12 @@ class IbpAgGrid {
         this.isReady = true;
     }
 
-
-    setGridData(data) {
+    async setGridData() {
+        let data = await httpRequest(this.getDataUrl, 'GET');
         if (data === null) {
             throw 'setGridData data is null';
         }
-        this.gridOptions.api.setRowData(Object.values(data));
-    }
-
-    refreshData() {
-        this.setGridData(getData(this.getDataUrl));
+        this.gridOptions.api.setRowData(data);
     }
 
     getSelectedRow() {
@@ -49,15 +45,15 @@ class IbpAgGrid {
     }
 
     setDeleteButtonAction() {
-        let successDelete = () => {
-            this.refreshData();
-        }
-        // actionMenu.deleteTableRow.off('click');
         actionMenu.deleteTableRow.onclick = () => {
             let selectedRow = this.getSelectedRow();
-            deleteById(selectedRow.id, successDelete, this.delUrl);
+            // deleteById(selectedRow.id, successDelete, this.delUrl);
+            let csrf = {};
+            csrf = addCSRF(csrf);
+            httpRequest(this.delUrl, 'DELETE', csrf, selectedRow.id);
             actionMenu.hideOneRowAction();
             actionMenu.showInner.style.display = 'none';
+            this.setGridData();
         };
     }
 
@@ -75,12 +71,14 @@ class IbpAgGrid {
                 }
             })
         });
-        observer.observe(document.querySelector(this.targetId), {subtree: false, childList: true});
+        observer.observe(document.getElementById(this.targetId), {subtree: false, childList: true});
     }
 
     prepareHtml() {
-        $(this.targetId).html("");
-        $(this.targetId).css({'width': '100%'}).addClass('ag-theme-alpine');
+        let pageContentHtml = document.getElementById(this.targetId);
+        pageContentHtml.innerHTML = "";
+        pageContentHtml.style.width = '100%'
+        pageContentHtml.classList.add('ag-theme-alpine');
     }
 }
 
@@ -117,7 +115,7 @@ var innerEquipParameters = {
         },
         enableBrowserTooltips: true,
         onCellValueChanged: function (event) {
-            setRowById(event.data.id, event.data, config.api.setInnerEquipmentRowById);
+            httpRequest(config.api.setInnerEquipmentRowById, "PUT", addCSRF(event.data), event.data.id);
         },
         onRowSelected: function () {
             actionMenu.deleteTableRow.style.display = 'block';
@@ -153,7 +151,7 @@ var buildingAndOuterEquipParameters = {
         },
         enableBrowserTooltips: true,
         onCellValueChanged: function (event) {
-            setRowById(event.data.id, event.data, config.api.setOuterEquipmentRowById);
+            httpRequest(config.api.setOuterEquipmentRowById, "PUT", addCSRF(event.data), event.data.id);
         },
         onRowSelected: function () {
             actionMenu.showOneRowAction();

@@ -2,80 +2,78 @@ var ui = {
     modalForm: {
         modalClass: undefined,
         formClass: undefined,
-        error: $('#form_outer-equipment-and-location__error')
+        error: document.getElementById('form_outer-equipment-and-location__error')
     },
-    modalContainer: $('.modal-container'),
-    showModalButton: $(".new-table-row")
+    modalContainer: document.getElementsByClassName('modal-container')[0],
+    showModalButton: document.getElementsByClassName('new-table-row')[0]
+
 };
 
-
 function _showError(message) {
-    ui.modalForm.error.text(message);
-    ui.modalForm.error.removeClass('d-none');
+    // ui.modalForm.error.text(message);
+    // ui.modalForm.error.removeClass('d-none');
 }
 
 function _hideError() {
-    ui.modalForm.error.addClass('d-none');
+    // ui.modalForm.error.addClass('d-none');
 }
 
 function getInputsArr() {
-    let inputValues = ui.modalForm.formClass.serializeArray();
-    for (let i = inputValues.length - 1; i >= 0; i--) {
-        if (inputValues[i].value === '') {
-            inputValues.splice(i, 1);
+
+    let data = {};
+    let formData = new FormData(ui.modalForm.formClass);
+    for (const [key, value] of formData) {
+        if (value !== '') {
+            data[key] = value;
         }
     }
-    return inputValues;
+    if (agOuterId !== undefined && ibpAgGrid.agName === "innerEquip") {
+        var name = 'id_outer'
+        var value = agOuterId
+        data[name] = value;
+    }
+    data = addCSRF(data);
+    return data;
 }
 
-function addCSRF(inputValues) {
-    var CSRF = $('meta[name=csrf-token]').attr('content');
-    if (CSRF !== undefined && CSRF !== "") {
-        inputValues.push({name: '_token', value: CSRF});
-        return inputValues;
-    }
+function hideModal() {
+    let modal = bootstrap.Modal.getInstance(ui.modalForm.modalClass)
+    modal.hide()
 }
 
 function setFormSubmitHandler(form, postUrl) {
-    form.submit(event => {
+    form.addEventListener('submit', (event) => {
         event.preventDefault();
         let inputValues = getInputsArr();
-        if (agOuterId !== undefined && ibpAgGrid.agName === "innerEquip") {
-            inputValues.push({name: 'id_outer', value: agOuterId});
-        }
-        inputValues = addCSRF(inputValues);
-        let successFunct = () => {
-            _hideError()
-            form.modal('hide');
-            form.trigger("reset");
+        httpRequest(postUrl, 'POST', inputValues).then((datums) => {
+            hideModal()
+            event.target.reset();
             if (ibpAgGrid.isReady === true) {
-                ibpAgGrid.refreshData();
+                ibpAgGrid.setGridData();
             }
             actionMenu.hideOneRowAction();
-        }
-
-        let errorFunct = (response) => {
+        }).catch((e) => {
+            console.log(e)
             _showError("Ошибка, попробуйте еще раз");
-        }
-        postData(inputValues, postUrl, successFunct, errorFunct);
+        })
     });
 }
 
-
 function createModalEquipLocationList(data) {
     let selectHtml = '';
-    $.each(data, function (key, val) {
-        selectHtml += `<option  value="` + val.location + `" id="` + val.id + `"> ` + val.location + `</option>`
+    data.forEach(elementLocation => {
+        selectHtml += `<option  value="` + elementLocation.location + `" id="` +
+            elementLocation.id + `"> ` + elementLocation.location + `</option>`;
     });
-    $("#place_first_lev").append(selectHtml);
+    document.getElementById('place_first_lev').innerHTML = selectHtml;
 }
 
 function createModalEquipStateList(data) {
     let selectHtml = '';
-    $.each(data, function (key, val) {
-        selectHtml += `<option>` + val.state + `</option>`
+    data.forEach(elementState => {
+        selectHtml += `<option>` + elementState.state + `</option>`
     });
-    $("#state_tech_condition").append(selectHtml);
+    document.getElementById('state_tech_condition').innerHTML = selectHtml;
 }
 
 function setModalLocationByCurrenFilterValue() {
@@ -282,15 +280,15 @@ function setModalInnerFormHtml() {
         </div>
     </div>
 `;
-    ui.showModalButton.attr('data-bs-target', '#modal-new-inner-equip');
-    ui.modalContainer.html(modalInnerEquip);
-    ui.modalForm.modalClass = $('#modal-new-inner-equip');
-    ui.modalForm.formClass = $('#form_inner-equipment');
-    setFormSubmitHandler(ui.modalForm.modalClass, config.api.postInnerEquipByOuterId, config.api.getInnerByOuterId);
+    ui.showModalButton.setAttribute('data-bs-target', '#modal-new-inner-equip');
+    ui.modalContainer.innerHTML = modalInnerEquip;
+    ui.modalForm.modalClass = document.getElementById('modal-new-inner-equip');
+    ui.modalForm.formClass = document.getElementById('form_inner-equipment');
+    setFormSubmitHandler(ui.modalForm.modalClass, config.api.postInnerEquipByOuterId);
 }
 
 
-function setModalOuterFormHtml() {
+async function setModalOuterFormHtml() {
     var modalOuterEquipBuild = `
         <div class="modal fade" id="modal-new-outer-equip" tabindex="-1" aria-labelledby="modal-new-equipLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -438,11 +436,11 @@ function setModalOuterFormHtml() {
         </div>
     </div>
 `;
-    ui.showModalButton.attr('data-bs-target', '#modal-new-outer-equip');
-    ui.modalContainer.html(modalOuterEquipBuild);
-    ui.modalForm.modalClass = $('#modal-new-outer-equip');
-    ui.modalForm.formClass = $('#form_outer-equipment-and-location');
-    setFormSubmitHandler(ui.modalForm.modalClass, config.api.postOuterEquipAndLocation, config.api.getDataBuildingAndOuter);
-    createModalEquipLocationList(getData(config.api.getListLocations));
-    createModalEquipStateList(getData(config.api.getListStates));
+    ui.showModalButton.setAttribute('data-bs-target', '#modal-new-outer-equip');
+    ui.modalContainer.innerHTML = modalOuterEquipBuild;
+    ui.modalForm.modalClass = document.getElementById('modal-new-outer-equip');
+    ui.modalForm.formClass = document.getElementById('form_outer-equipment-and-location');
+    setFormSubmitHandler(ui.modalForm.modalClass, config.api.postOuterEquipAndLocation);
+    createModalEquipLocationList(await httpRequest(config.api.getListLocations, 'GET'));
+    createModalEquipStateList(await httpRequest(config.api.getListStates, 'GET'));
 }

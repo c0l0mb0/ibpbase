@@ -21,60 +21,30 @@ var config = {
     }
 };
 
+function httpRequest(url, method, data = null, idRow = null) {
+    if (idRow !== null) url += '/' + idRow;
 
-function getData(url) {
-    $.ajax({
-        url: url,
-        type: 'GET',
-        async: false,
-        dataType: 'json'
-    }).done(function (response) {
-        data = response;
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        data = null;
-        throw ('data = null');
+    return new Promise(function (resolve, reject) {
+        var oReq = new XMLHttpRequest();
+        oReq.responseType = 'json';
+        oReq.open(method, url);
+        oReq.setRequestHeader('Content-type','application/json; charset=utf-8');
+        oReq.onload = function () {
+            if (oReq.status >= 200 && oReq.status < 300) {
+                resolve(oReq.response);
+            } else {
+                reject({
+                    status: oReq.status,
+                    statusText: oReq.statusText
+                });
+            }
+        };
+        oReq.onerror = function () {
+            reject({
+                status: oReq.status,
+                statusText: oReq.statusText
+            });
+        };
+        oReq.send(JSON.stringify(data));
     });
-    return data;
-}
-
-
-function setRowById(idRow, data, url) {
-    data._token = $('meta[name=csrf-token]').attr('content');
-    $.ajax({
-        url: url + '/' + idRow,
-        type: "PUT",
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify(data)
-    });
-}
-
-
-function deleteById(id, succesDelCallback, url) {
-    let data = [{
-        name: 'id',
-        value: id
-    }];
-    data = addCSRF(data)
-    $.ajax({
-        url: url + '/' + id,
-        method: 'DELETE',
-        data: data,
-        contentType: 'application/x-www-form-urlencoded',
-        dataType: 'json'
-    }).done(function () {
-        succesDelCallback();
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-
-    });
-}
-
-function postData(data, url, callBackSuccess, callBackError) {
-    $.ajax({
-        url: url,
-        method: 'POST',
-        data: data,
-        contentType: 'application/x-www-form-urlencoded',
-        dataType: 'json'
-    }).done(callBackSuccess).fail(callBackError);
 }

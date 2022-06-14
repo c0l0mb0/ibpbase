@@ -101,7 +101,7 @@ class ActionMenu {
 
     setEditInnerAction() {
         // this.showInner.off('click');
-        this.showInner.onclick =() => {
+        this.showInner.onclick = () => {
             let selectedRow = ibpAgGrid.getSelectedRow()
             agOuterId = selectedRow.id;
             ibpAgGrid = new IbpAgGrid(innerEquipParameters.gridOptions,
@@ -118,8 +118,7 @@ class ActionMenu {
     }
 
     setReturnToOuterAction() {
-        // this.returnToOuter.off('click');
-        this.returnToOuter.onclick =() => {
+        this.returnToOuter.onclick = () => {
             let getDataUrl;
             if (this.agGridFilter.agLocationFilterId === undefined) {
                 getDataUrl = config.api.getDataBuildingAndOuter;
@@ -142,22 +141,21 @@ class ActionMenu {
     ////filter////
     //////////////
     createLocationFilter() {
-        this.createListForLocationFilter();
-        this.setLocationFilterOnClickAction();
+        if (this._listLocationsUrl !== undefined) {
+            httpRequest(this._listLocationsUrl, 'GET').then((data) => {
+                this.createListForLocationFilter(data);
+                this.setLocationFilterOnClickAction();
+            });
+        }
     }
 
-    createListForLocationFilter() {
-        if (this._listLocationsUrl !== undefined) {
-            let data = getData(this._listLocationsUrl);
-            let selectHtml = '<li><a class="dropdown-item-location_all" id="all" href="#">Все</a></li>';
-            let locationCount = 0;
-            $.each(data, function (key, val) {
-                selectHtml += `<li><a class="dropdown-item-location_` + val.id + `"  id="` +
-                    val.id + `" href="#">` + val.location + `</a></li>`;
-                locationCount++;
-            });
-            this.listLocationUl.innerHTML = selectHtml;
-        }
+    createListForLocationFilter(data) {
+        let selectHtml = '<li><a class="dropdown-item-location_all" id="all" href="#">Все</a></li>';
+        data.forEach(elementLocation => {
+            selectHtml += `<li><a class="dropdown-item-location_` + elementLocation.id + `"  id="` +
+                elementLocation.id + `" href="#">` + elementLocation.location + `</a></li>`;
+        });
+        this.listLocationUl.innerHTML = selectHtml;
     }
 
     setLocationFilterOnClickAction() {
@@ -169,7 +167,7 @@ class ActionMenu {
                 if (id === 'all') {
                     item.onclick = () => {
                         ibpAgGrid.getDataUrl = config.api.getDataBuildingAndOuter;
-                        ibpAgGrid.refreshData();
+                        ibpAgGrid.setGridData();
                         this.agGridFilter.agLocationFilterId = undefined;
                         this.agGridFilter.agLocationFilterText = undefined;
                         changePageTitle('Приборы');
@@ -178,7 +176,7 @@ class ActionMenu {
                 } else {
                     item.onclick = () => {
                         ibpAgGrid.getDataUrl = config.api.getDataBuildingAndOuterById + '/' + id;
-                        ibpAgGrid.refreshData();
+                        ibpAgGrid.setGridData();
                         this.agGridFilter.agLocationFilterId = id;
                         this.agGridFilter.agLocationFilterText = item.innerText;
                         changePageTitle('Приборы => ' + this.agGridFilter.agLocationFilterText);

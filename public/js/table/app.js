@@ -1,6 +1,5 @@
 let ibpAgGrid;
 let actionMenu = new ActionMenu();
-
 let agOuterId
 
 actionMenu.newTableRow = document.getElementsByClassName('new-table-row')[0];
@@ -19,8 +18,15 @@ document.getElementById('dropdownMenuView').style.display = 'none';
 
 function changePageTitle(page_title) {
     document.getElementById('page-title').textContent = page_title;
-    // $('#page-title').text(page_title);
     document.title = page_title;
+}
+
+function addCSRF(objectData) {
+    var CSRF = document.getElementsByName('csrf-token')[0].getAttribute('content');
+    if (CSRF !== undefined && CSRF !== "") {
+        objectData._token = CSRF;
+        return objectData;
+    }
 }
 
 
