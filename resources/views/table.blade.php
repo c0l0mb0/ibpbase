@@ -10,6 +10,7 @@
     <title>Вход</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/table/table.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/table/flatpickr.min.css') }}">
 
 </head>
 <body>
@@ -22,13 +23,7 @@
             </div>
             <ul class="list-unstyled components">
                 <li>
-                    <a class="all-equip" href="#">Состояние</a>
-                </li>
-                <li>
                     <a class="edit_equip" href="#">Приборы</a>
-                </li>
-                <li>
-                    <a class="edit-elements" href="#">Элементы</a>
                 </li>
                 <li>
                     <a href="#">Капремонт</a>
@@ -44,6 +39,9 @@
                 </li>
                 <li>
                     <a href="#">График ТО</a>
+                </li>
+                <li>
+                    <a href="#">ЗИП</a>
                 </li>
             </ul>
         </div>
@@ -83,6 +81,22 @@
                         </button>
                         <ul class="dropdown-menu" id="action-menu-dropdown-locations" aria-labelledby="dropdownMenuBuildings"></ul>
                     </div>
+                    <button type="button" class="btn show-cap-remont" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Кап. ремонт">
+                        <img src="{{ asset('icon/wrench-adjustable-circle.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn show-toir" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="ТОиР">
+                        <img src="{{ asset('icon/tools.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn show-pen-ren" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="ПЭН/РЭН АКБ">
+                        <img src="{{ asset('icon/card-list.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn show-tro" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Акт ТРО">
+                        <img src="{{ asset('icon/text-indent-left.svg') }}" class="row-menue__icon">
+                    </button>
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="dropdownMenuView"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -125,6 +139,10 @@
     <!-- Modal -->
     <div class="modal-container"></div>
 </div>
+
+
+<script src="{{ asset('js/table/flatpickr.js') }}"></script>
+<script src="{{ asset('js/table/ru.js') }}"></script>
 <script src="{{ asset('js/table/ag-grid-community.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/table/side_bar.js') }}"></script>

@@ -129,7 +129,6 @@ class OuterEquipmentController extends Controller
         $this->validate($request, [
             'factory_number' => 'required'
         ]);
-
         $outerEquipment = OuterEquipment::find($id);
 
         $outerEquipment->update($request->all());

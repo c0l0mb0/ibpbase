@@ -127,10 +127,83 @@ var innerEquipParameters = {
     agName: 'innerEquip'
 }
 
+function getDatePicker() {
+    function Datepicker() {
+    }
+
+    Datepicker.prototype.init = function (params) {
+        flatpickr.localize(flatpickr.l10ns.ru);
+        this.input = document.createElement("input");
+        this.input.value = params.value;
+        this.input.flatpickr();
+    };
+    Datepicker.prototype.getGui = function () {
+        return this.input;
+    };
+    Datepicker.prototype.afterGuiAttached = function () {
+        this.input.focus();
+        this.input.select();
+    };
+    Datepicker.prototype.getValue = function () {
+        return this.input.value;
+    };
+    Datepicker.prototype.destroy = function () {
+    };
+    Datepicker.prototype.isPopup = function () {
+        return false;
+    };
+    return Datepicker;
+}
+
+/////////////////////////////////////////////////
+function CheckboxRenderer() {
+}
+
+CheckboxRenderer.prototype.init = function (params) {
+    this.params = params;
+
+    this.eGui = document.createElement('input');
+    this.eGui.type = 'checkbox';
+    this.eGui.checked = params.value;
+
+    this.checkedHandler = this.checkedHandler.bind(this);
+    this.eGui.addEventListener('click', this.checkedHandler);
+
+}
+
+CheckboxRenderer.prototype.checkedHandler = function (e) {
+    let checked = e.target.checked;
+    let colId = this.params.column.colId;
+    this.params.node.setDataValue(colId, checked);
+}
+
+CheckboxRenderer.prototype.getGui = function (params) {
+    return this.eGui;
+}
+
+CheckboxRenderer.prototype.destroy = function (params) {
+    this.eGui.removeEventListener('click', this.checkedHandler);
+}
+
+//////////////////////////////////////////////
+function getCheckboxEditor() {
+    function CheckboxEditor() {
+    }
+    CheckboxEditor.prototype.init = function (params) {
+       debugger
+    };
+}
+
 var buildingAndOuterEquipParameters = {
     gridOptions: {
+        components: {datePicker: getDatePicker(), checkboxRenderer: CheckboxRenderer, checkboxEditor: getCheckboxEditor()},
         domLayout: 'autoHeight',
         columnDefs: [
+            {
+                headerName: "ЕстьЗИП",
+                field: "has_zip",
+                cellRenderer: 'checkboxRenderer',
+            },
             {headerName: "Место", field: "place_third_lev", tooltipField: 'place_third_lev'},
             {headerName: "Имя", field: "equip_name", minWidth: 250, tooltipField: 'equip_name'},
             {headerName: "Номер", field: "factory_number", tooltipField: 'factory_number'},
@@ -138,11 +211,26 @@ var buildingAndOuterEquipParameters = {
             {headerName: "ИнвНом", field: "inventory_number", tooltipField: 'inventory_number'},
             {headerName: "НомВвода", field: "numb_vvod"},
             {headerName: "Назначение", field: "purpose", tooltipField: 'purpose'},
-            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue'},
-            {headerName: "Эксплуатация", field: "year_exploitation", tooltipField: 'year_exploitation'},
+            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue', cellEditor: 'datePicker'},
+            {
+                headerName: "Эксплуатация",
+                field: "year_exploitation",
+                tooltipField: 'year_exploitation',
+                cellEditor: 'datePicker'
+            },
             {headerName: "Мощность", field: "power", tooltipField: 'power'},
             {headerName: "Ток", field: "current"},
-            {headerName: "Состояние", field: "state_tech_condition", tooltipField: 'state_tech_condition'}
+
+            {
+                headerName: "Состояние",
+                field: "state_tech_condition",
+                tooltipField: 'state_tech_condition',
+                cellEditor: 'agSelectCellEditor',
+                cellEditorParams: {
+                    values: ['исправен', 'частично исправен', 'неисправен', 'требуется замена запчастей',
+                        'выведен из строя', 'нахоится в резерве', 'теребуется капремонт']
+                }
+            }
         ],
         rowSelection: 'single',
         defaultColDef: {
