@@ -1,22 +1,24 @@
+// var host= 'http://45.142.36.70:80/index.php';
+var host= 'http://127.0.0.1:8000'
 var config = {
     api: {
-        postOuterEquipAndLocation: 'http://127.0.0.1:8000/api/outerequipwithlocation',
-        postInnerEquipByOuterId: 'http://127.0.0.1:8000/api/innerequip',
+        postOuterEquipAndLocation: host + '/api/outerequipwithlocation',
+        postInnerEquipByOuterId: host + '/api/innerequip',
 
-        deleteOuterEquipAndItsLocation: 'http://127.0.0.1:8000/api/outerequipwithlocation',
-        deleteInnerEquip: 'http://127.0.0.1:8000/api/innerequip',
+        deleteOuterEquipAndItsLocation: host + '/api/outerequipwithlocation',
+        deleteInnerEquip: host + '/api/innerequip',
 
-        getDataBuildingAndOuter: 'http://127.0.0.1:8000/api/indexbuildingouter',
-        getDataBuildingAndOuterById: 'http://127.0.0.1:8000/api/indexbuildingouterbyid',
-        getDataBuildingInnerAndOuter: 'http://127.0.0.1:8000/api/indexbuildingouterinner',
-        getDataBuildingInnerAndOuterByOuterId: 'http://127.0.0.1:8000/api/indexbuildingouterinner',
-        getDataListOfObjects: 'http://127.0.0.1:8000/api/listofobjects',
-        getInnerByOuterId: 'http://127.0.0.1:8000/api/showinnerbyouterid',
-        getListLocations: 'http://127.0.0.1:8000/api/listoflocations',
-        getListStates: 'http://127.0.0.1:8000/api/listofstates',
+        getDataBuildingAndOuter: host + '/api/indexbuildingouter',
+        getDataBuildingAndOuterById: host + '/api/indexbuildingouterbyid',
+        getDataBuildingInnerAndOuter: host + '/api/indexbuildingouterinner',
+        getDataBuildingInnerAndOuterByOuterId: host + '/api/indexbuildingouterinner',
+        getDataListOfObjects: host + '/api/listofobjects',
+        getInnerByOuterId: host + '/api/showinnerbyouterid',
+        getListLocations: host + '/api/listoflocations',
+        getListStates: host + '/api/listofstates',
 
-        setOuterEquipmentRowById: 'http://127.0.0.1:8000/api/outerequip',
-        setInnerEquipmentRowById: 'http://127.0.0.1:8000/api/innerequip',
+        setOuterEquipmentRowById: host + '/api/outerequip',
+        setInnerEquipmentRowById: host + '/api/innerequip',
 
     }
 };

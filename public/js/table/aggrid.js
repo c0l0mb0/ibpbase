@@ -83,50 +83,6 @@ class IbpAgGrid {
 }
 
 
-var innerEquipParameters = {
-    gridOptions: {
-        domLayout: 'autoHeight',
-        suppressRowTransform: true,
-
-        columnDefs: [
-            {headerName: "Элемент", field: "inner_name", minWidth: 250, tooltipField: 'inner_name'},
-            {headerName: "ЗавНомЭлемента", field: "faсtory_number_inner", tooltipField: 'faсtory_number_inner'},
-            {headerName: "Количество", field: "quant", tooltipField: 'quant'},
-            {headerName: "ЗИП", field: "state_zip", tooltipField: 'state_zip'},
-            {headerName: "ТехнСост", field: "state_tech_condition", tooltipField: 'state_tech_condition'},
-            {headerName: "Назначение", field: "purpose", tooltipField: 'purpose'},
-            {headerName: "ИнвНом", field: "inventory_number", tooltipField: 'inventory_number'},
-            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue'},
-            {headerName: "НачЭксплуат", field: "year_exploitation", tooltipField: 'year_exploitation'},
-            {headerName: "Напряжение", field: "voltage", tooltipField: 'voltage'},
-            {headerName: "ВидТО", field: "tehn_obsl_hours", tooltipField: 'tehn_obsl_hours'},
-            {headerName: "СтартТО", field: "tehn_obsl_start", tooltipField: 'tehn_obsl_start'},
-            {headerName: "Приоритет", field: "state_priority", tooltipField: 'state_priority'},
-            {headerName: "Зявка", field: "state_request", tooltipField: 'state_request'},
-            {headerName: "ЗявкаПодтвержд", field: "state_approved_request", tooltipField: 'state_approved_request'},
-            {headerName: "ДатаПоломки", field: "fault_date", tooltipField: 'fault_date'},
-            {headerName: "ПричинаПоломки", field: "fault_reason", tooltipField: 'fault_reason'},
-            {headerName: "ДатаДоставки", field: "state_delivery_date", tooltipField: 'state_delivery_date'}
-        ],
-        rowSelection: 'single',
-        defaultColDef: {
-            resizable: true,
-            editable: true,
-        },
-        enableBrowserTooltips: true,
-        onCellValueChanged: function (event) {
-            httpRequest(config.api.setInnerEquipmentRowById, "PUT", addCSRF(event.data), event.data.id);
-        },
-        onRowSelected: function () {
-            actionMenu.deleteTableRow.style.display = 'block';
-        },
-        onFirstDataRendered: (params) => {
-            params.api.sizeColumnsToFit();
-        }
-    },
-    agName: 'innerEquip'
-}
-
 function getDatePicker() {
     function Datepicker() {
     }
@@ -185,25 +141,15 @@ CheckboxRenderer.prototype.destroy = function (params) {
     this.eGui.removeEventListener('click', this.checkedHandler);
 }
 
-//////////////////////////////////////////////
-function getCheckboxEditor() {
-    function CheckboxEditor() {
-    }
-    CheckboxEditor.prototype.init = function (params) {
-       debugger
-    };
-}
 
 var buildingAndOuterEquipParameters = {
     gridOptions: {
-        components: {datePicker: getDatePicker(), checkboxRenderer: CheckboxRenderer, checkboxEditor: getCheckboxEditor()},
+        components: {
+            datePicker: getDatePicker(),
+            checkboxRenderer: CheckboxRenderer
+        },
         domLayout: 'autoHeight',
         columnDefs: [
-            {
-                headerName: "ЕстьЗИП",
-                field: "has_zip",
-                cellRenderer: 'checkboxRenderer',
-            },
             {headerName: "Место", field: "place_third_lev", tooltipField: 'place_third_lev'},
             {headerName: "Имя", field: "equip_name", minWidth: 250, tooltipField: 'equip_name'},
             {headerName: "Номер", field: "factory_number", tooltipField: 'factory_number'},
@@ -220,12 +166,18 @@ var buildingAndOuterEquipParameters = {
             },
             {headerName: "Мощность", field: "power", tooltipField: 'power'},
             {headerName: "Ток", field: "current"},
+            {
+                headerName: "ЕстьЗИП",
+                field: "has_zip",
+                cellRenderer: 'checkboxRenderer',
+            },
 
             {
                 headerName: "Состояние",
                 field: "state_tech_condition",
                 tooltipField: 'state_tech_condition',
                 cellEditor: 'agSelectCellEditor',
+                singleClickEdit: true,
                 cellEditorParams: {
                     values: ['исправен', 'частично исправен', 'неисправен', 'требуется замена запчастей',
                         'выведен из строя', 'нахоится в резерве', 'теребуется капремонт']
@@ -250,5 +202,66 @@ var buildingAndOuterEquipParameters = {
     },
     agName: 'buildingAndOuterEquip'
 }
-
+var innerEquipParameters = {
+    gridOptions: {
+        components: {
+            datePicker: getDatePicker(),
+            checkboxRenderer: CheckboxRenderer
+        },
+        domLayout: 'autoHeight',
+        suppressRowTransform: true,
+        columnDefs: [
+            {headerName: "Элемент", field: "inner_name", minWidth: 250, tooltipField: 'inner_name'},
+            {headerName: "Количество", field: "quant", tooltipField: 'quant'},
+            {headerName: "ЗавНомЭлемента", field: "faсtory_number", tooltipField: 'faсtory_number'},
+            {headerName: "Производитель", field: "faсtory_name", tooltipField: 'faсtory_name'},
+            {headerName: "ИнвНом", field: "inventory_number", tooltipField: 'inventory_number'},
+            {headerName: "Назначение", field: "purpose", tooltipField: 'purpose'},
+            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue', cellEditor: 'datePicker'},
+            {
+                headerName: "НачЭксплуат",
+                field: "year_exploitation",
+                tooltipField: 'year_exploitation',
+                cellEditor: 'datePicker'
+            },
+            {headerName: "Напряжение", field: "voltage", tooltipField: 'voltage'},
+            {
+                headerName: "ТехнСост",
+                field: "state_tech_condition",
+                tooltipField: 'state_tech_condition',
+                cellEditor: 'agSelectCellEditor',
+                singleClickEdit: true,
+                cellEditorParams: {
+                    values: ['исправен', 'неисправен']
+                }
+            },
+            {headerName: "ДатаПоломки", field: "fault_date", tooltipField: 'fault_date', cellEditor: 'datePicker'},
+            {headerName: "ПричинаПоломки", field: "fault_reason", tooltipField: 'fault_reason'},
+            {
+                headerName: "СтартТО",
+                field: "tehn_obsl_start",
+                tooltipField: 'tehn_obsl_start',
+                cellEditor: 'datePicker'
+            },
+            {headerName: "ТО4", field: "to_4", tooltipField: 'to_4', cellRenderer: 'checkboxRenderer'},
+            {headerName: "ТО5", field: "to_5", tooltipField: 'to_5', cellRenderer: 'checkboxRenderer'},
+        ],
+        rowSelection: 'single',
+        defaultColDef: {
+            resizable: true,
+            editable: true,
+        },
+        enableBrowserTooltips: true,
+        onCellValueChanged: function (event) {
+            httpRequest(config.api.setInnerEquipmentRowById, "PUT", addCSRF(event.data), event.data.id);
+        },
+        onRowSelected: function () {
+            actionMenu.deleteTableRow.style.display = 'block';
+        },
+        onFirstDataRendered: (params) => {
+            params.api.sizeColumnsToFit();
+        }
+    },
+    agName: 'innerEquip'
+}
 
