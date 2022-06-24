@@ -1,25 +1,22 @@
-// var host= 'http://45.142.36.70:80';
-// var host= 'http://127.0.0.1:8000'
-var host= 'http://rhre555/ibpbase/public'
 var config = {
     api: {
-        postOuterEquipAndLocation: host + '/api/outerequipwithlocation',
-        postInnerEquipByOuterId: host + '/api/innerequip',
+        postOuterEquipAndLocation: '/api/outerequipwithlocation',
+        postInnerEquipByOuterId: '/api/innerequip',
 
-        deleteOuterEquipAndItsLocation: host + '/api/outerequipwithlocation',
-        deleteInnerEquip: host + '/api/innerequip',
+        deleteOuterEquipAndItsLocation: '/api/outerequipwithlocation',
+        deleteInnerEquip: '/api/innerequip',
 
-        getDataBuildingAndOuter: host + '/api/indexbuildingouter',
-        getDataBuildingAndOuterById: host + '/api/indexbuildingouterbyid',
-        getDataBuildingInnerAndOuter: host + '/api/indexbuildingouterinner',
-        getDataBuildingInnerAndOuterByOuterId: host + '/api/indexbuildingouterinner',
-        getDataListOfObjects: host + '/api/listofobjects',
-        getInnerByOuterId: host + '/api/showinnerbyouterid',
-        getListLocations: host + '/api/listoflocations',
-        getListStates: host + '/api/listofstates',
+        getDataBuildingAndOuter: '/api/indexbuildingouter',
+        getDataBuildingAndOuterById: '/api/indexbuildingouterbyid',
+        getDataBuildingInnerAndOuter: '/api/indexbuildingouterinner',
+        getDataBuildingInnerAndOuterByOuterId: '/api/indexbuildingouterinner',
+        getDataListOfObjects: '/api/listofobjects',
+        getInnerByOuterId: '/api/showinnerbyouterid',
+        getListLocations: '/api/listoflocations',
+        getListStates: '/api/listofstates',
 
-        setOuterEquipmentRowById: host + '/api/outerequip',
-        setInnerEquipmentRowById: host + '/api/innerequip',
+        setOuterEquipmentRowById: '/api/outerequip',
+        setInnerEquipmentRowById: '/api/innerequip',
 
     }
 };
