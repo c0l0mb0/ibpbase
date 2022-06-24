@@ -1,5 +1,6 @@
-// var host= 'http://45.142.36.70:80/index.php';
-var host= 'http://127.0.0.1:8000'
+// var host= 'http://45.142.36.70:80';
+// var host= 'http://127.0.0.1:8000'
+var host= 'http://rhre555/ibpbase/public'
 var config = {
     api: {
         postOuterEquipAndLocation: host + '/api/outerequipwithlocation',

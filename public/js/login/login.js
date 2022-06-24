@@ -22,23 +22,23 @@ var app = (function ($) {
         ui.login.$error.addClass('d-none');
     }
 
-    // function _login(e) {
-    //     e.preventDefault();
-    //     _hideError();
-    //     $.ajax({
-    //         url: config.api.login,
-    //         method: 'POST',
-    //         data: ui.login.$form.serialize(),
-    //         contentType: 'application/x-www-form-urlencoded',
-    //         dataType: 'json',
-    //         success: function () {
-    //             window.location.replace("http://ibp/front/index.html");
-    //         },
-    //         error: function (response) {
-    //             _showError("Ошибка, попробуйте еще раз");
-    //         }
-    //     });
-    // }
+    function _login(e) {
+        e.preventDefault();
+        _hideError();
+        $.ajax({
+            url: config.api.login,
+            method: 'POST',
+            data: ui.login.$form.serialize(),
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: 'json',
+            success: function () {
+                window.location.replace("http://ibp/front/index.html");
+            },
+            error: function (response) {
+                _showError("Ошибка, попробуйте еще раз");
+            }
+        });
+    }
 
     function init() {
         ui.login.$form.submit(_login);
