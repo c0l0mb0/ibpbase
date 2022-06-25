@@ -1,104 +1,46 @@
 class ActionMenu {
-    _newTableRow;
-    _deleteTableRow;
-    _showInner;
-    _returnToOuter;
-    _listLocationUl;
-    _listLocationsUrl;
-    _listLocationsButton;
-    _deleteAction;
+
+    newTableRow;
+    deleteTableRow;
+    showInner;
+    returnToOuter;
+    listLocationUl;
+    listLocationsUrl;
+    listLocationsButton;
+    deleteAction;
+    showCapRemont;
+    showToir;
+    showPenRen;
+    showTro;
     agGridFilter = {
         agLocationFilterId: undefined,
         agLocationFilterText: undefined
     }
 
-
     hideALl() {
-        this._newTableRow.style.display = 'none';
-        this._deleteTableRow.style.display = 'none';
-        this._showInner.style.display = 'none';
-        this._returnToOuter.style.display = 'none';
-        this._listLocationsButton.style.display = 'none';
+        this.newTableRow.style.display = 'none';
+        this.deleteTableRow.style.display = 'none';
+        this.showInner.style.display = 'none';
+        this.returnToOuter.style.display = 'none';
+        this.listLocationsButton.style.display = 'none';
+        this.showCapRemont.style.display = 'none';
+        this.showToir.style.display = 'none';
+        this.showPenRen.style.display = 'none';
+        this.showTro.style.display = 'none';
     }
 
     showOneRowAction() {
-        this._deleteTableRow.style.display = 'block';
-        this._showInner.style.display = 'block';
+        this.deleteTableRow.style.display = 'block';
+        this.showInner.style.display = 'block';
     }
 
     hideOneRowAction() {
-        this._deleteTableRow.style.display = 'none';
-        this._showInner.style.display = 'none';
+        this.deleteTableRow.style.display = 'none';
+        this.showInner.style.display = 'none';
     }
-
-    get deleteAction() {
-        return this._deleteAction;
-    }
-
-    set deleteAction(value) {
-        this._deleteAction = value;
-    }
-
-    get listLocationsButton() {
-        return this._listLocationsButton;
-    }
-
-    set listLocationsButton(value) {
-        this._listLocationsButton = value;
-    }
-
-    get listLocationUl() {
-        return this._listLocationUl;
-    }
-
-    set listLocationUl(value) {
-        this._listLocationUl = value;
-    }
-
-    get listLocationsUrl() {
-        return this._listLocationsUrl;
-    }
-
-    set listLocationsUrl(value) {
-        this._listLocationsUrl = value;
-    }
-
-    get newTableRow() {
-        return this._newTableRow;
-    }
-
-    set newTableRow(value) {
-        this._newTableRow = value;
-    }
-
-    get deleteTableRow() {
-        return this._deleteTableRow;
-    }
-
-    set deleteTableRow(value) {
-        this._deleteTableRow = value;
-    }
-
-    get showInner() {
-        return this._showInner;
-    }
-
-    set showInner(value) {
-        this._showInner = value;
-    }
-
-    get returnToOuter() {
-        return this._returnToOuter;
-    }
-
-    set returnToOuter(value) {
-        this._returnToOuter = value;
-    }
-
     ///////////////////////////
     ////inner outer actions////
     ///////////////////////////
-
     setEditInnerAction() {
         // this.showInner.off('click');
         this.showInner.onclick = () => {

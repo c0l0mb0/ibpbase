@@ -1,3 +1,4 @@
+//ag grid wrapper, first field from DAO has to have name id
 class IbpAgGrid {
     gridOptions;
     getDataUrl;
@@ -47,7 +48,6 @@ class IbpAgGrid {
     setDeleteButtonAction() {
         actionMenu.deleteTableRow.onclick = () => {
             let selectedRow = this.getSelectedRow();
-            // deleteById(selectedRow.id, successDelete, this.delUrl);
             let csrf = {};
             csrf = addCSRF(csrf);
             httpRequest(this.delUrl, 'DELETE', csrf, selectedRow.id);

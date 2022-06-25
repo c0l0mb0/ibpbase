@@ -9,6 +9,11 @@ actionMenu.showInner = document.querySelector('.show-inner');
 actionMenu.returnToOuter = document.querySelector('.show-last-outer');
 actionMenu.listLocationsButton = document.querySelector('#dropdown-menu-button-locations');
 actionMenu.listLocationUl = document.querySelector('#action-menu-dropdown-locations');
+
+actionMenu.showCapRemont = document.querySelector('.show-cap-remont');
+actionMenu.showToir = document.querySelector('.show-toir');
+actionMenu.showPenRen = document.querySelector('.show-pen-ren');
+actionMenu.showTro = document.querySelector('.show-tro');
 actionMenu.listLocationsUrl = config.api.getListLocations;
 actionMenu.hideALl();
 
