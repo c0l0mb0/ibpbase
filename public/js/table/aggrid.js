@@ -82,39 +82,6 @@ class IbpAgGrid {
     }
 }
 
-
-
-/////////////////////////////////////////////////
-// function CheckboxRenderer() {
-// }
-//
-// CheckboxRenderer.prototype.init = function (params) {
-//     this.params = params;
-//
-//     this.eGui = document.createElement('input');
-//     this.eGui.type = 'checkbox';
-//     this.eGui.checked = params.value;
-//
-//     this.checkedHandler = this.checkedHandler.bind(this);
-//     this.eGui.addEventListener('click', this.checkedHandler);
-//
-// }
-//
-// CheckboxRenderer.prototype.checkedHandler = function (e) {
-//     let checked = e.target.checked;
-//     let colId = this.params.column.colId;
-//     this.params.node.setDataValue(colId, checked);
-// }
-//
-// CheckboxRenderer.prototype.getGui = function (params) {
-//     return this.eGui;
-// }
-//
-// CheckboxRenderer.prototype.destroy = function (params) {
-//     this.eGui.removeEventListener('click', this.checkedHandler);
-// }
-
-
 var buildingAndOuterEquipParameters = {
     gridOptions: {
         // components: {
@@ -178,10 +145,6 @@ var buildingAndOuterEquipParameters = {
 
 var innerEquipParameters = {
     gridOptions: {
-        components: {
-            datePicker: getDatePicker(),
-            checkboxRenderer: CheckboxRenderer
-        },
         domLayout: 'autoHeight',
         suppressRowTransform: true,
         columnDefs: [
@@ -239,49 +202,13 @@ var innerEquipParameters = {
     agName: 'innerEquip'
 }
 
-var capRemontParameters = {
+var zipParameters = {
     gridOptions: {
-        components: {
-            datePicker: getDatePicker(),
-            checkboxRenderer: CheckboxRenderer
-        },
         domLayout: 'autoHeight',
         suppressRowTransform: true,
         columnDefs: [
-            {headerName: "Элемент", field: "inner_name", minWidth: 250, tooltipField: 'inner_name'},
-            {headerName: "Количество", field: "quant", tooltipField: 'quant'},
-            {headerName: "ЗавНомЭлемента", field: "faсtory_number", tooltipField: 'faсtory_number'},
-            {headerName: "Производитель", field: "faсtory_name", tooltipField: 'faсtory_name'},
-            {headerName: "ИнвНом", field: "inventory_number", tooltipField: 'inventory_number'},
-            {headerName: "Назначение", field: "purpose", tooltipField: 'purpose'},
-            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue', cellEditor: 'datePicker'},
-            {
-                headerName: "НачЭксплуат",
-                field: "year_exploitation",
-                tooltipField: 'year_exploitation',
-                cellEditor: 'datePicker'
-            },
-            {headerName: "Напряжение", field: "voltage", tooltipField: 'voltage'},
-            {
-                headerName: "ТехнСост",
-                field: "state_tech_condition",
-                tooltipField: 'state_tech_condition',
-                cellEditor: 'agSelectCellEditor',
-                singleClickEdit: true,
-                cellEditorParams: {
-                    values: ['исправен', 'неисправен']
-                }
-            },
-            {headerName: "ДатаПоломки", field: "fault_date", tooltipField: 'fault_date', cellEditor: 'datePicker'},
-            {headerName: "ПричинаПоломки", field: "fault_reason", tooltipField: 'fault_reason'},
-            {
-                headerName: "СтартТО",
-                field: "tehn_obsl_start",
-                tooltipField: 'tehn_obsl_start',
-                cellEditor: 'datePicker'
-            },
-            {headerName: "ТО4", field: "to_4", tooltipField: 'to_4', cellRenderer: 'checkboxRenderer'},
-            {headerName: "ТО5", field: "to_5", tooltipField: 'to_5', cellRenderer: 'checkboxRenderer'},
+            {headerName: "Название", field: "equip_name", minWidth: 250, tooltipField: 'equip_name'},
+            {headerName: "Количество", field: "quantity", minWidth: 50, tooltipField: 'quantity'},
         ],
         rowSelection: 'single',
         defaultColDef: {
@@ -290,7 +217,7 @@ var capRemontParameters = {
         },
         enableBrowserTooltips: true,
         onCellValueChanged: function (event) {
-            httpRequest(config.api.setInnerEquipmentRowById, "PUT", addCSRF(event.data), event.data.id);
+            httpRequest(config.api.getByIdPostPutByIdDeleteByIdZipEquipment, "PUT", addCSRF(event.data), event.data.id);
         },
         onRowSelected: function () {
             actionMenu.deleteTableRow.style.display = 'block';
@@ -299,5 +226,5 @@ var capRemontParameters = {
             params.api.sizeColumnsToFit();
         }
     },
-    agName: 'capRemont'
+    agName: 'zip'
 }

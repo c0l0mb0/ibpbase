@@ -23,7 +23,7 @@
             </div>
             <ul class="list-unstyled components">
                 <li>
-                    <a class="edit_equip" href="#">Приборы</a>
+                    <a class="sidebar-edit_equip" href="#">Приборы</a>
                 </li>
                 <li>
                     <a href="#">Капремонт</a>
@@ -41,7 +41,7 @@
                     <a href="#">График ТО</a>
                 </li>
                 <li>
-                    <a href="#">ЗИП</a>
+                    <a class="sidebar-edit_zip" href="#">ЗИП</a>
                 </li>
             </ul>
         </div>
@@ -147,9 +147,9 @@
 <script src="{{ asset('js/table/check-box-render.js') }}"></script>
 <script src="{{ asset('js/table/ag-grid-community.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('js/table/side_bar.js') }}"></script>
+<script src="{{ asset('js/table/side-bar.js') }}"></script>
 <script src="{{ asset('js/table/modal.js') }}"></script>
-<script src="{{ asset('js/table/action_menu.js') }}"></script>
+<script src="{{ asset('js/table/action-menu.js') }}"></script>
 <script src="{{ asset('js/table/equipment-dao.js') }}"></script>
 <script src="{{ asset('js/table/aggrid.js') }}"></script>
 <script src="{{ asset('js/table/app.js') }}"></script>

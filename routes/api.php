@@ -2,9 +2,14 @@
 
 use App\Http\Controllers\BuildingsController;
 use App\Http\Controllers\InnerEquipmentController;
+use App\Http\Controllers\KapRemontController;
 use App\Http\Controllers\ListLocationsController;
 use App\Http\Controllers\ListStatesController;
 use App\Http\Controllers\OuterEquipmentController;
+use App\Http\Controllers\PenRenController;
+use App\Http\Controllers\TehnObslRemontController;
+use App\Http\Controllers\TroController;
+use App\Http\Controllers\ZipEquipmentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +51,35 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::put('innerequip/{id}', [InnerEquipmentController::class, 'update']);
     Route::delete('innerequip/{id}', [InnerEquipmentController::class, 'destroy']);
 
+    Route::get('kapremontall', [KapRemontController::class, 'index']);
+    Route::get('kapremont/{id}', [KapRemontController::class, 'show']);
+    Route::post('kapremont', [KapRemontController::class, 'create']);
+    Route::put('kapremont/{id}', [KapRemontController::class, 'update']);
+    Route::delete('kapremont/{id}', [KapRemontController::class, 'destroy']);
+
+    Route::get('tehnobslremontall', [TehnObslRemontController::class, 'index']);
+    Route::get('tehnobslremont/{id}', [TehnObslRemontController::class, 'show']);
+    Route::post('tehnobslremont', [TehnObslRemontController::class, 'create']);
+    Route::put('tehnobslremont/{id}', [TehnObslRemontController::class, 'update']);
+    Route::delete('tehnobslremont/{id}', [TehnObslRemontController::class, 'destroy']);
+
+    Route::get('penrenall', [PenRenController::class, 'index']);
+    Route::get('penren/{id}', [PenRenController::class, 'show']);
+    Route::post('penren', [PenRenController::class, 'create']);
+    Route::put('penren/{id}', [PenRenController::class, 'update']);
+    Route::delete('penren/{id}', [PenRenController::class, 'destroy']);
+
+    Route::get('troall', [TroController::class, 'index']);
+    Route::get('tro/{id}', [TroController::class, 'show']);
+    Route::post('tro', [TroController::class, 'create']);
+    Route::put('tro/{id}', [TroController::class, 'update']);
+    Route::delete('tro/{id}', [TroController::class, 'destroy']);
+
+    Route::get('zipall', [ZipEquipmentController::class, 'index']);
+    Route::get('zip/{id}', [ZipEquipmentController::class, 'show']);
+    Route::post('zip', [ZipEquipmentController::class, 'create']);
+    Route::put('zip/{id}', [ZipEquipmentController::class, 'update']);
+    Route::delete('zip/{id}', [ZipEquipmentController::class, 'destroy']);
 
 });
 

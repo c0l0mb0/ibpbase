@@ -2,7 +2,7 @@ var ui = {
     modalForm: {
         modalClass: undefined,
         formClass: undefined,
-        error: document.getElementById('form_outer-equipment-and-location__error')
+        error: undefined,
     },
     modalContainer: document.getElementsByClassName('modal-container')[0],
     showModalButton: document.getElementsByClassName('new-table-row')[0]
@@ -10,12 +10,13 @@ var ui = {
 };
 
 function _showError(message) {
-    // ui.modalForm.error.text(message);
-    // ui.modalForm.error.removeClass('d-none');
+    ui.modalForm.error = document.querySelector('#form-error');
+    ui.modalForm.error.innerHTML += 'Ошибка: ' + message.status + ' | ' + message.statusText;
+    ui.modalForm.error.classList.remove('d-none');
 }
 
 function _hideError() {
-    // ui.modalForm.error.addClass('d-none');
+    ui.modalForm.error.classList.add('d-none');
 }
 
 function getInputsArr() {
@@ -46,15 +47,15 @@ function setFormSubmitHandler(form, postUrl) {
         event.preventDefault();
         let inputValues = getInputsArr();
         httpRequest(postUrl, 'POST', inputValues).then((datums) => {
-            hideModal()
+            _hideError();
+            hideModal();
             event.target.reset();
             if (ibpAgGrid.isReady === true) {
                 ibpAgGrid.setGridData();
             }
             actionMenu.hideOneRowAction();
         }).catch((e) => {
-            console.log(e)
-            _showError("Ошибка, попробуйте еще раз");
+            _showError(e);
         })
     });
 }
@@ -267,8 +268,7 @@ function setModalInnerFormHtml() {
                     </div>
 
                     <div class="row" style="margin: 0;">
-                        <mark id="form_outer-equipment-and-location__error" class="inline-block secondary d-none" >Текст
-                            ошибки
+                        <mark id="form-error" class="inline-block secondary d-none" style="text-align: center">
                         </mark>
                     </div>
                     <div class="modal-footer">
@@ -285,6 +285,55 @@ function setModalInnerFormHtml() {
     ui.modalForm.modalClass = document.getElementById('modal-new-inner-equip');
     ui.modalForm.formClass = document.getElementById('form_inner-equipment');
     setFormSubmitHandler(ui.modalForm.modalClass, config.api.postInnerEquipByOuterId);
+}
+
+function setModalZipFormHtml() {
+    var modalInnerEquip = `
+        <div class="modal fade" id="modal-new-zip-equip" tabindex="-1" aria-labelledby="modal-Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-Label">Добавить прибор в ЗИП'</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form class="modal-form needs-validation" id="form-zip_equipment">
+                    <div class="modal-body">
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="equip_name" class="col-form-label">Название</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="equip_name" required name="equip_name">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="quantity" class="col-form-label">Количество</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="quantity" required name="quantity">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin: 0;">
+                        <mark id="form-error" class="inline-block secondary d-none" style="text-align: center">
+                        </mark>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary modal__sbmit">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+`;
+    ui.showModalButton.setAttribute('data-bs-target', '#modal-new-zip-equip');
+    ui.modalContainer.innerHTML = modalInnerEquip;
+    ui.modalForm.modalClass = document.getElementById('modal-new-zip-equip');
+    ui.modalForm.formClass = document.getElementById('form-zip_equipment');
+    setFormSubmitHandler(ui.modalForm.modalClass, config.api.getByIdPostPutByIdDeleteByIdZipEquipment);
 }
 
 
@@ -423,8 +472,7 @@ async function setModalOuterFormHtml() {
                         </div>
                     </div>
                     <div class="row" style="margin: 0;">
-                        <mark id="form_outer-equipment-and-location__error" class="inline-block secondary d-none" >Текст
-                            ошибки
+                        <mark id="form-error" class="inline-block secondary d-none" style="text-align: center">
                         </mark>
                     </div>
                     <div class="modal-footer">
