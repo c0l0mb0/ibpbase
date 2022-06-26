@@ -32,11 +32,19 @@ class ActionMenu {
     showOneRowAction() {
         this.deleteTableRow.style.display = 'block';
         this.showInner.style.display = 'block';
+        this.showCapRemont.style.display = 'block';
+        this.showToir.style.display = 'block';
+        this.showPenRen.style.display = 'block';
+        this.showTro.style.display = 'block';
     }
 
     hideOneRowAction() {
         this.deleteTableRow.style.display = 'none';
         this.showInner.style.display = 'none';
+        this.showCapRemont.style.display = 'none';
+        this.showToir.style.display = 'none';
+        this.showPenRen.style.display = 'none';
+        this.showTro.style.display = 'none';
     }
     ///////////////////////////
     ////inner outer actions////
@@ -83,8 +91,8 @@ class ActionMenu {
     ////filter////
     //////////////
     createLocationFilter() {
-        if (this._listLocationsUrl !== undefined) {
-            httpRequest(this._listLocationsUrl, 'GET').then((data) => {
+        if (this.listLocationsUrl !== undefined) {
+            httpRequest(this.listLocationsUrl, 'GET').then((data) => {
                 this.createListForLocationFilter(data);
                 this.setLocationFilterOnClickAction();
             });

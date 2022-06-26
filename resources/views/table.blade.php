@@ -143,6 +143,8 @@
 
 <script src="{{ asset('js/table/flatpickr.js') }}"></script>
 <script src="{{ asset('js/table/ru.js') }}"></script>
+<script src="{{ asset('js/table/date-picker.js') }}"></script>
+<script src="{{ asset('js/table/check-box-render.js') }}"></script>
 <script src="{{ asset('js/table/ag-grid-community.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/table/side_bar.js') }}"></script>

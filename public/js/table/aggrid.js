@@ -83,71 +83,44 @@ class IbpAgGrid {
 }
 
 
-function getDatePicker() {
-    function Datepicker() {
-    }
-
-    Datepicker.prototype.init = function (params) {
-        flatpickr.localize(flatpickr.l10ns.ru);
-        this.input = document.createElement("input");
-        this.input.value = params.value;
-        this.input.flatpickr();
-    };
-    Datepicker.prototype.getGui = function () {
-        return this.input;
-    };
-    Datepicker.prototype.afterGuiAttached = function () {
-        this.input.focus();
-        this.input.select();
-    };
-    Datepicker.prototype.getValue = function () {
-        return this.input.value;
-    };
-    Datepicker.prototype.destroy = function () {
-    };
-    Datepicker.prototype.isPopup = function () {
-        return false;
-    };
-    return Datepicker;
-}
 
 /////////////////////////////////////////////////
-function CheckboxRenderer() {
-}
-
-CheckboxRenderer.prototype.init = function (params) {
-    this.params = params;
-
-    this.eGui = document.createElement('input');
-    this.eGui.type = 'checkbox';
-    this.eGui.checked = params.value;
-
-    this.checkedHandler = this.checkedHandler.bind(this);
-    this.eGui.addEventListener('click', this.checkedHandler);
-
-}
-
-CheckboxRenderer.prototype.checkedHandler = function (e) {
-    let checked = e.target.checked;
-    let colId = this.params.column.colId;
-    this.params.node.setDataValue(colId, checked);
-}
-
-CheckboxRenderer.prototype.getGui = function (params) {
-    return this.eGui;
-}
-
-CheckboxRenderer.prototype.destroy = function (params) {
-    this.eGui.removeEventListener('click', this.checkedHandler);
-}
+// function CheckboxRenderer() {
+// }
+//
+// CheckboxRenderer.prototype.init = function (params) {
+//     this.params = params;
+//
+//     this.eGui = document.createElement('input');
+//     this.eGui.type = 'checkbox';
+//     this.eGui.checked = params.value;
+//
+//     this.checkedHandler = this.checkedHandler.bind(this);
+//     this.eGui.addEventListener('click', this.checkedHandler);
+//
+// }
+//
+// CheckboxRenderer.prototype.checkedHandler = function (e) {
+//     let checked = e.target.checked;
+//     let colId = this.params.column.colId;
+//     this.params.node.setDataValue(colId, checked);
+// }
+//
+// CheckboxRenderer.prototype.getGui = function (params) {
+//     return this.eGui;
+// }
+//
+// CheckboxRenderer.prototype.destroy = function (params) {
+//     this.eGui.removeEventListener('click', this.checkedHandler);
+// }
 
 
 var buildingAndOuterEquipParameters = {
     gridOptions: {
-        components: {
-            datePicker: getDatePicker(),
-            checkboxRenderer: CheckboxRenderer
-        },
+        // components: {
+        //     datePicker: getDatePicker(),
+        //     checkboxRenderer: CheckboxRenderer
+        // },
         domLayout: 'autoHeight',
         columnDefs: [
             {headerName: "Место", field: "place_third_lev", tooltipField: 'place_third_lev'},
@@ -157,19 +130,19 @@ var buildingAndOuterEquipParameters = {
             {headerName: "ИнвНом", field: "inventory_number", tooltipField: 'inventory_number'},
             {headerName: "НомВвода", field: "numb_vvod"},
             {headerName: "Назначение", field: "purpose", tooltipField: 'purpose'},
-            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue', cellEditor: 'datePicker'},
+            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue', cellEditor: DatePicker},
             {
                 headerName: "Эксплуатация",
                 field: "year_exploitation",
                 tooltipField: 'year_exploitation',
-                cellEditor: 'datePicker'
+                cellEditor: DatePicker
             },
             {headerName: "Мощность", field: "power", tooltipField: 'power'},
             {headerName: "Ток", field: "current"},
             {
                 headerName: "ЕстьЗИП",
                 field: "has_zip",
-                cellRenderer: 'checkboxRenderer',
+                cellRenderer: CheckboxRenderer,
             },
 
             {
@@ -202,6 +175,7 @@ var buildingAndOuterEquipParameters = {
     },
     agName: 'buildingAndOuterEquip'
 }
+
 var innerEquipParameters = {
     gridOptions: {
         components: {
@@ -265,3 +239,65 @@ var innerEquipParameters = {
     agName: 'innerEquip'
 }
 
+var capRemontParameters = {
+    gridOptions: {
+        components: {
+            datePicker: getDatePicker(),
+            checkboxRenderer: CheckboxRenderer
+        },
+        domLayout: 'autoHeight',
+        suppressRowTransform: true,
+        columnDefs: [
+            {headerName: "Элемент", field: "inner_name", minWidth: 250, tooltipField: 'inner_name'},
+            {headerName: "Количество", field: "quant", tooltipField: 'quant'},
+            {headerName: "ЗавНомЭлемента", field: "faсtory_number", tooltipField: 'faсtory_number'},
+            {headerName: "Производитель", field: "faсtory_name", tooltipField: 'faсtory_name'},
+            {headerName: "ИнвНом", field: "inventory_number", tooltipField: 'inventory_number'},
+            {headerName: "Назначение", field: "purpose", tooltipField: 'purpose'},
+            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue', cellEditor: 'datePicker'},
+            {
+                headerName: "НачЭксплуат",
+                field: "year_exploitation",
+                tooltipField: 'year_exploitation',
+                cellEditor: 'datePicker'
+            },
+            {headerName: "Напряжение", field: "voltage", tooltipField: 'voltage'},
+            {
+                headerName: "ТехнСост",
+                field: "state_tech_condition",
+                tooltipField: 'state_tech_condition',
+                cellEditor: 'agSelectCellEditor',
+                singleClickEdit: true,
+                cellEditorParams: {
+                    values: ['исправен', 'неисправен']
+                }
+            },
+            {headerName: "ДатаПоломки", field: "fault_date", tooltipField: 'fault_date', cellEditor: 'datePicker'},
+            {headerName: "ПричинаПоломки", field: "fault_reason", tooltipField: 'fault_reason'},
+            {
+                headerName: "СтартТО",
+                field: "tehn_obsl_start",
+                tooltipField: 'tehn_obsl_start',
+                cellEditor: 'datePicker'
+            },
+            {headerName: "ТО4", field: "to_4", tooltipField: 'to_4', cellRenderer: 'checkboxRenderer'},
+            {headerName: "ТО5", field: "to_5", tooltipField: 'to_5', cellRenderer: 'checkboxRenderer'},
+        ],
+        rowSelection: 'single',
+        defaultColDef: {
+            resizable: true,
+            editable: true,
+        },
+        enableBrowserTooltips: true,
+        onCellValueChanged: function (event) {
+            httpRequest(config.api.setInnerEquipmentRowById, "PUT", addCSRF(event.data), event.data.id);
+        },
+        onRowSelected: function () {
+            actionMenu.deleteTableRow.style.display = 'block';
+        },
+        onFirstDataRendered: (params) => {
+            params.api.sizeColumnsToFit();
+        }
+    },
+    agName: 'capRemont'
+}
