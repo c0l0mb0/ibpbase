@@ -33,6 +33,9 @@ class ZipEquipmentController extends Controller
             'equip_name' => 'required',
             'quantity' => 'required|numeric'
         ]);
+        if (ZipEquipment::where('equip_name', $request->equip_name)->exists()) {
+            return response()->json('already exists', 409);
+        }
         $requestArray = $request->all();
         $requestArray['role'] = $this->getUserRole();
 

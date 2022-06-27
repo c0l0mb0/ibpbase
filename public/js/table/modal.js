@@ -10,12 +10,12 @@ var ui = {
 };
 
 function _showError(message) {
-    ui.modalForm.error = document.querySelector('#form-error');
     ui.modalForm.error.innerHTML += 'Ошибка: ' + message.status + ' | ' + message.statusText;
     ui.modalForm.error.classList.remove('d-none');
 }
 
 function _hideError() {
+    ui.modalForm.error.innerHTML = '';
     ui.modalForm.error.classList.add('d-none');
 }
 
@@ -55,6 +55,7 @@ function setFormSubmitHandler(form, postUrl) {
             }
             actionMenu.hideOneRowAction();
         }).catch((e) => {
+            _hideError();
             _showError(e);
         })
     });
@@ -282,6 +283,7 @@ function setModalInnerFormHtml() {
 `;
     ui.showModalButton.setAttribute('data-bs-target', '#modal-new-inner-equip');
     ui.modalContainer.innerHTML = modalInnerEquip;
+    ui.modalForm.error = document.querySelector('#form-error');
     ui.modalForm.modalClass = document.getElementById('modal-new-inner-equip');
     ui.modalForm.formClass = document.getElementById('form_inner-equipment');
     setFormSubmitHandler(ui.modalForm.modalClass, config.api.postInnerEquipByOuterId);
@@ -331,6 +333,7 @@ function setModalZipFormHtml() {
 `;
     ui.showModalButton.setAttribute('data-bs-target', '#modal-new-zip-equip');
     ui.modalContainer.innerHTML = modalInnerEquip;
+    ui.modalForm.error = document.querySelector('#form-error');
     ui.modalForm.modalClass = document.getElementById('modal-new-zip-equip');
     ui.modalForm.formClass = document.getElementById('form-zip_equipment');
     setFormSubmitHandler(ui.modalForm.modalClass, config.api.getByIdPostPutByIdDeleteByIdZipEquipment);
@@ -486,6 +489,7 @@ async function setModalOuterFormHtml() {
 `;
     ui.showModalButton.setAttribute('data-bs-target', '#modal-new-outer-equip');
     ui.modalContainer.innerHTML = modalOuterEquipBuild;
+    ui.modalForm.error = document.querySelector('#form-error');
     ui.modalForm.modalClass = document.getElementById('modal-new-outer-equip');
     ui.modalForm.formClass = document.getElementById('form_outer-equipment-and-location');
     setFormSubmitHandler(ui.modalForm.modalClass, config.api.postOuterEquipAndLocation);
