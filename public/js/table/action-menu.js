@@ -58,8 +58,8 @@ class ActionMenu {
                 config.api.getInnerByOuterId + '/' +
                 agOuterId, config.api.deleteInnerEquip, innerEquipParameters.agName);
             setModalInnerFormHtml();
-            changePageTitle("Элементы => " + selectedRow.place_first_lev + " => " +
-                selectedRow.equip_name);
+            changePageTitle( selectedRow.place_first_lev + " => " +
+                selectedRow.equip_name + " => Элементы" );
             this.hideOneRowAction();
             this.listLocationsButton.style.display = 'none';
             this.setReturnToOuterAction();

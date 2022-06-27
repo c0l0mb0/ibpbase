@@ -33,6 +33,6 @@ Route::name('user.')->group(function() {
         Auth::logout();
         return redirect('/login');
     })->name('logout');
-    
+
 });
 

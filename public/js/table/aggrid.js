@@ -84,10 +84,6 @@ class IbpAgGrid {
 
 var buildingAndOuterEquipParameters = {
     gridOptions: {
-        // components: {
-        //     datePicker: getDatePicker(),
-        //     checkboxRenderer: CheckboxRenderer
-        // },
         domLayout: 'autoHeight',
         columnDefs: [
             {headerName: "Место", field: "place_third_lev", tooltipField: 'place_third_lev'},
@@ -180,8 +176,8 @@ var innerEquipParameters = {
                 tooltipField: 'tehn_obsl_start',
                 cellEditor: 'datePicker'
             },
-            {headerName: "ТО4", field: "to_4", tooltipField: 'to_4', cellRenderer: 'checkboxRenderer'},
-            {headerName: "ТО5", field: "to_5", tooltipField: 'to_5', cellRenderer: 'checkboxRenderer'},
+            {headerName: "ТО4", field: "to_4", tooltipField: 'to_4', cellRenderer: CheckboxRenderer},
+            {headerName: "ТО5", field: "to_5", tooltipField: 'to_5', cellRenderer: CheckboxRenderer},
         ],
         rowSelection: 'single',
         defaultColDef: {
