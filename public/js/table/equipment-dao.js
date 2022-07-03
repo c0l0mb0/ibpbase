@@ -31,7 +31,7 @@ var config = {
 
         getTroAll:'/api/troall',
         getByIdPostPutByIdDeleteByIdTro:'/api/tro',
-        getByIdOuterTro:'/api/penrenbyouterid',
+        getByIdOuterTro:'/api/trobyouterid',
 
         getZipEquipmentAll:'/api/zipall',
         getByIdPostPutByIdDeleteByIdZipEquipment:'/api/zip',

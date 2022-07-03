@@ -1,4 +1,4 @@
-//ag grid wrapper, first field from DAO has to have name id
+//ag grid wrapper, first field from DAO has to have name "id"
 class IbpAgGrid {
     gridOptions;
     getDataUrl;
@@ -262,4 +262,108 @@ var kapRemontParameters = {
         }
     },
     agName: 'kapRemont'
+}
+
+var tehnObslRemontParameters = {
+    gridOptions: {
+        domLayout: 'autoHeight',
+        suppressRowTransform: true,
+        columnDefs: [
+            {headerName: "НаКакойГодВкл.ТОиР", field: "year_toir",  tooltipField: 'year_toir'},
+            {headerName: "МодульДляТОиР", field: "module_toir",  tooltipField: 'module_toir'},
+            {headerName: "Замена", field: "module_replacement_name",  tooltipField: 'module_replacement_name'},
+            {headerName: "Акт", field: "act",  tooltipField: 'act'},
+            {headerName: "Акт ссылка", field: "act_link",  tooltipField: 'act_link'},
+            {headerName: "ДВ", field: "dv",  tooltipField: 'dv'},
+            {headerName: "ДВ ссылка", field: "dv_link",  tooltipField: 'dv_link'},
+            {headerName: "ВОР", field: "vor",  tooltipField: 'vor'},
+            {headerName: "ВОР ссылка", field: "vor_link",  tooltipField: 'vor_link'},
+            {headerName: "Вкл.в план ТОиР", field: "include_toir_plan",  tooltipField: 'include_toir_plan', cellRenderer: CheckboxRenderer},
+            {headerName: "Вкл.в план ТОиР ссылка", field: "include_toir_plan_link",  tooltipField: 'include_toir_plan_link'},
+            {headerName: "Выполнен ТОиР", field: "done_toir_plan",  tooltipField: 'done_toir_plan', cellRenderer: CheckboxRenderer},
+            {headerName: "Выполнен ТОиР ссылка", field: "done_toir_plan_link",  tooltipField: 'done_toir_plan_link'},
+        ],
+        rowSelection: 'single',
+        defaultColDef: {
+            resizable: true,
+            editable: true,
+        },
+        enableBrowserTooltips: true,
+        onCellValueChanged: function (event) {
+            httpRequest(config.api.getByIdPostPutByIdDeleteByIdTehnObslRemont, "PUT", addCSRF(event.data), event.data.id);
+        },
+        onRowSelected: function () {
+            actionMenu.deleteTableRow.style.display = 'block';
+        },
+        onFirstDataRendered: (params) => {
+            params.api.sizeColumnsToFit();
+        }
+    },
+    agName: 'tehnObslRemont'
+}
+
+var penRenParameters = {
+    gridOptions: {
+        domLayout: 'autoHeight',
+        suppressRowTransform: true,
+        columnDefs: [
+            {headerName: "НаКакойГодВкл.ПЭН/РЭН", field: "year_pen_ren",  tooltipField: 'year_pen_ren'},
+            {headerName: "N деф.акта", field: "defect_act_number",  tooltipField: 'defect_act_number'},
+            {headerName: "Деф.акт ссылка", field: "defect_act_number_link",  tooltipField: 'defect_act_number_link'},
+            {headerName: "Вкл.в ПЭН/РЭН", field: "included_pen_ren",  tooltipField: 'included_pen_ren', cellRenderer: CheckboxRenderer},
+            {headerName: "Причина исключения", field: "reason_exclude",  tooltipField: 'reason_exclude'},
+            {headerName: "Причина искл. ссылка", field: "reason_exclude_link",  tooltipField: 'reason_exclude_link'},
+            {headerName: "Поставка выполнена", field: "delivery_ibp_done",  tooltipField: 'delivery_ibp_done', cellRenderer: CheckboxRenderer},
+            {headerName: "Поставка год", field: "delivery_ibp_year",  tooltipField: 'delivery_ibp_year'},
+            {headerName: "Примечание", field: "comments_pen_ren",  tooltipField: 'comments_pen_ren'},
+        ],
+        rowSelection: 'single',
+        defaultColDef: {
+            resizable: true,
+            editable: true,
+        },
+        enableBrowserTooltips: true,
+        onCellValueChanged: function (event) {
+            httpRequest(config.api.getByIdPostPutByIdDeleteByIdPenRen, "PUT", addCSRF(event.data), event.data.id);
+        },
+        onRowSelected: function () {
+            actionMenu.deleteTableRow.style.display = 'block';
+        },
+        onFirstDataRendered: (params) => {
+            params.api.sizeColumnsToFit();
+        }
+    },
+    agName: 'penRen'
+}
+
+var troParameters = {
+    gridOptions: {
+        domLayout: 'autoHeight',
+        suppressRowTransform: true,
+        columnDefs: [
+            {headerName: "Акт номер", field: "act_number",  tooltipField: 'act_number'},
+            {headerName: "Акт ссылка", field: "act_number_link",  tooltipField: 'act_number_link'},
+            {headerName: "Дата", field: "act_date", tooltipField: 'act_date', cellEditor: 'datePicker'},
+            {headerName: "Имя оборудования", field: "equipment_name",  tooltipField: 'equipment_name'},
+            {headerName: "Содержание акта", field: "act_content",  tooltipField: 'act_content'},
+            {headerName: "Причина неиспр.", field: "fault_reason",  tooltipField: 'fault_reason'},
+            {headerName: "Сост.оборудования", field: "equipment_state",  tooltipField: 'equipment_state'},
+        ],
+        rowSelection: 'single',
+        defaultColDef: {
+            resizable: true,
+            editable: true,
+        },
+        enableBrowserTooltips: true,
+        onCellValueChanged: function (event) {
+            httpRequest(config.api.getByIdPostPutByIdDeleteByIdTro, "PUT", addCSRF(event.data), event.data.id);
+        },
+        onRowSelected: function () {
+            actionMenu.deleteTableRow.style.display = 'block';
+        },
+        onFirstDataRendered: (params) => {
+            params.api.sizeColumnsToFit();
+        }
+    },
+    agName: 'tro'
 }

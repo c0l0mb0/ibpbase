@@ -27,8 +27,6 @@ class TroController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'inner_name' => 'required',
-            'quant' => 'required',
             'outer_id' => 'required'
         ]);
         $troEntry = Tro::create($request->all());

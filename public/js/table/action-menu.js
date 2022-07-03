@@ -65,6 +65,78 @@ class ActionMenu {
         };
     }
 
+    ////Kap Remont actions////
+    setEditKapRemontAction() {
+        this.showCapRemont.onclick = () => {
+            let selectedRow = ibpAgGrid.getSelectedRow()
+            agOuterId = selectedRow.id;
+            ibpAgGrid = new IbpAgGrid(kapRemontParameters.gridOptions,
+                config.api.getByIdOuterKapRemont + '/' +
+                agOuterId, config.api.getByIdPostPutByIdDeleteByIdKapRemont, kapRemontParameters.agName);
+            setModalKapRemontFormHtml();
+            changePageTitle(selectedRow.place_first_lev + " => " +
+                selectedRow.equip_name + " => Данные по капремонту");
+            this.hideOneRowAction();
+            this.listLocationsButton.style.display = 'none';
+            this.setReturnToOuterAction();
+
+        };
+    }
+
+    ////Tehn Obsl Remont actions////
+    setEditTehnObslRemontAction() {
+        this.showToir.onclick = () => {
+            let selectedRow = ibpAgGrid.getSelectedRow()
+            agOuterId = selectedRow.id;
+            ibpAgGrid = new IbpAgGrid(tehnObslRemontParameters.gridOptions,
+                config.api.getByIdOuterTehnObslRemont  + '/' +
+                agOuterId, config.api.getByIdPostPutByIdDeleteByIdTehnObslRemont, tehnObslRemontParameters.agName);
+            setModalTehnObslRemontFormHtml();
+            changePageTitle(selectedRow.place_first_lev + " => " +
+                selectedRow.equip_name + " => Данные по ТОиР");
+            this.hideOneRowAction();
+            this.listLocationsButton.style.display = 'none';
+            this.setReturnToOuterAction();
+
+        };
+    }
+
+    ////Pen Ren actions////
+    setEditPenRenAction() {
+        this.showPenRen.onclick = () => {
+            let selectedRow = ibpAgGrid.getSelectedRow()
+            agOuterId = selectedRow.id;
+            ibpAgGrid = new IbpAgGrid(penRenParameters.gridOptions,
+                config.api.getByIdOuterPenRen + '/' +
+                agOuterId, config.api.getByIdPostPutByIdDeleteByIdPenRen, penRenParameters.agName);
+            setModalPenRenFormHtml();
+            changePageTitle(selectedRow.place_first_lev + " => " +
+                selectedRow.equip_name + " => Данные по ПЭН/РЭН");
+            this.hideOneRowAction();
+            this.listLocationsButton.style.display = 'none';
+            this.setReturnToOuterAction();
+
+        };
+    }
+
+    ////Tro actions////
+    setEditTroAction() {
+        this.showTro.onclick = () => {
+            let selectedRow = ibpAgGrid.getSelectedRow()
+            agOuterId = selectedRow.id;
+            ibpAgGrid = new IbpAgGrid(troParameters.gridOptions,
+                config.api.getByIdOuterTro + '/' +
+                agOuterId, config.api.getByIdPostPutByIdDeleteByIdTro, troParameters.agName);
+            setModalTroFormHtml();
+            changePageTitle(selectedRow.place_first_lev + " => " +
+                selectedRow.equip_name + " => Данные по Актам ТРО");
+            this.hideOneRowAction();
+            this.listLocationsButton.style.display = 'none';
+            this.setReturnToOuterAction();
+
+        };
+    }
+
     setReturnToOuterAction() {
         this.returnToOuter.onclick = () => {
             let getDataUrl;
@@ -83,24 +155,6 @@ class ActionMenu {
             this.createLocationFilter();
         };
         this.returnToOuter.style.display = 'block';
-    }
-
-    ////Kap Remont actions////
-    setEditKapRemontAction() {
-        this.showCapRemont.onclick = () => {
-            let selectedRow = ibpAgGrid.getSelectedRow()
-            agOuterId = selectedRow.id;
-            ibpAgGrid = new IbpAgGrid(kapRemontParameters.gridOptions,
-                config.api.getByIdOuterKapRemont + '/' +
-                agOuterId, config.api.getByIdPostPutByIdDeleteByIdKapRemont, kapRemontParameters.agName);
-            setModalKapRemontFormHtml()
-            changePageTitle(selectedRow.place_first_lev + " => " +
-                selectedRow.equip_name + " => Данные по капремонту");
-            this.hideOneRowAction();
-            this.listLocationsButton.style.display = 'none';
-            this.setReturnToOuterAction();
-
-        };
     }
 
     ////filter////

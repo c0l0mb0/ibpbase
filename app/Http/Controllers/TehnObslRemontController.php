@@ -27,8 +27,6 @@ class TehnObslRemontController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'inner_name' => 'required',
-            'quant' => 'required',
             'outer_id' => 'required'
         ]);
         $tehnObslRemontEntry = TehnObslRemont::create($request->all());

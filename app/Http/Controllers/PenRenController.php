@@ -27,8 +27,6 @@ class PenRenController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'inner_name' => 'required',
-            'quant' => 'required',
             'outer_id' => 'required'
         ]);
         $penRenEntry = PenRen::create($request->all());

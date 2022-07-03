@@ -32,8 +32,8 @@ function getInputsArr() {
     }
 
     if (agOuterId !== undefined && (ibpAgGrid.agName === "innerEquip" ||
-        ibpAgGrid.agName === "kapRemont" || ibpAgGrid.agName === "innerEquip" ||
-        ibpAgGrid.agName === "innerEquip" || ibpAgGrid.agName === "innerEquip")) {
+        ibpAgGrid.agName === "kapRemont" || ibpAgGrid.agName === "tehnObslRemont" ||
+        ibpAgGrid.agName === "penRen" || ibpAgGrid.agName === "tro")) {
         data['outer_id'] = agOuterId;
     }
     data = addCSRF(data);
@@ -101,25 +101,48 @@ function setModalLocationByCurrenFilterValue() {
     }
 }
 
-function setModalInnerFormHtml() {
-    ui.modalForm.caption.innerHTML = 'Добавить внутреннее оборудование';
-    ui.modalForm.modalBody.innerHTML = modalInnerHtml;
-    ui.modalForm.postUrl = config.api.postInnerEquipByOuterId
-    setFormSubmitHandler();
-}
-
 function setModalZipFormHtml() {
     ui.modalForm.caption.innerHTML = 'Добавить прибор в ЗИП';
     ui.modalForm.modalBody.innerHTML = modalZipHtml;
-    setFormSubmitHandler(config.api.getByIdPostPutByIdDeleteByIdZipEquipment);
+    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdZipEquipment
+    setFormSubmitHandler();
+}
+
+function setModalInnerFormHtml() {
+    ui.modalForm.caption.innerHTML = 'Добавить внутреннее оборудование';
+    ui.modalForm.modalBody.innerHTML = modalInnerHtml;
+    ui.modalForm.postUrl = config.api.postInnerEquipByOuterId;
+    setFormSubmitHandler();
 }
 
 function setModalKapRemontFormHtml() {
-    ui.modalForm.caption.innerHTML = 'Добавить данные о КР';
+    ui.modalForm.caption.innerHTML = 'Добавить данные по КР';
     ui.modalForm.modalBody.innerHTML = modalKapRemontHtml;
-    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdKapRemont
+    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdKapRemont;
     setFormSubmitHandler();
 }
+
+function setModalTehnObslRemontFormHtml() {
+    ui.modalForm.caption.innerHTML = 'Добавить данные по ТОиР';
+    ui.modalForm.modalBody.innerHTML = modalTehnObslRemontHtml;
+    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdTehnObslRemont;
+    setFormSubmitHandler();
+}
+
+function setModalPenRenFormHtml() {
+    ui.modalForm.caption.innerHTML = 'Добавить данные по ПЭН/РЭН';
+    ui.modalForm.modalBody.innerHTML = modalPenRenHtml;
+    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdPenRen;
+    setFormSubmitHandler();
+}
+
+function setModalTroFormHtml() {
+    ui.modalForm.caption.innerHTML = 'Добавить данные по Актам ТРО';
+    ui.modalForm.modalBody.innerHTML = modalTroHtml;
+    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdTro;
+    setFormSubmitHandler();
+}
+
 
 async function setModalOuterFormHtml() {
     ui.modalForm.caption.innerHTML = 'Добавить оборудование';
@@ -528,3 +551,242 @@ const modalKapRemontHtml = `
                                 <input type="text" class="form-control" id="done_kr_plan_link"  name="done_kr_plan_link">
                             </div>
                         </div>`;
+const modalTehnObslRemontHtml = `
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="year_toir" class="col-form-label">На какой год вкл.ТОиР</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="year_toir"  name="year_toir">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="module_toir" class="col-form-label">Модуль для ТОиР</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="module_toir"  name="module_toir">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="module_replacement_name" class="col-form-label">На что меняется</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="module_replacement_name"  name="module_replacement_name">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="act" class="col-form-label">Акт</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="act"  name="act">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="act_link" class="col-form-label">Акт ссылка</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="act_link"  name="act_link">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="dv" class="col-form-label">ДВ</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="dv"  name="dv">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="dv_link" class="col-form-label">ДВ ссылка</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="dv_link"  name="dv_link">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="vor" class="col-form-label">ВОР</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="vor"  name="vor">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="vor_link" class="col-form-label">ВОР ссылка</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="vor_link"  name="vor_link">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="include_toir_plan" class="form-check-label">Включен в план ТОиР</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="checkbox" class="form-check-input" id="include_toir_plan" name="include_toir_plan">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="include_toir_plan_link" class="col-form-label">Включен в план ТОиР ссылка</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="include_toir_plan_link"  name="include_toir_plan_link">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="done_toir_plan" class="form-check-label">Выполнен ТОиР</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="checkbox" class="form-check-input" id="done_toir_plan" name="done_toir_plan">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="done_toir_plan_link" class="col-form-label">Выполнен ТОиР ссылка</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="done_toir_plan_link"  name="done_toir_plan_link">
+                            </div>
+                        </div>`;
+const modalPenRenHtml = `
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="year_pen_ren" class="col-form-label">На какой год вкл. ПЭН/РЭН</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="year_pen_ren"  name="year_pen_ren">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="defect_act_number" class="col-form-label">Номер деф.акта</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="defect_act_number"  name="defect_act_number">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="defect_act_number_link" class="col-form-label">Деф.акт ссылка</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="defect_act_number_link"  name="defect_act_number_link">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="included_pen_ren" class="col-form-label">Включен в ПЭН/РЭН</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="checkbox" class="form-check-input" id="included_pen_ren"  name="included_pen_ren">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="reason_exclude" class="col-form-label">Причина исключения</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="reason_exclude"  name="reason_exclude">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="reason_exclude_link" class="col-form-label">Причина исключения ссылка</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="reason_exclude_link"  name="reason_exclude_link">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="delivery_ibp_done" class="col-form-label">Поставка выполнена</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="checkbox" class="form-check-input" id="delivery_ibp_done"  name="delivery_ibp_done">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="delivery_ibp_year" class="col-form-label">Поставка год</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="delivery_ibp_year"  name="delivery_ibp_year">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="comments_pen_ren" class="col-form-label">Примечание</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="comments_pen_ren"  name="comments_pen_ren">
+                            </div>
+                        </div>`;
+const modalTroHtml = `
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="act_number" class="col-form-label">Акт номер</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="act_number"  name="act_number">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="act_number_link" class="col-form-label">Акт ссылка</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="act_number_link"  name="act_number_link">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="act_date" class="col-form-label">Дата</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="date" class="form-control" id="act_date"  name="act_date">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="equipment_name" class="col-form-label">Имя оборудования</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="equipment_name"  name="equipment_name">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="act_content" class="col-form-label">Содержание акта</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="act_content"  name="act_content">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="fault_reason" class="col-form-label">Причина неиспр.</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="date" class="form-control" id="fault_reason"  name="fault_reason">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="equipment_state" class="col-form-label">Сост.оборудования</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="date" class="form-control" id="equipment_state"  name="equipment_state">
+                            </div>
+                        </div>
+                        `;
+
+
+

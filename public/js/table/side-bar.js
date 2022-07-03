@@ -8,6 +8,10 @@ document.querySelector('.sidebar-edit_equip').onclick = () => {
     setModalOuterFormHtml();
     actionMenu.setEditInnerAction();
     actionMenu.setEditKapRemontAction();
+    actionMenu.setEditTehnObslRemontAction();
+    actionMenu.setEditPenRenAction();
+    actionMenu.setEditTroAction();
+
     actionMenu.createLocationFilter();
     changePageTitle("Приборы");
 };
