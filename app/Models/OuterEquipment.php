@@ -20,7 +20,23 @@ class OuterEquipment extends Model
 
     public function innerEquip()
     {
-        return $this->hasMany(InnerEquipment::class, 'id_outer', 'id');
+        return $this->hasMany(InnerEquipment::class, 'outer_id', 'id');
+    }
+    public function kapRemont()
+    {
+        return $this->hasMany(KapRemont::class, 'outer_id', 'id');
+    }
+    public function tehnObslRemont()
+    {
+        return $this->hasMany(TehnObslRemont::class, 'outer_id', 'id');
+    }
+    public function penRen()
+    {
+        return $this->hasMany(PenRen::class, 'outer_id', 'id');
+    }
+    public function tro()
+    {
+        return $this->hasMany(Tro::class, 'outer_id', 'id');
     }
 }
 

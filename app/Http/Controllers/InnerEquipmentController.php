@@ -28,7 +28,7 @@ class InnerEquipmentController extends Controller
         $this->validate($request, [
             'inner_name' => 'required',
             'quant' => 'required',
-            'id_outer' => 'required'
+            'outer_id' => 'required'
         ]);
         $innerEquipments = InnerEquipment::create($request->all());
 

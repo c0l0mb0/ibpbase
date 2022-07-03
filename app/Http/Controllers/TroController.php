@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OuterEquipment;
 use App\Models\Tro;
 use Illuminate\Http\Request;
 
@@ -16,9 +17,9 @@ class TroController extends Controller
     public function index()
     {
 
-        $TroEntry = Tro::all();
+        $troEntry = Tro::all();
 
-        return response()->json($TroEntry);
+        return response()->json($troEntry);
 
     }
 
@@ -28,30 +29,30 @@ class TroController extends Controller
         $this->validate($request, [
             'inner_name' => 'required',
             'quant' => 'required',
-            'id_outer' => 'required'
+            'outer_id' => 'required'
         ]);
-        $TroEntry = Tro::create($request->all());
+        $troEntry = Tro::create($request->all());
 
-        return response()->json($TroEntry);
+        return response()->json($troEntry);
     }
 
-    public function show($id)
+    public function showByOuterId($idOuter)
     {
-        $TroEntry = Tro::find($id);
-        return response()->json($TroEntry);
+        $tro = OuterEquipment::find($idOuter)->tro;
+        return response()->json($tro);
     }
 
     public function update($id, Request $request)
     {
-        $TroEntry = Tro::find($id);
-        $TroEntry->update($request->all());
-        return response()->json($TroEntry);
+        $troEntry = Tro::find($id);
+        $troEntry->update($request->all());
+        return response()->json($troEntry);
     }
 
     public function destroy($id)
     {
-        $TroEntry = Tro::find($id);
-        $TroEntry->delete();
+        $troEntry = Tro::find($id);
+        $troEntry->delete();
 
         return response()->json('Tro removed successfully');
     }

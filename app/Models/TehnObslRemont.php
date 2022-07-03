@@ -9,6 +9,8 @@ class TehnObslRemont extends Model
 {
     use HasFactory;
 
+    protected $table = 'tehn_obsl_remont';
+
     protected $fillable = [
         'include_toir_plan', 'done_toir_plan', 'outer_id', 'dv', 'dv_link', 'vor', 'vor_link',
         'done_toir_plan_link', 'include_toir_plan_link', 'year_toir', 'module_toir',

@@ -9,6 +9,8 @@ class Tro extends Model
 {
     use HasFactory;
 
+    protected $table = 'tro';
+
     protected $fillable = [
         'act_date', 'outer_id', 'act_content', 'fault_reason', 'act_number',
         'act_number_link', 'equipment_state', 'equipment_name',

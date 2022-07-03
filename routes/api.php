@@ -52,25 +52,25 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::delete('innerequip/{id}', [InnerEquipmentController::class, 'destroy']);
 
     Route::get('kapremontall', [KapRemontController::class, 'index']);
-    Route::get('kapremont/{id}', [KapRemontController::class, 'show']);
+    Route::get('kapremontbyouterid/{id}', [KapRemontController::class, 'showByOuterId']);
     Route::post('kapremont', [KapRemontController::class, 'create']);
     Route::put('kapremont/{id}', [KapRemontController::class, 'update']);
     Route::delete('kapremont/{id}', [KapRemontController::class, 'destroy']);
 
     Route::get('tehnobslremontall', [TehnObslRemontController::class, 'index']);
-    Route::get('tehnobslremont/{id}', [TehnObslRemontController::class, 'show']);
+    Route::get('tehnobslremontbyouerid/{id}', [TehnObslRemontController::class, 'showByOuterId']);
     Route::post('tehnobslremont', [TehnObslRemontController::class, 'create']);
     Route::put('tehnobslremont/{id}', [TehnObslRemontController::class, 'update']);
     Route::delete('tehnobslremont/{id}', [TehnObslRemontController::class, 'destroy']);
 
     Route::get('penrenall', [PenRenController::class, 'index']);
-    Route::get('penren/{id}', [PenRenController::class, 'show']);
+    Route::get('penrenbyouterid/{id}', [PenRenController::class, 'showByOuterId']);
     Route::post('penren', [PenRenController::class, 'create']);
     Route::put('penren/{id}', [PenRenController::class, 'update']);
     Route::delete('penren/{id}', [PenRenController::class, 'destroy']);
 
     Route::get('troall', [TroController::class, 'index']);
-    Route::get('tro/{id}', [TroController::class, 'show']);
+    Route::get('trobyouterid/{id}', [TroController::class, 'showByOuterId']);
     Route::post('tro', [TroController::class, 'create']);
     Route::put('tro/{id}', [TroController::class, 'update']);
     Route::delete('tro/{id}', [TroController::class, 'destroy']);

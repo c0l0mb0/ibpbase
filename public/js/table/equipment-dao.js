@@ -19,15 +19,19 @@ var config = {
 
         getKapRemontAll:'/api/kapremontall',
         getByIdPostPutByIdDeleteByIdKapRemont:'/api/kapremont',
+        getByIdOuterKapRemont:'/api/kapremontbyouterid',
 
         getTehnObslRemontAll:'/api/tehnobslremontall',
         getByIdPostPutByIdDeleteByIdTehnObslRemont:'/api/tehnobslremont',
+        getByIdOuterTehnObslRemont:'/api/tehnobslremontbyouerid',
 
         getPenRenAll:'/api/penrenall',
         getByIdPostPutByIdDeleteByIdPenRen:'/api/penren',
+        getByIdOuterPenRen:'/api/penrenbyouterid',
 
         getTroAll:'/api/troall',
         getByIdPostPutByIdDeleteByIdTro:'/api/tro',
+        getByIdOuterTro:'/api/penrenbyouterid',
 
         getZipEquipmentAll:'/api/zipall',
         getByIdPostPutByIdDeleteByIdZipEquipment:'/api/zip',

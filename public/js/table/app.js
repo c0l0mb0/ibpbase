@@ -2,7 +2,6 @@ let ibpAgGrid;
 let actionMenu = new ActionMenu();
 let agOuterId
 
-
 actionMenu.newTableRow = document.querySelector('.new-table-row');
 actionMenu.deleteTableRow = document.querySelector('.delete-table-row');
 actionMenu.showInner = document.querySelector('.show-inner');

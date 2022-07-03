@@ -46,7 +46,7 @@ class OuterEquipmentController extends Controller
     {
         $outerEquipment = DB::table('outer_equipment')
             ->select(DB::raw('*, outer_equipment.id as id '))
-            ->leftJoin('inner_equipment', 'outer_equipment.id', '=', 'inner_equipment.id_outer')
+            ->leftJoin('inner_equipment', 'outer_equipment.id', '=', 'inner_equipment.outer_id')
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->where('users.role', $this->getUserRole())
             ->orderBy('outer_equipment.id', 'ASC')

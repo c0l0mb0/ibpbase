@@ -1,12 +1,14 @@
 var ui = {
     modalForm: {
-        modalClass: undefined,
-        formClass: undefined,
-        error: undefined,
+        caption: document.getElementById('modal__caption'),
+        modal: document.getElementById('modal__new-entry'),
+        modalBody: document.querySelector('.modal__form__body'),
+        form: document.getElementById('form__new-entry'),
+        error: document.getElementById('form__error'),
     },
-    modalContainer: document.getElementsByClassName('modal-container')[0],
-    showModalButton: document.getElementsByClassName('new-table-row')[0]
-
+    modalContainer: document.querySelector('.modal-container'),
+    showModalButton: document.querySelector('.new-table-row'),
+    postUrl: undefined
 };
 
 function _showError(message) {
@@ -22,43 +24,48 @@ function _hideError() {
 function getInputsArr() {
 
     let data = {};
-    let formData = new FormData(ui.modalForm.formClass);
+    let formData = new FormData(ui.modalForm.form);
     for (const [key, value] of formData) {
         if (value !== '') {
             data[key] = value;
         }
     }
-    if (agOuterId !== undefined && ibpAgGrid.agName === "innerEquip") {
-        var name = 'id_outer'
-        var value = agOuterId
-        data[name] = value;
+
+    if (agOuterId !== undefined && (ibpAgGrid.agName === "innerEquip" ||
+        ibpAgGrid.agName === "kapRemont" || ibpAgGrid.agName === "innerEquip" ||
+        ibpAgGrid.agName === "innerEquip" || ibpAgGrid.agName === "innerEquip")) {
+        data['outer_id'] = agOuterId;
     }
     data = addCSRF(data);
     return data;
 }
 
 function hideModal() {
-    let modal = bootstrap.Modal.getInstance(ui.modalForm.modalClass)
+    let modal = bootstrap.Modal.getInstance(ui.modalForm.modal)
     modal.hide()
 }
 
-function setFormSubmitHandler(form, postUrl) {
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        let inputValues = getInputsArr();
-        httpRequest(postUrl, 'POST', inputValues).then((datums) => {
-            _hideError();
-            hideModal();
-            event.target.reset();
-            if (ibpAgGrid.isReady === true) {
-                ibpAgGrid.setGridData();
-            }
-            actionMenu.hideOneRowAction();
-        }).catch((e) => {
-            _hideError();
-            _showError(e);
-        })
-    });
+const submitModalFormHandler = function (event) {
+    event.preventDefault();
+    let inputValues = getInputsArr();
+    httpRequest(ui.modalForm.postUrl, 'POST', inputValues).then((e) => {
+        _hideError();
+        hideModal();
+        event.target.reset();
+        if (ibpAgGrid.isReady === true) {
+            ibpAgGrid.setGridData();
+        }
+        actionMenu.hideOneRowAction();
+    }).catch((e) => {
+        _hideError();
+        console.log(e);
+        _showError(e);
+    })
+}
+
+function setFormSubmitHandler() {
+    ui.modalForm.form.removeEventListener('submit', submitModalFormHandler);
+    ui.modalForm.form.addEventListener('submit', submitModalFormHandler);
 }
 
 function createModalEquipLocationList(data) {
@@ -94,18 +101,159 @@ function setModalLocationByCurrenFilterValue() {
     }
 }
 
-
 function setModalInnerFormHtml() {
-    var modalInnerEquip = `
-        <div class="modal fade" id="modal-new-inner-equip" tabindex="-1" aria-labelledby="modal-new-equipInnerLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-new-equipInnerLabel">Добавить элемент'</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form class="modal-form needs-validation" id="form_inner-equipment">
-                    <div class="modal-body">
+    ui.modalForm.caption.innerHTML = 'Добавить внутреннее оборудование';
+    ui.modalForm.modalBody.innerHTML = modalInnerHtml;
+    ui.modalForm.postUrl = config.api.postInnerEquipByOuterId
+    setFormSubmitHandler();
+}
+
+function setModalZipFormHtml() {
+    ui.modalForm.caption.innerHTML = 'Добавить прибор в ЗИП';
+    ui.modalForm.modalBody.innerHTML = modalZipHtml;
+    setFormSubmitHandler(config.api.getByIdPostPutByIdDeleteByIdZipEquipment);
+}
+
+function setModalKapRemontFormHtml() {
+    ui.modalForm.caption.innerHTML = 'Добавить данные о КР';
+    ui.modalForm.modalBody.innerHTML = modalKapRemontHtml;
+    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdKapRemont
+    setFormSubmitHandler();
+}
+
+async function setModalOuterFormHtml() {
+    ui.modalForm.caption.innerHTML = 'Добавить оборудование';
+    ui.modalForm.modalBody.innerHTML = modalOuterHtml;
+    ui.modalForm.postUrl = config.api.postOuterEquipAndLocation;
+    setFormSubmitHandler();
+    createModalEquipLocationList(await httpRequest(config.api.getListLocations, 'GET'));
+    createModalEquipStateList(await httpRequest(config.api.getListStates, 'GET'));
+}
+
+const modalOuterHtml = `
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="place_first_lev" class="col-form-label">Расположение</label>
+                            </div>
+                            <div class="col-9">
+                                <select class="form-select" id="place_first_lev" name="place_first_lev">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="place_third_lev" class="col-form-label">Место</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="place_third_lev" name="place_third_lev">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="affiliate" class="col-form-label">Филиал</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="affiliate" name="affiliate">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="equip_name" class="col-form-label">Название</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="equip_name" required name="equip_name">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="inner_equipment.factory_number" class="col-form-label">Зав.Номер</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="inner_equipment.factory_number" required name="factory_number">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="factory_name" class="col-form-label">Изготовитель</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="factory_name" name="factory_name">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="inventory_number" class="col-form-label">Инв.Номер</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="inventory_number" name="inventory_number">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="numb_vvod" class="col-form-label">Ном.ввода</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="numb_vvod" name="numb_vvod">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="purpose" class="col-form-label">Назначение</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="purpose" name="purpose">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="year_issue" class="col-form-label">Выпуск</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="date" class="form-control" id="year_issue" name="year_issue">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="year_exploitation" class="col-form-label">Эксплуатация</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="date" class="form-control" id="year_exploitation" name="year_exploitation">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="power" class="col-form-label">Мощноть</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="power" name="power">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="current" class="col-form-label">Ток</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="current" name="current">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="voltage" class="col-form-label">Напряжение</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="voltage" name="voltage">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="state_tech_condition" class="col-form-label">Состояние</label>
+                            </div>
+                            <div class="col-9">
+                                <select class="form-select" id="state_tech_condition" name="state_tech_condition">
+                                </select>
+                            </div>
+                        </div>`;
+const modalInnerHtml = `
                         <div class="row p-2">
                             <div class="col-3">
                                 <label for="inner_name" class="col-form-label">Имя</label>
@@ -265,41 +413,8 @@ function setModalInnerFormHtml() {
                             <div class="col-9">
                                 <input type="text" class="form-control" id="state_zip" name="state_zip">
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row" style="margin: 0;">
-                        <mark id="form-error" class="inline-block secondary d-none" style="text-align: center">
-                        </mark>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-primary modal__sbmit">Сохранить</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-`;
-    ui.showModalButton.setAttribute('data-bs-target', '#modal-new-inner-equip');
-    ui.modalContainer.innerHTML = modalInnerEquip;
-    ui.modalForm.error = document.querySelector('#form-error');
-    ui.modalForm.modalClass = document.getElementById('modal-new-inner-equip');
-    ui.modalForm.formClass = document.getElementById('form_inner-equipment');
-    setFormSubmitHandler(ui.modalForm.modalClass, config.api.postInnerEquipByOuterId);
-}
-
-function setModalZipFormHtml() {
-    var modalInnerEquip = `
-        <div class="modal fade" id="modal-new-zip-equip" tabindex="-1" aria-labelledby="modal-Label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-Label">Добавить прибор в ЗИП</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form class="modal-form needs-validation" id="form-zip_equipment">
-                    <div class="modal-body">
+                        </div>`;
+const modalZipHtml = `
                         <div class="row p-2">
                             <div class="col-3">
                                 <label for="equip_name" class="col-form-label">Название</label>
@@ -315,184 +430,101 @@ function setModalZipFormHtml() {
                             <div class="col-9">
                                 <input type="text" class="form-control" id="quantity" required name="quantity">
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row" style="margin: 0;">
-                        <mark id="form-error" class="inline-block secondary d-none" style="text-align: center">
-                        </mark>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-primary modal__sbmit">Сохранить</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-`;
-    ui.showModalButton.setAttribute('data-bs-target', '#modal-new-zip-equip');
-    ui.modalContainer.innerHTML = modalInnerEquip;
-    ui.modalForm.error = document.querySelector('#form-error');
-    ui.modalForm.modalClass = document.getElementById('modal-new-zip-equip');
-    ui.modalForm.formClass = document.getElementById('form-zip_equipment');
-    setFormSubmitHandler(ui.modalForm.modalClass, config.api.getByIdPostPutByIdDeleteByIdZipEquipment);
-}
-
-
-async function setModalOuterFormHtml() {
-    var modalOuterEquipBuild = `
-        <div class="modal fade" id="modal-new-outer-equip" tabindex="-1" aria-labelledby="modal-new-equipLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-new-equipLabel">Добавить прибор</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form class="modal-form needs-validation" id="form_outer-equipment-and-location">
-                    <div class="modal-body">
+                        </div>`;
+const modalKapRemontHtml = `
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="place_first_lev" class="col-form-label">Расположение</label>
+                                <label for="year_cap_remont" class="col-form-label">На какой год вкл. в КР</label>
                             </div>
                             <div class="col-9">
-                                <select class="form-select" id="place_first_lev" name="place_first_lev">
-                                </select>
+                                <input type="text" class="form-control" id="year_cap_remont"  name="year_cap_remont">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="place_third_lev" class="col-form-label">Место</label>
+                                <label for="replacement_name" class="col-form-label">На что меняется</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="place_third_lev" name="place_third_lev">
+                                <input type="text" class="form-control" id="replacement_name"  name="replacement_name">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="affiliate" class="col-form-label">Филиал</label>
+                                <label for="act" class="col-form-label">Акт</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="affiliate" name="affiliate">
+                                <input type="text" class="form-control" id="act"  name="act">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="equip_name" class="col-form-label">Название</label>
+                                <label for="act_link" class="col-form-label">Акт ссылка</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="equip_name" required name="equip_name">
+                                <input type="text" class="form-control" id="act_link"  name="act_link">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="inner_equipment.factory_number" class="col-form-label">Зав.Номер</label>
+                                <label for="dv" class="col-form-label">ДВ</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="inner_equipment.factory_number" required name="factory_number">
+                                <input type="text" class="form-control" id="dv"  name="dv">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="factory_name" class="col-form-label">Изготовитель</label>
+                                <label for="dv_link" class="col-form-label">ДВ ссылка</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="factory_name" name="factory_name">
+                                <input type="text" class="form-control" id="dv_link"  name="dv_link">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="inventory_number" class="col-form-label">Инв.Номер</label>
+                                <label for="vor" class="col-form-label">ВОР</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="inventory_number" name="inventory_number">
+                                <input type="text" class="form-control" id="vor"  name="vor">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="numb_vvod" class="col-form-label">Ном.ввода</label>
+                                <label for="vor_link" class="col-form-label">ВОР ссылка</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="numb_vvod" name="numb_vvod">
+                                <input type="text" class="form-control" id="vor_link"  name="vor_link">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="purpose" class="col-form-label">Назначение</label>
+                                <label for="include_kr_plan" class="form-check-label">Включен в план КР</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="purpose" name="purpose">
+                                <input type="checkbox" class="form-check-input" id="include_kr_plan" name="include_kr_plan">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="year_issue" class="col-form-label">Выпуск</label>
+                                <label for="include_kr_plan_link" class="col-form-label">Включен в план КР ссылка</label>
                             </div>
                             <div class="col-9">
-                                <input type="date" class="form-control" id="year_issue" name="year_issue">
+                                <input type="text" class="form-control" id="include_kr_plan_link"  name="include_kr_plan_link">
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="done_kr_plan" class="form-check-label">Выполнен КР</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="checkbox" class="form-check-input" id="done_kr_plan" name="done_kr_plan">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="year_exploitation" class="col-form-label">Эксплуатация</label>
+                                <label for="done_kr_plan_link" class="col-form-label">Выполнен КР ссылка</label>
                             </div>
                             <div class="col-9">
-                                <input type="date" class="form-control" id="year_exploitation" name="year_exploitation">
+                                <input type="text" class="form-control" id="done_kr_plan_link"  name="done_kr_plan_link">
                             </div>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-3">
-                                <label for="power" class="col-form-label">Мощноть</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" class="form-control" id="power" name="power">
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-3">
-                                <label for="current" class="col-form-label">Ток</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" class="form-control" id="current" name="current">
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-3">
-                                <label for="voltage" class="col-form-label">Напряжение</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" class="form-control" id="voltage" name="voltage">
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-3">
-                                <label for="state_tech_condition" class="col-form-label">Состояние</label>
-                            </div>
-                            <div class="col-9">
-                                <select class="form-select" id="state_tech_condition" name="state_tech_condition">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin: 0;">
-                        <mark id="form-error" class="inline-block secondary d-none" style="text-align: center">
-                        </mark>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-primary modal__sbmit">Сохранить</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-`;
-    ui.showModalButton.setAttribute('data-bs-target', '#modal-new-outer-equip');
-    ui.modalContainer.innerHTML = modalOuterEquipBuild;
-    ui.modalForm.error = document.querySelector('#form-error');
-    ui.modalForm.modalClass = document.getElementById('modal-new-outer-equip');
-    ui.modalForm.formClass = document.getElementById('form_outer-equipment-and-location');
-    setFormSubmitHandler(ui.modalForm.modalClass, config.api.postOuterEquipAndLocation);
-    createModalEquipLocationList(await httpRequest(config.api.getListLocations, 'GET'));
-    createModalEquipStateList(await httpRequest(config.api.getListStates, 'GET'));
-}
+                        </div>`;

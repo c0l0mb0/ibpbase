@@ -224,3 +224,42 @@ var zipParameters = {
     },
     agName: 'zip'
 }
+
+var kapRemontParameters = {
+    gridOptions: {
+        domLayout: 'autoHeight',
+        suppressRowTransform: true,
+        columnDefs: [
+            {headerName: "НаКакойГодВкл.КР", field: "year_cap_remont",  tooltipField: 'equip_name'},
+            {headerName: "Замена", field: "replacement_name",  tooltipField: 'equip_name'},
+            {headerName: "Акт", field: "act",  tooltipField: 'equip_name'},
+            {headerName: "Акт ссылка", field: "act_link",  tooltipField: 'equip_name'},
+
+            {headerName: "ДВ", field: "dv",  tooltipField: 'equip_name'},
+            {headerName: "ДВ ссылка", field: "dv_link",  tooltipField: 'equip_name'},
+
+            {headerName: "ВОР", field: "vor",  tooltipField: 'equip_name'},
+            {headerName: "ВОР ссылка", field: "vor_link",  tooltipField: 'equip_name'},
+            {headerName: "Включен в план КР", field: "include_kr_plan",  tooltipField: 'equip_name', cellRenderer: CheckboxRenderer},
+            {headerName: "Включен в план КР ссылка", field: "include_kr_plan_link",  tooltipField: 'equip_name'},
+            {headerName: "Выполнен КР", field: "done_kr_plan",  tooltipField: 'equip_name', cellRenderer: CheckboxRenderer},
+            {headerName: "Выполнен КР ссылка", field: "done_kr_plan_link",  tooltipField: 'equip_name'},
+        ],
+        rowSelection: 'single',
+        defaultColDef: {
+            resizable: true,
+            editable: true,
+        },
+        enableBrowserTooltips: true,
+        onCellValueChanged: function (event) {
+            httpRequest(config.api.getByIdPostPutByIdDeleteByIdKapRemont, "PUT", addCSRF(event.data), event.data.id);
+        },
+        onRowSelected: function () {
+            actionMenu.deleteTableRow.style.display = 'block';
+        },
+        onFirstDataRendered: (params) => {
+            params.api.sizeColumnsToFit();
+        }
+    },
+    agName: 'kapRemont'
+}

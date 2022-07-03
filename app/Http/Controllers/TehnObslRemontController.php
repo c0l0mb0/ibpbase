@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OuterEquipment;
 use App\Models\TehnObslRemont;
 use Illuminate\Http\Request;
 
@@ -28,17 +29,17 @@ class TehnObslRemontController extends Controller
         $this->validate($request, [
             'inner_name' => 'required',
             'quant' => 'required',
-            'id_outer' => 'required'
+            'outer_id' => 'required'
         ]);
         $tehnObslRemontEntry = TehnObslRemont::create($request->all());
 
         return response()->json($tehnObslRemontEntry);
     }
 
-    public function show($id)
+    public function showByOuterId($idOuter)
     {
-        $tehnObslRemontEntry = TehnObslRemont::find($id);
-        return response()->json($tehnObslRemontEntry);
+        $tehnObslRemont = OuterEquipment::find($idOuter)->tehnObslRemont;
+        return response()->json($tehnObslRemont);
     }
 
     public function update($id, Request $request)

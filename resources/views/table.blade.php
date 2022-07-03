@@ -59,12 +59,8 @@
                 </button>
                 <div class="row-menue">
                     <button type="button" class="btn new-table-row" data-bs-toggle="modal" data-bs-trigger="hover"
-                            data-bs-placement="bottom" title="Добавить" data-bs-target="#modal-new-inner-equip">
+                            data-bs-placement="bottom" title="Добавить" data-bs-target="#modal__new-entry">
                         <img src="{{ asset('icon/plus-svgrepo-com.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn show-inner" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            title="Элементы">
-                        <img src="{{ asset('icon/into.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn show-last-outer" data-bs-toggle="tooltip" data-bs-placement="bottom"
                             title="Оборудование">
@@ -81,6 +77,10 @@
                         </button>
                         <ul class="dropdown-menu" id="action-menu-dropdown-locations" aria-labelledby="dropdownMenuBuildings"></ul>
                     </div>
+                    <button type="button" class="btn show-inner" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            title="Элементы">
+                        <img src="{{ asset('icon/chip-svgrepo-com.svg') }}" class="row-menue__icon">
+                    </button>
                     <button type="button" class="btn show-cap-remont" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Кап. ремонт">
                         <img src="{{ asset('icon/wrench-adjustable-circle.svg') }}" class="row-menue__icon">
@@ -137,7 +137,29 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal-container"></div>
+    <div class="modal-container">
+        <div class="modal fade" id="modal__new-entry" tabindex="-1" aria-labelledby="modal-Label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal__caption">Добавить</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form class="modal-form needs-validation" id="form__new-entry">
+                        <div class="modal__form__body"></div>
+                        <div class="row" style="margin: 0;">
+                            <mark id="form__error" class="inline-block secondary d-none" style="text-align: center">
+                            </mark>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-primary modal__sbmit">Сохранить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

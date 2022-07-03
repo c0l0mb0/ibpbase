@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\KapRemont;
+use App\Models\OuterEquipment;
 use Illuminate\Http\Request;
 
 
@@ -33,9 +34,9 @@ class KapRemontController extends Controller
         return response()->json($kapRemontEntry);
     }
 
-    public function show($id)
+    public function showByOuterId($idOuter)
     {
-        $kapRemontEntry = KapRemont::find($id);
+        $kapRemontEntry = OuterEquipment::find($idOuter)->kapRemont;
         return response()->json($kapRemontEntry);
     }
 

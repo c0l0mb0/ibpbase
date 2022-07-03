@@ -7,6 +7,7 @@ document.querySelector('.sidebar-edit_equip').onclick = () => {
         config.api.getDataBuildingAndOuter, config.api.deleteOuterEquipAndItsLocation, buildingAndOuterEquipParameters.agName);
     setModalOuterFormHtml();
     actionMenu.setEditInnerAction();
+    actionMenu.setEditKapRemontAction();
     actionMenu.createLocationFilter();
     changePageTitle("Приборы");
 };

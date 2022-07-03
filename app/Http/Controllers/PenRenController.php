@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OuterEquipment;
 use App\Models\PenRen;
 use Illuminate\Http\Request;
 
@@ -16,9 +17,9 @@ class PenRenController extends Controller
     public function index()
     {
 
-        $PenRenEntry = PenRen::all();
+        $penRenEntry = PenRen::all();
 
-        return response()->json($PenRenEntry);
+        return response()->json($penRenEntry);
 
     }
 
@@ -28,30 +29,30 @@ class PenRenController extends Controller
         $this->validate($request, [
             'inner_name' => 'required',
             'quant' => 'required',
-            'id_outer' => 'required'
+            'outer_id' => 'required'
         ]);
-        $PenRenEntry = PenRen::create($request->all());
+        $penRenEntry = PenRen::create($request->all());
 
-        return response()->json($PenRenEntry);
+        return response()->json($penRenEntry);
     }
 
-    public function show($id)
+    public function showByOuterId($idOuter)
     {
-        $PenRenEntry = PenRen::find($id);
-        return response()->json($PenRenEntry);
+        $penRen = OuterEquipment::find($idOuter)->penRen;
+        return response()->json($penRen);
     }
 
     public function update($id, Request $request)
     {
-        $PenRenEntry = PenRen::find($id);
-        $PenRenEntry->update($request->all());
-        return response()->json($PenRenEntry);
+        $penRenEntry = PenRen::find($id);
+        $penRenEntry->update($request->all());
+        return response()->json($penRenEntry);
     }
 
     public function destroy($id)
     {
-        $PenRenEntry = PenRen::find($id);
-        $PenRenEntry->delete();
+        $penRenEntry = PenRen::find($id);
+        $penRenEntry->delete();
 
         return response()->json('PenRen removed successfully');
     }

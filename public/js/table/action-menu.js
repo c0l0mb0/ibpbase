@@ -46,11 +46,9 @@ class ActionMenu {
         this.showPenRen.style.display = 'none';
         this.showTro.style.display = 'none';
     }
-    ///////////////////////////
+
     ////inner outer actions////
-    ///////////////////////////
     setEditInnerAction() {
-        // this.showInner.off('click');
         this.showInner.onclick = () => {
             let selectedRow = ibpAgGrid.getSelectedRow()
             agOuterId = selectedRow.id;
@@ -58,8 +56,8 @@ class ActionMenu {
                 config.api.getInnerByOuterId + '/' +
                 agOuterId, config.api.deleteInnerEquip, innerEquipParameters.agName);
             setModalInnerFormHtml();
-            changePageTitle( selectedRow.place_first_lev + " => " +
-                selectedRow.equip_name + " => Элементы" );
+            changePageTitle(selectedRow.place_first_lev + " => " +
+                selectedRow.equip_name + " => Элементы");
             this.hideOneRowAction();
             this.listLocationsButton.style.display = 'none';
             this.setReturnToOuterAction();
@@ -87,9 +85,25 @@ class ActionMenu {
         this.returnToOuter.style.display = 'block';
     }
 
-    //////////////
+    ////Kap Remont actions////
+    setEditKapRemontAction() {
+        this.showCapRemont.onclick = () => {
+            let selectedRow = ibpAgGrid.getSelectedRow()
+            agOuterId = selectedRow.id;
+            ibpAgGrid = new IbpAgGrid(kapRemontParameters.gridOptions,
+                config.api.getByIdOuterKapRemont + '/' +
+                agOuterId, config.api.getByIdPostPutByIdDeleteByIdKapRemont, kapRemontParameters.agName);
+            setModalKapRemontFormHtml()
+            changePageTitle(selectedRow.place_first_lev + " => " +
+                selectedRow.equip_name + " => Данные по капремонту");
+            this.hideOneRowAction();
+            this.listLocationsButton.style.display = 'none';
+            this.setReturnToOuterAction();
+
+        };
+    }
+
     ////filter////
-    //////////////
     createLocationFilter() {
         if (this.listLocationsUrl !== undefined) {
             httpRequest(this.listLocationsUrl, 'GET').then((data) => {
