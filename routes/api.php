@@ -53,24 +53,28 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::get('kapremontall', [KapRemontController::class, 'index']);
     Route::get('kapremontbyouterid/{id}', [KapRemontController::class, 'showByOuterId']);
+    Route::get('kapremont-outer-building', [KapRemontController::class, 'indexBuildingOuterKapRemont']);
     Route::post('kapremont', [KapRemontController::class, 'create']);
     Route::put('kapremont/{id}', [KapRemontController::class, 'update']);
     Route::delete('kapremont/{id}', [KapRemontController::class, 'destroy']);
 
     Route::get('tehnobslremontall', [TehnObslRemontController::class, 'index']);
     Route::get('tehnobslremontbyouerid/{id}', [TehnObslRemontController::class, 'showByOuterId']);
+    Route::get('tehn-obsl-remont-outer-building', [TehnObslRemontController::class, 'indexBuildingOuterTehnObslRemont']);
     Route::post('tehnobslremont', [TehnObslRemontController::class, 'create']);
     Route::put('tehnobslremont/{id}', [TehnObslRemontController::class, 'update']);
     Route::delete('tehnobslremont/{id}', [TehnObslRemontController::class, 'destroy']);
 
     Route::get('penrenall', [PenRenController::class, 'index']);
     Route::get('penrenbyouterid/{id}', [PenRenController::class, 'showByOuterId']);
+    Route::get('pen-ren-outer-building', [PenRenController::class, 'indexBuildingOuterPenRen']);
     Route::post('penren', [PenRenController::class, 'create']);
     Route::put('penren/{id}', [PenRenController::class, 'update']);
     Route::delete('penren/{id}', [PenRenController::class, 'destroy']);
 
     Route::get('troall', [TroController::class, 'index']);
     Route::get('trobyouterid/{id}', [TroController::class, 'showByOuterId']);
+    Route::get('tro-outer-building', [TroController::class, 'indexBuildingOuterTro']);
     Route::post('tro', [TroController::class, 'create']);
     Route::put('tro/{id}', [TroController::class, 'update']);
     Route::delete('tro/{id}', [TroController::class, 'destroy']);

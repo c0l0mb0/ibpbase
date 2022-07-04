@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\OuterEquipment;
 use App\Models\PenRen;
+use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class PenRenController extends Controller
@@ -21,6 +24,21 @@ class PenRenController extends Controller
 
         return response()->json($penRenEntry);
 
+    }
+
+    public function indexBuildingOuterPenRen()
+    {
+        $user = Users::find(Auth::user()->getAuthIdentifier())->role;
+
+        $buildingOuterPenRen = DB::table('outer_equipment')
+            ->select(DB::raw('*'))
+            ->rightJoin('pen_ren', 'outer_equipment.id', '=', 'pen_ren.outer_id')
+            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
+            ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
+            ->where('users.role', $user)
+            ->orderBy('outer_equipment.id', 'ASC')
+            ->get();
+        return response()->json($buildingOuterPenRen);
     }
 
 

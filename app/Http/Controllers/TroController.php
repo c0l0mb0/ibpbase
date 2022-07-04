@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\OuterEquipment;
 use App\Models\Tro;
+use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class TroController extends Controller
@@ -21,6 +24,21 @@ class TroController extends Controller
 
         return response()->json($troEntry);
 
+    }
+
+    public function indexBuildingOuterTro()
+    {
+        $user = Users::find(Auth::user()->getAuthIdentifier())->role;
+
+        $buildingOuterTro = DB::table('outer_equipment')
+            ->select(DB::raw('*'))
+            ->rightJoin('tro', 'outer_equipment.id', '=', 'tro.outer_id')
+            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
+            ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
+            ->where('users.role', $user)
+            ->orderBy('outer_equipment.id', 'ASC')
+            ->get();
+        return response()->json($buildingOuterTro);
     }
 
 

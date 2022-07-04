@@ -26,16 +26,16 @@
                     <a class="sidebar-edit_equip" href="#">Приборы</a>
                 </li>
                 <li>
-                    <a href="#">Капремонт</a>
+                    <a class="sidebar__show-kap-remont" href="#">Капремонт</a>
                 </li>
                 <li>
-                    <a href="#">ТОиР</a>
+                    <a class="sidebar__show-tehn-obsl-remont" href="#">ТОиР</a>
                 </li>
                 <li>
-                    <a href="#">ПЭН/РЭН АКБ</a>
+                    <a class="sidebar__show-pen-ren" href="#">ПЭН/РЭН АКБ</a>
                 </li>
                 <li>
-                    <a href="#">Акты ТРО</a>
+                    <a class="sidebar__show-tro" href="#">Акты ТРО</a>
                 </li>
                 <li>
                     <a href="#">График ТО</a>

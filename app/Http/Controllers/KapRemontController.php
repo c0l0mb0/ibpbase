@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\KapRemont;
 use App\Models\OuterEquipment;
+use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class KapRemontController extends Controller
@@ -21,6 +24,21 @@ class KapRemontController extends Controller
 
         return response()->json($kapRemontEntry);
 
+    }
+
+    public function indexBuildingOuterKapRemont()
+    {
+        $user = Users::find(Auth::user()->getAuthIdentifier())->role;
+
+        $buildingKapRemontOuterEquipments = DB::table('outer_equipment')
+            ->select(DB::raw('*'))
+            ->rightJoin('kap_remont', 'outer_equipment.id', '=', 'kap_remont.outer_id')
+            ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
+            ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
+            ->where('users.role', $user)
+            ->orderBy('outer_equipment.id', 'ASC')
+            ->get();
+        return response()->json($buildingKapRemontOuterEquipments);
     }
 
 
