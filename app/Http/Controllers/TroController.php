@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TroExport;
 use App\Models\OuterEquipment;
 use App\Models\Tro;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class TroController extends Controller
 {
@@ -40,6 +41,11 @@ class TroController extends Controller
             ->get();
         return response()->json($buildingOuterTro);
     }
+    public function export()
+    {
+        return Excel::download(new TroExport, 'TroExport.xlsx');
+    }
+
 
 
     public function create(Request $request)

@@ -26,8 +26,10 @@ class IbpAgGrid {
         actionMenu.returnToOuter.style.display = 'none';
         actionMenu.newTableRow.style.display = 'block';
         actionMenu.listLocationsButton.style.display = 'block';
+        actionMenu.exportExcel.style.display = 'block';
 
         this.isReady = true;
+        actionMenu.setExportExcelAction();
     }
 
     async setGridData() {
@@ -79,6 +81,53 @@ class IbpAgGrid {
         pageContentHtml.innerHTML = "";
         pageContentHtml.style.width = '100%'
         pageContentHtml.classList.add('ag-theme-alpine');
+    }
+
+    exportDisplyedDataToExcel() {
+        let agHeaders = [];
+        let agFields = [];
+        this.gridOptions.columnApi.getAllDisplayedColumns().forEach(element => (agHeaders.push(element.colDef.headerName)));
+        this.gridOptions.columnApi.getAllDisplayedColumns().forEach(element => (agFields.push(element.colDef.field)));
+        let agData = [];
+        this.gridOptions.api.forEachNode((rowNode, index) => {
+            // console.log(rowNode);
+            agData[index] = rowNode.data;
+            let agDataTmp = Object.keys(agData[index])
+                .filter(key => agFields.includes(key))
+                .reduce((obj, key) => {
+                    obj[key] = agData[index][key];
+                    return obj;
+                }, {});
+            agData[index] = agDataTmp;
+        });
+
+        var excelData = [];
+        let tmpArray = [];
+        // debugger
+        for (const elementAgData of agData) {
+            tmpArray = [];
+            for (const elementAgFields of agFields) {
+                for (const [key, value] of Object.entries(elementAgData)) {
+
+                    if (elementAgFields === key) {
+                        tmpArray.push(value)
+                    }
+                }
+            }
+            excelData.push(tmpArray);
+        }
+        for (var i = 0; i < excelData.length; i++) {
+            for (var j = 0; j < excelData[i].length; j++) {
+                if (excelData[i][j] === null) {
+                    excelData[i][j] = "";
+                }
+            }
+        }
+
+        excelData.unshift(agHeaders);
+        console.log(excelData);
+        var myTestXML = new myExcelXML(excelData);
+        myTestXML.downLoad();
     }
 }
 
@@ -440,7 +489,7 @@ var buildingOuterEquipKapRemontParameters = {
             params.api.sizeColumnsToFit();
         }
     },
-    agName: 'buildingAndOuterEquip'
+    agName: 'buildingOuterEquipKapRemont'
 }
 
 var buildingOuterEquipTehnObslRemontParameters = {

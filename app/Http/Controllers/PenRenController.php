@@ -8,6 +8,7 @@ use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class PenRenController extends Controller
@@ -24,6 +25,11 @@ class PenRenController extends Controller
 
         return response()->json($penRenEntry);
 
+    }
+
+    public function export()
+    {
+        return Excel::download(new PenRenExport, 'PenRenExport.xlsx');
     }
 
     public function indexBuildingOuterPenRen()

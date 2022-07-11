@@ -8,5 +8,4 @@ class Users extends Model
 
 {
 
-
 }

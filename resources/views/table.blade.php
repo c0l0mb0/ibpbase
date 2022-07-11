@@ -97,6 +97,10 @@
                             data-bs-placement="bottom" title="Акт ТРО">
                         <img src="{{ asset('icon/text-indent-left.svg') }}" class="row-menue__icon">
                     </button>
+                    <button type="button" class="btn excel-export" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Экспорт в Excel">
+                        <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
+                    </button>
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="dropdownMenuView"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -174,6 +178,7 @@
 <script src="{{ asset('js/table/action-menu.js') }}"></script>
 <script src="{{ asset('js/table/equipment-dao.js') }}"></script>
 <script src="{{ asset('js/table/aggrid.js') }}"></script>
+<script src="{{ asset('js/table/excel-export.js') }}"></script>
 <script src="{{ asset('js/table/app.js') }}"></script>
 </body>
 </html>

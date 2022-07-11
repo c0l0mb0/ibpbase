@@ -27,22 +27,22 @@ document.querySelector('.sidebar__show-kap-remont').onclick = () => {
 
     ibpAgGrid = new IbpAgGrid(buildingOuterEquipKapRemontParameters.gridOptions,
         config.api.getKapRemontOuterEquipAll, null, buildingOuterEquipKapRemontParameters.agName);
-    actionMenu.newTableRow.style.display = 'none';
+    actionMenu.setRowActionForNotEditableGrid();
 }
 document.querySelector('.sidebar__show-tehn-obsl-remont').onclick = () => {
     ibpAgGrid = new IbpAgGrid(buildingOuterEquipTehnObslRemontParameters.gridOptions,
         config.api.getTehnObslRemontOuterEquipAll, null, buildingOuterEquipTehnObslRemontParameters.agName);
-    actionMenu.newTableRow.style.display = 'none';
+    actionMenu.setRowActionForNotEditableGrid();
 }
 document.querySelector('.sidebar__show-pen-ren').onclick = () => {
     ibpAgGrid = new IbpAgGrid(buildingOuterEquipPenRenParameters.gridOptions,
         config.api.getPenRenOuterEquipAll, null, buildingOuterEquipPenRenParameters.agName);
-    actionMenu.newTableRow.style.display = 'none';
+    actionMenu.setRowActionForNotEditableGrid();
 }
 document.querySelector('.sidebar__show-tro').onclick = () => {
     ibpAgGrid = new IbpAgGrid(buildingOuterEquipTroParameters.gridOptions,
         config.api.getTroOuterEquipAll, null, buildingOuterEquipTroParameters.agName);
-    actionMenu.newTableRow.style.display = 'none';
+    actionMenu.setRowActionForNotEditableGrid();
 }
 
 

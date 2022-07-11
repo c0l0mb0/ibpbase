@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KapRemontExport;
 use App\Models\KapRemont;
 use App\Models\OuterEquipment;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class KapRemontController extends Controller
@@ -19,11 +21,8 @@ class KapRemontController extends Controller
      */
     public function index()
     {
-
         $kapRemontEntry = KapRemont::all();
-
         return response()->json($kapRemontEntry);
-
     }
 
     public function indexBuildingOuterKapRemont()
@@ -39,6 +38,11 @@ class KapRemontController extends Controller
             ->orderBy('outer_equipment.id', 'ASC')
             ->get();
         return response()->json($buildingKapRemontOuterEquipments);
+    }
+
+    public function export()
+    {
+        return Excel::download(new KapRemontExport, 'KapRemontExport.xlsx');
     }
 
 

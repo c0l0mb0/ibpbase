@@ -57,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('kapremont', [KapRemontController::class, 'create']);
     Route::put('kapremont/{id}', [KapRemontController::class, 'update']);
     Route::delete('kapremont/{id}', [KapRemontController::class, 'destroy']);
+    Route::get('kapremont-export', [KapRemontController::class, 'export']);
 
     Route::get('tehnobslremontall', [TehnObslRemontController::class, 'index']);
     Route::get('tehnobslremontbyouerid/{id}', [TehnObslRemontController::class, 'showByOuterId']);
@@ -64,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('tehnobslremont', [TehnObslRemontController::class, 'create']);
     Route::put('tehnobslremont/{id}', [TehnObslRemontController::class, 'update']);
     Route::delete('tehnobslremont/{id}', [TehnObslRemontController::class, 'destroy']);
+    Route::get('tehn-obsl-remont-export', [TehnObslRemontController::class, 'export']);
 
     Route::get('penrenall', [PenRenController::class, 'index']);
     Route::get('penrenbyouterid/{id}', [PenRenController::class, 'showByOuterId']);
@@ -71,6 +73,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('penren', [PenRenController::class, 'create']);
     Route::put('penren/{id}', [PenRenController::class, 'update']);
     Route::delete('penren/{id}', [PenRenController::class, 'destroy']);
+    Route::get('pen-ren-export', [PenRenController::class, 'export']);
 
     Route::get('troall', [TroController::class, 'index']);
     Route::get('trobyouterid/{id}', [TroController::class, 'showByOuterId']);
@@ -78,6 +81,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('tro', [TroController::class, 'create']);
     Route::put('tro/{id}', [TroController::class, 'update']);
     Route::delete('tro/{id}', [TroController::class, 'destroy']);
+    Route::get('tro-export', [TroController::class, 'export']);
 
     Route::get('zipall', [ZipEquipmentController::class, 'index']);
     Route::get('zip/{id}', [ZipEquipmentController::class, 'show']);

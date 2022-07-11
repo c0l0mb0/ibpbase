@@ -12,6 +12,7 @@ class ActionMenu {
     showToir;
     showPenRen;
     showTro;
+    exportExcel;
     agGridFilter = {
         agLocationFilterId: undefined,
         agLocationFilterText: undefined
@@ -27,6 +28,7 @@ class ActionMenu {
         this.showToir.style.display = 'none';
         this.showPenRen.style.display = 'none';
         this.showTro.style.display = 'none';
+        this.exportExcel.style.display = 'none';
     }
 
     showOneRowAction() {
@@ -36,6 +38,10 @@ class ActionMenu {
         this.showToir.style.display = 'block';
         this.showPenRen.style.display = 'block';
         this.showTro.style.display = 'block';
+    }
+
+    setRowActionForNotEditableGrid() {
+        actionMenu.newTableRow.style.display = 'none';
     }
 
     hideOneRowAction() {
@@ -89,7 +95,7 @@ class ActionMenu {
             let selectedRow = ibpAgGrid.getSelectedRow()
             agOuterId = selectedRow.id;
             ibpAgGrid = new IbpAgGrid(tehnObslRemontParameters.gridOptions,
-                config.api.getByIdOuterTehnObslRemont  + '/' +
+                config.api.getByIdOuterTehnObslRemont + '/' +
                 agOuterId, config.api.getByIdPostPutByIdDeleteByIdTehnObslRemont, tehnObslRemontParameters.agName);
             setModalTehnObslRemontFormHtml();
             changePageTitle(selectedRow.place_first_lev + " => " +
@@ -134,6 +140,13 @@ class ActionMenu {
             this.listLocationsButton.style.display = 'none';
             this.setReturnToOuterAction();
 
+        };
+    }
+
+    ////Excel export action////
+    setExportExcelAction() {
+        this.exportExcel.onclick = () => {
+            ibpAgGrid.exportDisplyedDataToExcel();
         };
     }
 
@@ -207,3 +220,5 @@ class ActionMenu {
 
     }
 }
+
+

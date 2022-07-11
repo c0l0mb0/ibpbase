@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TehnObslRemontExport;
 use App\Models\OuterEquipment;
 use App\Models\TehnObslRemont;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class TehnObslRemontController extends Controller
@@ -21,6 +23,11 @@ class TehnObslRemontController extends Controller
     {
         $tehnObslRemontEntry = TehnObslRemont::all();
         return response()->json($tehnObslRemontEntry);
+    }
+
+    public function export()
+    {
+        return Excel::download(new TehnObslRemontExport, 'TehnObslRemontExport.xlsx');
     }
 
     public function indexBuildingOuterTehnObslRemont()
