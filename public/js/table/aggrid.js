@@ -142,11 +142,11 @@ var buildingAndOuterEquipParameters = {
             {headerName: "ИнвНом", field: "inventory_number", tooltipField: 'inventory_number'},
             {headerName: "НомВвода", field: "numb_vvod"},
             {headerName: "Назначение", field: "purpose", tooltipField: 'purpose'},
-            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue', cellEditor: DatePicker},
+            {headerName: "Выпуск", field: "year_issue_date", tooltipField: 'year_issue_date', cellEditor: DatePicker},
             {
                 headerName: "Эксплуатация",
-                field: "year_exploitation",
-                tooltipField: 'year_exploitation',
+                field: "year_exploitation_date",
+                tooltipField: 'year_exploitation_date',
                 cellEditor: DatePicker
             },
             {headerName: "Мощность", field: "power", tooltipField: 'power'},
@@ -199,12 +199,11 @@ var innerEquipParameters = {
             {headerName: "Производитель", field: "faсtory_name", tooltipField: 'faсtory_name'},
             {headerName: "ИнвНом", field: "inventory_number", tooltipField: 'inventory_number'},
             {headerName: "Назначение", field: "purpose", tooltipField: 'purpose'},
-            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue', cellEditor: 'datePicker'},
+            {headerName: "Выпуск", field: "year_issue", tooltipField: 'year_issue'},
             {
                 headerName: "НачЭксплуат",
                 field: "year_exploitation",
-                tooltipField: 'year_exploitation',
-                cellEditor: 'datePicker'
+                tooltipField: 'year_exploitation'
             },
             {headerName: "Напряжение", field: "voltage", tooltipField: 'voltage'},
             {
@@ -217,13 +216,13 @@ var innerEquipParameters = {
                     values: ['исправен', 'неисправен']
                 }
             },
-            {headerName: "ДатаПоломки", field: "fault_date", tooltipField: 'fault_date', cellEditor: 'datePicker'},
+            {headerName: "ДатаПоломки", field: "fault_date", tooltipField: 'fault_date',cellEditor: DatePicker},
             {headerName: "ПричинаПоломки", field: "fault_reason", tooltipField: 'fault_reason'},
             {
                 headerName: "СтартТО",
                 field: "tehn_obsl_start",
                 tooltipField: 'tehn_obsl_start',
-                cellEditor: 'datePicker'
+               cellEditor: DatePicker
             },
             {headerName: "ТО4", field: "to_4", tooltipField: 'to_4', cellRenderer: CheckboxRenderer},
             {headerName: "ТО5", field: "to_5", tooltipField: 'to_5', cellRenderer: CheckboxRenderer},
@@ -426,7 +425,7 @@ var troParameters = {
         columnDefs: [
             {headerName: "Акт номер", field: "act_number", tooltipField: 'act_number'},
             {headerName: "Акт ссылка", field: "act_number_link", tooltipField: 'act_number_link'},
-            {headerName: "Дата", field: "act_date", tooltipField: 'act_date', cellEditor: 'datePicker'},
+            {headerName: "Дата", field: "act_date", tooltipField: 'act_date',cellEditor: DatePicker},
             {headerName: "Имя оборудования", field: "equipment_name", tooltipField: 'equipment_name'},
             {headerName: "Содержание акта", field: "act_content", tooltipField: 'act_content'},
             {headerName: "Причина неиспр.", field: "fault_reason", tooltipField: 'fault_reason'},
@@ -600,7 +599,7 @@ var buildingOuterEquipTroParameters = {
 
             {headerName: "Акт номер", field: "act_number", tooltipField: 'act_number'},
             {headerName: "Акт ссылка", field: "act_number_link", tooltipField: 'act_number_link'},
-            {headerName: "Дата", field: "act_date", tooltipField: 'act_date', cellEditor: 'datePicker'},
+            {headerName: "Дата", field: "act_date", tooltipField: 'act_date',cellEditor: DatePicker},
             {headerName: "Имя оборудования", field: "equipment_name", tooltipField: 'equipment_name'},
             {headerName: "Содержание акта", field: "act_content", tooltipField: 'act_content'},
             {headerName: "Причина неиспр.", field: "fault_reason", tooltipField: 'fault_reason'},
