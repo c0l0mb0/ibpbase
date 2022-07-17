@@ -24,7 +24,6 @@ let myExcelXML = (function () {
 
         downLoad() {
             const Worksheet = myXMLWorkSheet(SheetName, fs);
-            WorkbookStart += myXMLStyles(styleID);
 
             Workbook = WorkbookStart + Worksheet + WorkbookEnd;
 
@@ -62,12 +61,6 @@ let myExcelXML = (function () {
         set styleID(n) {
             styleID = n;
         }
-    }
-
-    const myXMLStyles = function (id) {
-        let Styles = '<ss:Styles><ss:Style ss:ID="' + id + '"><ss:Font ss:Bold="1"/></ss:Style></ss:Styles>';
-
-        return Styles;
     }
 
     const myXMLWorkSheet = function (name, o) {
