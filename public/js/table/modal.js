@@ -229,18 +229,18 @@ const modalOuterHtml = `
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="year_issue" class="col-form-label">Выпуск</label>
+                                <label for="year_issue_date" class="col-form-label">Выпуск</label>
                             </div>
                             <div class="col-9">
-                                <input type="date" class="form-control" id="year_issue" name="year_issue">
+                                <input type="date" class="form-control" id="year_issue_date" name="year_issue_date">
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-3">
-                                <label for="year_exploitation" class="col-form-label">Эксплуатация</label>
+                                <label for="year_exploitation_date" class="col-form-label">Эксплуатация</label>
                             </div>
                             <div class="col-9">
-                                <input type="date" class="form-control" id="year_exploitation" name="year_exploitation">
+                                <input type="date" class="form-control" id="year_exploitation_date" name="year_exploitation_date">
                             </div>
                         </div>
                         <div class="row p-2">

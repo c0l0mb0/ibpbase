@@ -90,7 +90,6 @@ class IbpAgGrid {
         this.gridOptions.columnApi.getAllDisplayedColumns().forEach(element => (agFields.push(element.colDef.field)));
         let agData = [];
         this.gridOptions.api.forEachNode((rowNode, index) => {
-            // console.log(rowNode);
             agData[index] = rowNode.data;
             let agDataTmp = Object.keys(agData[index])
                 .filter(key => agFields.includes(key))
@@ -103,7 +102,6 @@ class IbpAgGrid {
 
         var excelData = [];
         let tmpArray = [];
-        // debugger
         for (const elementAgData of agData) {
             tmpArray = [];
             for (const elementAgFields of agFields) {
@@ -125,7 +123,6 @@ class IbpAgGrid {
         }
 
         excelData.unshift(agHeaders);
-        console.log(excelData);
         var myTestXML = new myExcelXML(excelData);
         myTestXML.downLoad();
     }
