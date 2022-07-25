@@ -19,7 +19,7 @@ class ZipEquipmentController extends Controller
     public function index()
     {
         $zipEquipmentAllEntries = DB::table('zip_equipment')
-            ->select(DB::raw('* '))
+            ->select(DB::raw('zip_equipment.id as id, equip_name, quantity'))
             ->where('zip_equipment.role', $this->getUserRole())
             ->get();
 

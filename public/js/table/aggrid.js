@@ -137,6 +137,7 @@ var buildingAndOuterEquipParameters = {
             {headerName: "Номер", field: "factory_number", tooltipField: 'factory_number'},
             {headerName: "Производитель", field: "factory_name", tooltipField: 'factory_name'},
             {headerName: "ИнвНом", field: "inventory_number", tooltipField: 'inventory_number'},
+            {headerName: "Филиал", field: "affiliate", tooltipField: 'affiliate'},
             {headerName: "НомВвода", field: "numb_vvod"},
             {headerName: "Назначение", field: "purpose", tooltipField: 'purpose'},
             {headerName: "Выпуск", field: "year_issue_date", tooltipField: 'year_issue_date', cellEditor: DatePicker},

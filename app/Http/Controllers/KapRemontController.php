@@ -30,7 +30,9 @@ class KapRemontController extends Controller
         $user = Users::find(Auth::user()->getAuthIdentifier())->role;
 
         $buildingKapRemontOuterEquipments = DB::table('outer_equipment')
-            ->select(DB::raw('*'))
+            ->select(DB::raw('kap_remont.id as id, place_first_lev,place_third_lev,equip_name,factory_number,state_tech_condition,
+            year_cap_remont,replacement_name,act,act_link,dv,dv_link,vor,vor_link,include_kr_plan,
+            include_kr_plan_link,done_kr_plan,done_kr_plan_link'))
             ->rightJoin('kap_remont', 'outer_equipment.id', '=', 'kap_remont.outer_id')
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')

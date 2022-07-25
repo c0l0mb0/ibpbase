@@ -37,7 +37,10 @@ class PenRenController extends Controller
         $user = Users::find(Auth::user()->getAuthIdentifier())->role;
 
         $buildingOuterPenRen = DB::table('outer_equipment')
-            ->select(DB::raw('*'))
+            ->select(DB::raw('pen_ren.id as id, place_first_lev, place_third_lev, equip_name,factory_number,
+            state_tech_condition,year_pen_ren,defect_act_number,defect_act_number_link,
+            included_pen_ren,reason_exclude,reason_exclude_link,delivery_ibp_done,delivery_ibp_year,
+            comments_pen_ren'))
             ->rightJoin('pen_ren', 'outer_equipment.id', '=', 'pen_ren.outer_id')
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')

@@ -35,7 +35,9 @@ class TehnObslRemontController extends Controller
         $user = Users::find(Auth::user()->getAuthIdentifier())->role;
 
         $buildingOuterTehnObslRemont = DB::table('outer_equipment')
-            ->select(DB::raw('*'))
+            ->select(DB::raw('tehn_obsl_remont.id as id,place_first_lev,place_third_lev,equip_name,
+            factory_number,state_tech_condition,year_toir,module_toir,module_replacement_name,act,act_link,dv,
+            dv_link,vor,vor_link, include_toir_plan,include_toir_plan_link,done_toir_plan,done_toir_plan_link'))
             ->rightJoin('tehn_obsl_remont', 'outer_equipment.id', '=', 'tehn_obsl_remont.outer_id')
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')

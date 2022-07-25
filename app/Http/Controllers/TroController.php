@@ -32,7 +32,9 @@ class TroController extends Controller
         $user = Users::find(Auth::user()->getAuthIdentifier())->role;
 
         $buildingOuterTro = DB::table('outer_equipment')
-            ->select(DB::raw('*'))
+            ->select(DB::raw('place_first_lev, place_third_lev, equip_name,factory_number,
+            state_tech_condition,act_number,act_number_link,act_date,equipment_name,act_content,
+            fault_reason,equipment_state'))
             ->rightJoin('tro', 'outer_equipment.id', '=', 'tro.outer_id')
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')

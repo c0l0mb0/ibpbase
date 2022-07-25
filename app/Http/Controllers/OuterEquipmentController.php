@@ -25,7 +25,9 @@ class OuterEquipmentController extends Controller
     {
         $locationFromLocationList = ListLocations::find($id)->location;
         $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw('* ,outer_equipment.id as id '))
+            ->select(DB::raw('outer_equipment.id as id, place_third_lev,equip_name,factory_number,factory_name,
+            inventory_number,affiliate,numb_vvod,purpose,year_issue_date,year_exploitation_date,power,current,
+            has_zip,state_tech_condition '))
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
             ->where('users.role', $this->getUserRole())
@@ -45,7 +47,9 @@ class OuterEquipmentController extends Controller
     public function indexBuildingOuterInner()
     {
         $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw('*, outer_equipment.id as id '))
+            ->select(DB::raw('outer_equipment.id as id, place_third_lev,equip_name,factory_number,factory_name,
+            inventory_number,affiliate,numb_vvod,purpose,year_issue_date,year_exploitation_date,power,
+            current,has_zip,state_tech_condition '))
             ->leftJoin('inner_equipment', 'outer_equipment.id', '=', 'inner_equipment.outer_id')
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->where('users.role', $this->getUserRole())
@@ -57,7 +61,9 @@ class OuterEquipmentController extends Controller
     public function indexBuildingOuter()
     {
         $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw(' * , outer_equipment.id as id '))
+            ->select(DB::raw('outer_equipment.id as id, place_third_lev,equip_name,factory_number,factory_name,
+            inventory_number,affiliate,numb_vvod,purpose,year_issue_date,year_exploitation_date,power,current,
+            has_zip,state_tech_condition'))
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
             ->where('users.role', $this->getUserRole())
