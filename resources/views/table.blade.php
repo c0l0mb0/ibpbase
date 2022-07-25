@@ -19,7 +19,13 @@
     <nav id="sidebar" class="sticky-sm-top">
         <div class="sidebar-container">
             <div class="sidebar-header">
-                <h3>База ИБП</h3>
+                <div class="sidebar__icon">
+                    <img src="{{ asset('icon/battery_icon.png') }}" alt="" aria-hidden="true"
+                         style="width:40px;height:50px">
+                </div>
+                <div class="sidebar__label">
+                    <h4>База ИБП</h4>
+                </div>
             </div>
             <ul class="list-unstyled components">
                 <li>
@@ -62,7 +68,8 @@
                             data-bs-placement="bottom" title="Добавить" data-bs-target="#modal__new-entry">
                         <img src="{{ asset('icon/plus-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn show-last-outer" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    <button type="button" class="btn show-last-outer" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
                             title="Оборудование">
                         <img src="{{ asset('icon/outer.svg') }}" class="row-menue__icon">
                     </button>
@@ -75,7 +82,8 @@
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             Объекты
                         </button>
-                        <ul class="dropdown-menu" id="action-menu-dropdown-locations" aria-labelledby="dropdownMenuBuildings"></ul>
+                        <ul class="dropdown-menu" id="action-menu-dropdown-locations"
+                            aria-labelledby="dropdownMenuBuildings"></ul>
                     </div>
                     <button type="button" class="btn show-inner" data-bs-toggle="tooltip" data-bs-placement="bottom"
                             title="Элементы">
