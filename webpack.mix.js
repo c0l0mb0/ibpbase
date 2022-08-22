@@ -1,17 +1,20 @@
 const mix = require('laravel-mix');
 
-/*
- |--------------------------------------------------------------------------
- | Mix Asset Management
- |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel applications. By default, we are compiling the CSS
- | file for the application as well as bundling up all the JS files.
- |
- */
+require('laravel-mix-polyfill');
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+// mix.js(['public/js/table/action-menu.js', 'public/js/table/ag-grid-community.min.js',
+//     'public/js/table/date-picker.js','public/js/table/check-box-render.js',
+//     'public/js/table/aggrid.js', 'public/js/table/equipment-dao.js',
+//     'public/js/table/excel-export.js', 'public/js/table/flatpickr.js', 'public/js/table/modal.js',
+//     'public/js/table/ru.js', 'public/js/table/side-bar.js','public/js/table/app.js',], 'public/js/pollyfill/app.js')
+//     .polyfill({
+//         enabled: true,
+//         useBuiltIns: "usage",
+//         targets: "IE 11"
+//     });
+mix.js(['public/js/table/date-picker.js','public/js/table/app.js',], 'public/js/pollyfill/app.js')
+    .polyfill({
+        enabled: true,
+        useBuiltIns: "usage",
+        targets: "IE 11"
+    });

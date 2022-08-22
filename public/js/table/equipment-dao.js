@@ -1,4 +1,4 @@
-var config = {
+export var config = {
     api: {
         postOuterEquipAndLocation: '/api/outerequipwithlocation',
         postInnerEquipByOuterId: '/api/innerequip',
@@ -47,7 +47,7 @@ var config = {
     }
 };
 
-function httpRequest(url, method, data = null, idRow = null) {
+export function httpRequest(url, method, data = null, idRow = null) {
     if (idRow !== null) url += '/' + idRow;
 
     return new Promise(function (resolve, reject) {
@@ -76,7 +76,7 @@ function httpRequest(url, method, data = null, idRow = null) {
     });
 }
 
-function downloadFile(url) {
+export function downloadFile(url) {
     var oReq = new XMLHttpRequest();
     oReq.open("GET", url, true);
     oReq.responseType = "blob";

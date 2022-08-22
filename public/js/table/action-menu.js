@@ -1,5 +1,12 @@
-class ActionMenu {
+import {httpRequest} from './equipment-dao.js'
+import {config} from './equipment-dao.js'
+import {changePageTitle} from './helper.js';
+import * as aggrid from './aggrid.js'
 
+export default class ActionMenu {
+    agOuterId;
+    ibpAgGrid;
+    modalForm;
     newTableRow;
     deleteTableRow;
     showInner;
@@ -41,7 +48,7 @@ class ActionMenu {
     }
 
     setRowActionForNotEditableGrid() {
-        actionMenu.newTableRow.style.display = 'none';
+        this.newTableRow.style.display = 'none';
     }
 
     hideOneRowAction() {
@@ -56,12 +63,15 @@ class ActionMenu {
     ////inner outer actions////
     setEditInnerAction() {
         this.showInner.onclick = () => {
-            let selectedRow = ibpAgGrid.getSelectedRow()
-            agOuterId = selectedRow.id;
-            ibpAgGrid = new IbpAgGrid(innerEquipParameters.gridOptions,
+            let selectedRow = this.ibpAgGrid.getSelectedRow();
+            this.agOuterId = selectedRow.id;
+            this.ibpAgGrid = new aggrid.IbpAgGrid(aggrid.agGridParameters.innerEquipParameters.gridOptions,
                 config.api.getInnerByOuterId + '/' +
-                agOuterId, config.api.deleteInnerEquip, innerEquipParameters.agName);
-            setModalInnerFormHtml();
+                this.agOuterId, config.api.deleteInnerEquip, aggrid.agGridParameters.innerEquipParameters.agName, this);
+            this.modalForm.ibpAgGrid = this.ibpAgGrid;
+            this.modalForm.agOuterId = this.agOuterId;
+            this.modalForm.setModalInnerFormHtml();
+            console.log(selectedRow)
             changePageTitle(selectedRow.place_first_lev + " => " +
                 selectedRow.equip_name + " => Элементы");
             this.hideOneRowAction();
@@ -74,12 +84,15 @@ class ActionMenu {
     ////Kap Remont actions////
     setEditKapRemontAction() {
         this.showCapRemont.onclick = () => {
-            let selectedRow = ibpAgGrid.getSelectedRow()
-            agOuterId = selectedRow.id;
-            ibpAgGrid = new IbpAgGrid(kapRemontParameters.gridOptions,
+            let selectedRow = this.ibpAgGrid.getSelectedRow()
+            this.agOuterId = selectedRow.id;
+            this.ibpAgGrid = new aggrid.IbpAgGrid(aggrid.agGridParameters.kapRemontParameters.gridOptions,
                 config.api.getByIdOuterKapRemont + '/' +
-                agOuterId, config.api.getByIdPostPutByIdDeleteByIdKapRemont, kapRemontParameters.agName);
-            setModalKapRemontFormHtml();
+                this.agOuterId, config.api.getByIdPostPutByIdDeleteByIdKapRemont,
+                aggrid.agGridParameters.kapRemontParameters.agName, this);
+            this.modalForm.ibpAgGrid = this.ibpAgGrid;
+            this.modalForm.agOuterId = this.agOuterId;
+            this.modalForm.setModalKapRemontFormHtml();
             changePageTitle(selectedRow.place_first_lev + " => " +
                 selectedRow.equip_name + " => Данные по капремонту");
             this.hideOneRowAction();
@@ -92,12 +105,15 @@ class ActionMenu {
     ////Tehn Obsl Remont actions////
     setEditTehnObslRemontAction() {
         this.showToir.onclick = () => {
-            let selectedRow = ibpAgGrid.getSelectedRow()
-            agOuterId = selectedRow.id;
-            ibpAgGrid = new IbpAgGrid(tehnObslRemontParameters.gridOptions,
+            let selectedRow = this.ibpAgGrid.getSelectedRow()
+            this.agOuterId = selectedRow.id;
+            this.ibpAgGrid = new aggrid.IbpAgGrid(aggrid.agGridParameters.tehnObslRemontParameters.gridOptions,
                 config.api.getByIdOuterTehnObslRemont + '/' +
-                agOuterId, config.api.getByIdPostPutByIdDeleteByIdTehnObslRemont, tehnObslRemontParameters.agName);
-            setModalTehnObslRemontFormHtml();
+                this.agOuterId, config.api.getByIdPostPutByIdDeleteByIdTehnObslRemont,
+                aggrid.agGridParameters.tehnObslRemontParameters.agName, this);
+            this.modalForm.ibpAgGrid = this.ibpAgGrid;
+            this.modalForm.agOuterId = this.agOuterId;
+            this.modalForm.setModalTehnObslRemontFormHtml();
             changePageTitle(selectedRow.place_first_lev + " => " +
                 selectedRow.equip_name + " => Данные по ТОиР");
             this.hideOneRowAction();
@@ -110,12 +126,15 @@ class ActionMenu {
     ////Pen Ren actions////
     setEditPenRenAction() {
         this.showPenRen.onclick = () => {
-            let selectedRow = ibpAgGrid.getSelectedRow()
-            agOuterId = selectedRow.id;
-            ibpAgGrid = new IbpAgGrid(penRenParameters.gridOptions,
+            let selectedRow = this.ibpAgGrid.getSelectedRow()
+            this.agOuterId = selectedRow.id;
+            this.ibpAgGrid = new aggrid.IbpAgGrid(aggrid.agGridParameters.penRenParameters.gridOptions,
                 config.api.getByIdOuterPenRen + '/' +
-                agOuterId, config.api.getByIdPostPutByIdDeleteByIdPenRen, penRenParameters.agName);
-            setModalPenRenFormHtml();
+                this.agOuterId, config.api.getByIdPostPutByIdDeleteByIdPenRen,
+                aggrid.agGridParameters.penRenParameters.agName, this);
+            this.modalForm.ibpAgGrid = this.ibpAgGrid;
+            this.modalForm.agOuterId = this.agOuterId;
+            this.modalForm.setModalPenRenFormHtml();
             changePageTitle(selectedRow.place_first_lev + " => " +
                 selectedRow.equip_name + " => Данные по ПЭН/РЭН");
             this.hideOneRowAction();
@@ -128,12 +147,15 @@ class ActionMenu {
     ////Tro actions////
     setEditTroAction() {
         this.showTro.onclick = () => {
-            let selectedRow = ibpAgGrid.getSelectedRow()
-            agOuterId = selectedRow.id;
-            ibpAgGrid = new IbpAgGrid(troParameters.gridOptions,
+            let selectedRow = this.ibpAgGrid.getSelectedRow()
+            this.agOuterId = selectedRow.id;
+            this.ibpAgGrid = new aggrid.IbpAgGrid(aggrid.agGridParameters.troParameters.gridOptions,
                 config.api.getByIdOuterTro + '/' +
-                agOuterId, config.api.getByIdPostPutByIdDeleteByIdTro, troParameters.agName);
-            setModalTroFormHtml();
+                this.agOuterId, config.api.getByIdPostPutByIdDeleteByIdTro,
+                aggrid.agGridParameters.troParameters.agName, this);
+            this.modalForm.ibpAgGrid = this.ibpAgGrid;
+            this.modalForm.agOuterId = this.agOuterId;
+            this.modalForm.setModalTroFormHtml();
             changePageTitle(selectedRow.place_first_lev + " => " +
                 selectedRow.equip_name + " => Данные по Актам ТРО");
             this.hideOneRowAction();
@@ -146,7 +168,7 @@ class ActionMenu {
     ////Excel export action////
     setExportExcelAction() {
         this.exportExcel.onclick = () => {
-            ibpAgGrid.exportDisplyedDataToExcel();
+            this.ibpAgGrid.exportDisplyedDataToExcel();
         };
     }
 
@@ -160,11 +182,13 @@ class ActionMenu {
                 getDataUrl = config.api.getDataBuildingAndOuterById + '/' + this.agGridFilter.agLocationFilterId;
                 changePageTitle("Приборы => " + this.agGridFilter.agLocationFilterText);
             }
-            ibpAgGrid = new IbpAgGrid(buildingAndOuterEquipParameters.gridOptions,
-                getDataUrl, config.api.deleteOuterEquipAndItsLocation, buildingAndOuterEquipParameters.agName);
-            agOuterId = undefined;
+            this.ibpAgGrid = new aggrid.IbpAgGrid(aggrid.agGridParameters.buildingAndOuterEquipParameters.gridOptions,
+                getDataUrl, config.api.deleteOuterEquipAndItsLocation,
+                aggrid.agGridParameters.buildingAndOuterEquipParameters.agName, this);
+            this.modalForm.ibpAgGrid = this.ibpAgGrid;
+            this.agOuterId = undefined;
             this.returnToOuter.style.display = 'none';
-            setModalOuterFormHtml();
+            this.modalForm.setModalOuterFormHtml();
             this.createLocationFilter();
         };
         this.returnToOuter.style.display = 'block';
@@ -197,21 +221,21 @@ class ActionMenu {
                 let id = item.id;
                 if (id === 'all') {
                     item.onclick = () => {
-                        ibpAgGrid.getDataUrl = config.api.getDataBuildingAndOuter;
-                        ibpAgGrid.setGridData();
+                        this.ibpAgGrid.getDataUrl = config.api.getDataBuildingAndOuter;
+                        this.ibpAgGrid.setGridData();
                         this.agGridFilter.agLocationFilterId = undefined;
                         this.agGridFilter.agLocationFilterText = undefined;
                         changePageTitle('Приборы');
-                        setModalLocationByCurrenFilterValue();
+                        this.modalForm.setModalLocationByCurrenFilterValue();
                     }
                 } else {
                     item.onclick = () => {
-                        ibpAgGrid.getDataUrl = config.api.getDataBuildingAndOuterById + '/' + id;
-                        ibpAgGrid.setGridData();
+                        this.ibpAgGrid.getDataUrl = config.api.getDataBuildingAndOuterById + '/' + id;
+                        this.ibpAgGrid.setGridData();
                         this.agGridFilter.agLocationFilterId = id;
                         this.agGridFilter.agLocationFilterText = item.innerText;
                         changePageTitle('Приборы => ' + this.agGridFilter.agLocationFilterText);
-                        setModalLocationByCurrenFilterValue();
+                        this.modalForm.setModalLocationByCurrenFilterValue();
                     }
                 }
 

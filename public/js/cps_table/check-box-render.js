@@ -1,7 +1,6 @@
-export default class CheckboxRenderer {
+class CheckboxRenderer {
     init(params) {
         this.params = params;
-
         this.eGui = document.createElement('input');
         this.eGui.type = 'checkbox';
         this.eGui.checked = params.value;

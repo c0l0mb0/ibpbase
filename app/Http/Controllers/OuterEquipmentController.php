@@ -61,12 +61,13 @@ class OuterEquipmentController extends Controller
     public function indexBuildingOuter()
     {
         $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw('outer_equipment.id as id, place_third_lev,equip_name,factory_number,factory_name,
+            ->select(DB::raw('outer_equipment.id as id,place_first_lev, place_third_lev,equip_name,factory_number,factory_name,
             inventory_number,affiliate,numb_vvod,purpose,year_issue_date,year_exploitation_date,power,current,
             has_zip,state_tech_condition'))
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
             ->leftJoin('users', 'outer_equipment.role', '=', 'users.role')
             ->where('users.role', $this->getUserRole())
+            ->orderBy('id', 'asc')
             ->get();
 
         return $outerEquipment;

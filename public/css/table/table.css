@@ -80,6 +80,13 @@ a:focus {
 
 }
 
+.sidebar__icon>img {
+    width:40px;
+    height:50px;
+    margin-right: 9px;
+    margin-left: 4px;
+}
+
 #sidebar .sidebar__label {
     padding-top: 11px;
 }
@@ -225,5 +232,9 @@ div.ag-root .ag-cell-focus {
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
+}
+
+#form__error {
+    text-align: center;
 }
 

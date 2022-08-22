@@ -1,157 +1,161 @@
-var ui = {
-    modalForm: {
-        caption: document.getElementById('modal__caption'),
-        modal: document.getElementById('modal__new-entry'),
-        modalBody: document.querySelector('.modal__form__body'),
-        form: document.getElementById('form__new-entry'),
-        error: document.getElementById('form__error'),
-    },
-    modalContainer: document.querySelector('.modal-container'),
-    showModalButton: document.querySelector('.new-table-row'),
-    postUrl: undefined
-};
+import {config} from './equipment-dao.js'
+import {httpRequest} from './equipment-dao.js'
+import {addCSRF} from './helper.js'
 
-function _showError(message) {
-    ui.modalForm.error.innerHTML += 'Ошибка: ' + message.status + ' | ' + message.statusText;
-    ui.modalForm.error.classList.remove('d-none');
-}
+export default class ModalForm {
+    actionMenu;
+    ibpAgGrid;
+    agOuterId;
+    ui = {
+        modalForm: {
+            caption: document.getElementById('modal__caption'),
+            modal: document.getElementById('modal__new-entry'),
+            modalBody: document.querySelector('.modal__form__body'),
+            form: document.getElementById('form__new-entry'),
+            error: document.getElementById('form__error'),
+        },
+        modalContainer: document.querySelector('.modal-container'),
+        showModalButton: document.querySelector('.new-table-row'),
+        postUrl: undefined
+    };
 
-function _hideError() {
-    ui.modalForm.error.innerHTML = '';
-    ui.modalForm.error.classList.add('d-none');
-}
+    constructor() {
+        this.setFormSubmitHandler();
+    }
 
-function getInputsArr() {
 
-    let data = {};
-    let formData = new FormData(ui.modalForm.form);
-    for (const [key, value] of formData) {
-        if (value !== '') {
-            data[key] = value;
+    setFormSubmitHandler() {
+        var _this = this;
+        this.ui.modalForm.form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            let inputValues = _this.getInputsArr();
+            httpRequest(_this.ui.modalForm.postUrl, 'POST', inputValues).then((e) => {
+                _this._hideError();
+                _this.hideModal();
+                event.target.reset();
+                _this.ibpAgGrid.setGridData();
+                _this.actionMenu.hideOneRowAction();
+            }).catch((e) => {
+                _this._hideError();
+                console.log(e);
+                _this._showError(e);
+            })
+        });
+    }
+
+    _showError(message) {
+        this.ui.modalForm.error.innerHTML += 'Ошибка: ' + message.status + ' | ' + message.statusText;
+        this.ui.modalForm.error.classList.remove('d-none');
+    }
+
+    _hideError() {
+        this.ui.modalForm.error.innerHTML = '';
+        this.ui.modalForm.error.classList.add('d-none');
+    }
+
+    getInputsArr() {
+        let data = {};
+        let formData = new FormData(this.ui.modalForm.form);
+        for (const [key, value] of formData) {
+            if (value !== '') {
+                data[key] = value;
+            }
+        }
+
+        if (this.agOuterId !== undefined && (this.ibpAgGrid.agName === "innerEquip" ||
+            this.ibpAgGrid.agName === "kapRemont" || this.ibpAgGrid.agName === "tehnObslRemont" ||
+            this.ibpAgGrid.agName === "penRen" || this.ibpAgGrid.agName === "tro")) {
+            data['outer_id'] = this.agOuterId;
+        }
+        data = addCSRF(data);
+        return data;
+    }
+
+    hideModal() {
+        let modal = bootstrap.Modal.getInstance(this.ui.modalForm.modal)
+        modal.hide()
+    }
+
+    createModalEquipLocationList(data) {
+        let selectHtml = '';
+        data.forEach(elementLocation => {
+            selectHtml += `<option  value="` + elementLocation.location + `" id="` +
+                elementLocation.id + `"> ` + elementLocation.location + `</option>`;
+        });
+        document.getElementById('place_first_lev').innerHTML = selectHtml;
+    }
+
+    createModalEquipStateList(data) {
+        let selectHtml = '';
+        data.forEach(elementState => {
+            selectHtml += `<option>` + elementState.state + `</option>`
+        });
+        document.getElementById('state_tech_condition').innerHTML = selectHtml;
+    }
+
+    setModalLocationByCurrenFilterValue() {
+        let modalLocationOption = document.getElementById('place_first_lev');
+        if (!modalLocationOption.childNodes || modalLocationOption.childNodes.length === 0) return false;
+        if (this.actionMenu.agGridFilter.agLocationFilterId === undefined) {
+            modalLocationOption.selectedIndex = 0;
+            return;
+        }
+        for (let items = 0; items < modalLocationOption.length; items++) {
+            let item = modalLocationOption[items];
+            if (item.id === this.actionMenu.agGridFilter.agLocationFilterId) {
+                modalLocationOption.selectedIndex = items;
+                return
+            }
         }
     }
 
-    if (agOuterId !== undefined && (ibpAgGrid.agName === "innerEquip" ||
-        ibpAgGrid.agName === "kapRemont" || ibpAgGrid.agName === "tehnObslRemont" ||
-        ibpAgGrid.agName === "penRen" || ibpAgGrid.agName === "tro")) {
-        data['outer_id'] = agOuterId;
+    setModalZipFormHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить прибор в ЗИП';
+        this.ui.modalForm.modalBody.innerHTML = modalZipHtml;
+        this.ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdZipEquipment
     }
-    data = addCSRF(data);
-    return data;
-}
 
-function hideModal() {
-    let modal = bootstrap.Modal.getInstance(ui.modalForm.modal)
-    modal.hide()
-}
-
-const submitModalFormHandler = function (event) {
-    event.preventDefault();
-    let inputValues = getInputsArr();
-    httpRequest(ui.modalForm.postUrl, 'POST', inputValues).then((e) => {
-        _hideError();
-        hideModal();
-        event.target.reset();
-        if (ibpAgGrid.isReady === true) {
-            ibpAgGrid.setGridData();
-        }
-        actionMenu.hideOneRowAction();
-    }).catch((e) => {
-        _hideError();
-        console.log(e);
-        _showError(e);
-    })
-}
-
-function setFormSubmitHandler() {
-    ui.modalForm.form.removeEventListener('submit', submitModalFormHandler);
-    ui.modalForm.form.addEventListener('submit', submitModalFormHandler);
-}
-
-function createModalEquipLocationList(data) {
-    let selectHtml = '';
-    data.forEach(elementLocation => {
-        selectHtml += `<option  value="` + elementLocation.location + `" id="` +
-            elementLocation.id + `"> ` + elementLocation.location + `</option>`;
-    });
-    document.getElementById('place_first_lev').innerHTML = selectHtml;
-}
-
-function createModalEquipStateList(data) {
-    let selectHtml = '';
-    data.forEach(elementState => {
-        selectHtml += `<option>` + elementState.state + `</option>`
-    });
-    document.getElementById('state_tech_condition').innerHTML = selectHtml;
-}
-
-function setModalLocationByCurrenFilterValue() {
-    let modalLocationOption = document.getElementById('place_first_lev');
-    if (!modalLocationOption.childNodes || modalLocationOption.childNodes.length === 0) return false;
-    if (actionMenu.agGridFilter.agLocationFilterId === undefined) {
-        modalLocationOption.selectedIndex = 0;
-        return;
+    setModalInnerFormHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить внутреннее оборудование';
+        this.ui.modalForm.modalBody.innerHTML = modalInnerHtml;
+        this.ui.modalForm.postUrl = config.api.postInnerEquipByOuterId;
     }
-    for (let items = 0; items < modalLocationOption.length; items++) {
-        let item = modalLocationOption[items];
-        if (item.id === actionMenu.agGridFilter.agLocationFilterId) {
-            modalLocationOption.selectedIndex = items;
-            return
-        }
+
+    setModalKapRemontFormHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить данные по КР';
+        this.ui.modalForm.modalBody.innerHTML = modalKapRemontHtml;
+        this.ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdKapRemont;
+    }
+
+    setModalTehnObslRemontFormHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить данные по ТОиР';
+        this.ui.modalForm.modalBody.innerHTML = modalTehnObslRemontHtml;
+        this.ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdTehnObslRemont;
+    }
+
+    setModalPenRenFormHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить данные по ПЭН/РЭН';
+        this.ui.modalForm.modalBody.innerHTML = modalPenRenHtml;
+        this.ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdPenRen;
+        // this.setFormSubmitHandler();
+    }
+
+    setModalTroFormHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить данные по Актам ТРО';
+        this.ui.modalForm.modalBody.innerHTML = modalTroHtml;
+        this.ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdTro;
+    }
+
+
+    async setModalOuterFormHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
+        this.ui.modalForm.modalBody.innerHTML = modalOuterHtml;
+        this.ui.modalForm.postUrl = config.api.postOuterEquipAndLocation;
+        this.createModalEquipLocationList(await httpRequest(config.api.getListLocations, 'GET'));
+        this.createModalEquipStateList(await httpRequest(config.api.getListStates, 'GET'));
     }
 }
 
-function setModalZipFormHtml() {
-    ui.modalForm.caption.innerHTML = 'Добавить прибор в ЗИП';
-    ui.modalForm.modalBody.innerHTML = modalZipHtml;
-    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdZipEquipment
-    setFormSubmitHandler();
-}
-
-function setModalInnerFormHtml() {
-    ui.modalForm.caption.innerHTML = 'Добавить внутреннее оборудование';
-    ui.modalForm.modalBody.innerHTML = modalInnerHtml;
-    ui.modalForm.postUrl = config.api.postInnerEquipByOuterId;
-    setFormSubmitHandler();
-}
-
-function setModalKapRemontFormHtml() {
-    ui.modalForm.caption.innerHTML = 'Добавить данные по КР';
-    ui.modalForm.modalBody.innerHTML = modalKapRemontHtml;
-    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdKapRemont;
-    setFormSubmitHandler();
-}
-
-function setModalTehnObslRemontFormHtml() {
-    ui.modalForm.caption.innerHTML = 'Добавить данные по ТОиР';
-    ui.modalForm.modalBody.innerHTML = modalTehnObslRemontHtml;
-    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdTehnObslRemont;
-    setFormSubmitHandler();
-}
-
-function setModalPenRenFormHtml() {
-    ui.modalForm.caption.innerHTML = 'Добавить данные по ПЭН/РЭН';
-    ui.modalForm.modalBody.innerHTML = modalPenRenHtml;
-    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdPenRen;
-    setFormSubmitHandler();
-}
-
-function setModalTroFormHtml() {
-    ui.modalForm.caption.innerHTML = 'Добавить данные по Актам ТРО';
-    ui.modalForm.modalBody.innerHTML = modalTroHtml;
-    ui.modalForm.postUrl = config.api.getByIdPostPutByIdDeleteByIdTro;
-    setFormSubmitHandler();
-}
-
-
-async function setModalOuterFormHtml() {
-    ui.modalForm.caption.innerHTML = 'Добавить оборудование';
-    ui.modalForm.modalBody.innerHTML = modalOuterHtml;
-    ui.modalForm.postUrl = config.api.postOuterEquipAndLocation;
-    setFormSubmitHandler();
-    createModalEquipLocationList(await httpRequest(config.api.getListLocations, 'GET'));
-    createModalEquipStateList(await httpRequest(config.api.getListStates, 'GET'));
-}
 
 const modalOuterHtml = `
                         <div class="row p-2">
@@ -168,7 +172,7 @@ const modalOuterHtml = `
                                 <label for="place_third_lev" class="col-form-label">Место</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" class="form-control" id="place_third_lev" name="place_third_lev">
+                                <input type="text" class="form-control" id="place_third_lev" required name="place_third_lev">
                             </div>
                         </div>
                         <div class="row p-2">
@@ -787,6 +791,3 @@ const modalTroHtml = `
                             </div>
                         </div>
                         `;
-
-
-

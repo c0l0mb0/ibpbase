@@ -1,6 +1,21 @@
-let ibpAgGrid;
+import ActionMenu from './action-menu.js'
+import * as equipment_dao from './equipment-dao.js'
+import SideBar from './side-bar.js'
+import ModalForm from './modal.js'
+
 let actionMenu = new ActionMenu();
-let agOuterId
+let modalForm = new ModalForm();
+let sideBar = new SideBar();
+
+//set links to each other
+modalForm.actionMenu = actionMenu;
+
+actionMenu.modalForm = modalForm;
+
+sideBar.actionMenu = actionMenu;
+sideBar.modalForm = modalForm;
+sideBar.setButtonsActions();
+
 
 actionMenu.newTableRow = document.querySelector('.new-table-row');
 actionMenu.deleteTableRow = document.querySelector('.delete-table-row');
@@ -14,24 +29,12 @@ actionMenu.showToir = document.querySelector('.show-toir');
 actionMenu.showPenRen = document.querySelector('.show-pen-ren');
 actionMenu.showTro = document.querySelector('.show-tro');
 actionMenu.exportExcel = document.querySelector('.excel-export');
-actionMenu.listLocationsUrl = config.api.getListLocations;
+actionMenu.listLocationsUrl = equipment_dao.config.api.getListLocations;
 actionMenu.hideALl();
 
 document.getElementById('dropdownMenuView').style.display = 'none';
 
 
-function changePageTitle(page_title) {
-    document.getElementById('page-title').textContent = page_title;
-    document.title = page_title;
-}
-
-function addCSRF(objectData) {
-    var CSRF = document.getElementsByName('csrf-token')[0].getAttribute('content');
-    if (CSRF !== undefined && CSRF !== "") {
-        objectData._token = CSRF;
-        return objectData;
-    }
-}
 
 
 

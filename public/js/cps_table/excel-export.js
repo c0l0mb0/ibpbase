@@ -1,4 +1,4 @@
-export let myExcelXML = (function () {
+let myExcelXML = (function () {
     let Workbook, WorkbookStart = '<?xml version="1.0"?><ss:Workbook  ' +
         'xmlns="urn:schemas-microsoft-com:office:spreadsheet" ' +
         'xmlns:o="urn:schemas-microsoft-com:office:office" ' +
@@ -9,7 +9,7 @@ export let myExcelXML = (function () {
         styleID = 1, columnWidth = 80,
         fileName = "data", uri, link;
 
-     class myExcelXML {
+    class myExcelXML {
         constructor(o) {
             let respArray = o;
             let finalDataArray = [];

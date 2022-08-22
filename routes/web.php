@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\BuildingsController;
-use App\Http\Controllers\InnerEquipmentController;
-use App\Http\Controllers\OuterEquipmentController;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -17,19 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::name('user.')->group(function() {
-    Route::view('/table','table')->middleware('auth')->name('table');
+Route::name('user.')->group(function () {
+    Route::view('/table', 'table')->middleware('auth')->name('table');
+    Route::view('/cpstable', 'cps_table')->middleware('auth')->name('cps_table');
 
-    Route::get('/login',function() {
-        if (Auth::check()) {
-            return redirect(route('user.table'));
-        }
-        return view('login');
-    })->name('login');
+    Route::get('/login', [\App\Http\Controllers\LoginController::class, 'getLoginPage'])->name('login');
 
-    Route::post('/login',[\App\Http\Controllers\LoginController::class, 'authenticate']);
+    Route::post('/login', [\App\Http\Controllers\LoginController::class, 'authenticate']);
 
-    Route::get('/logout',function () {
+    Route::get('/logout', function () {
         Auth::logout();
         return redirect('/login');
     })->name('logout');

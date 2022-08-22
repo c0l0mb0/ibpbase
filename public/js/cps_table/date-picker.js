@@ -1,4 +1,4 @@
-export default class DatePicker {
+class DatePicker {
     init(params) {
         flatpickr.localize(flatpickr.l10ns.ru);
         this.input = document.createElement("input");

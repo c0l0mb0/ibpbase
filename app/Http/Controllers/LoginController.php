@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,12 +22,29 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            return redirect()->intended(route('user.table'));
+            if (Auth::user()->user_name == 'cpsaf') {
+                return redirect(route('user.cps_table'));
+            }
+            if (Auth::user()->user_name == 'cps' || Auth::user()->user_name == 'coir') {
+                return redirect(route('user.table'));
+            }
         }
 
         return redirect(route('user.login'))->withErrors([
             'common_error' => 'Не удалось авторизироваться'
         ]);
+    }
+
+    public function getLoginPage ()
+    {
+        if (Auth::check()) {
+            if (Auth::user()->user_name == 'cpsaf') {
+                return redirect(route('user.cps_table'));
+            }
+            if (Auth::user()->user_name == 'cps' || Auth::user()->user_name == 'coir') {
+                return redirect(route('user.table'));
+            }
+        }
+        return view('login');
     }
 }
