@@ -8,7 +8,8 @@
     {{--    CSRF Token--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Вход</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/libs/bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/login/login.css') }}">
 
 </head>
@@ -39,6 +40,10 @@
         </form>
     </div>
 </div>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/libs/jquery-3.2.1.slim.min.js') }}"></script>
+<script src="{{ asset('js/libs/popper.min.js') }}"></script>
+<script src="{{ asset('js/libs/bootstrap4.min.js') }}"></script>
+
+<script src="{{ asset('js/login/login.js') }}"></script>
 </body>
 </html>

@@ -1,3 +1,10 @@
+import {isIE11browser} from "./helper.js";
+
+let url = window.location
+let splitUrl = url.toString().split('/');
+splitUrl = splitUrl.slice(0, -1);
+let UrlPathWithoutLastDirectory = splitUrl.join("/")
+
 export var config = {
     api: {
         postOuterEquipAndLocation: '/api/outerequipwithlocation',
@@ -47,18 +54,32 @@ export var config = {
     }
 };
 
+Object.keys(config.api).forEach(key => {
+    config.api[key] = UrlPathWithoutLastDirectory + config.api[key];
+});
+
 export function httpRequest(url, method, data = null, idRow = null) {
     if (idRow !== null) url += '/' + idRow;
 
     return new Promise(function (resolve, reject) {
         var oReq = new XMLHttpRequest();
-        oReq.responseType = 'json';
+        // oReq.responseType = 'json'; ie11 compatibility
         oReq.open(method, url, true);
+        oReq.responseType = "json";
         oReq.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         oReq.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
         oReq.onload = function () {
             if (oReq.status >= 200 && oReq.status < 300) {
-                resolve(oReq.response);
+                if (isIE11browser) { //ie11 compatibility
+                    let res = JSON.parse(oReq.response);
+                    resolve(res);
+                } else {
+                    let res = JSON.stringify(oReq.response);
+                    res = JSON.parse(res);
+                    resolve(res);
+                }
+
             } else {
                 reject({
                     status: oReq.status,

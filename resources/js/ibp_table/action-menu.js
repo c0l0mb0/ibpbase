@@ -1,9 +1,9 @@
-import {httpRequest} from './equipment-dao.js'
 import {config} from './equipment-dao.js'
 import {changePageTitle} from './helper.js';
 import * as aggrid from './aggrid.js'
 
 export default class ActionMenu {
+    arrLocationFirstLev;
     agOuterId;
     ibpAgGrid;
     modalForm;
@@ -71,7 +71,6 @@ export default class ActionMenu {
             this.modalForm.ibpAgGrid = this.ibpAgGrid;
             this.modalForm.agOuterId = this.agOuterId;
             this.modalForm.setModalInnerFormHtml();
-            console.log(selectedRow)
             changePageTitle(selectedRow.place_first_lev + " => " +
                 selectedRow.equip_name + " => Элементы");
             this.hideOneRowAction();
@@ -196,12 +195,14 @@ export default class ActionMenu {
 
     ////filter////
     createLocationFilter() {
-        if (this.listLocationsUrl !== undefined) {
-            httpRequest(this.listLocationsUrl, 'GET').then((data) => {
-                this.createListForLocationFilter(data);
-                this.setLocationFilterOnClickAction();
-            });
-        }
+        // if (this.listLocationsUrl !== undefined) {
+        //     httpRequest(this.listLocationsUrl, 'GET').then((data) => {
+        //         this.createListForLocationFilter(data);
+        //         this.setLocationFilterOnClickAction();
+        //     });
+        // }
+        this.createListForLocationFilter(this.arrLocationFirstLev);
+        this.setLocationFilterOnClickAction();
     }
 
     createListForLocationFilter(data) {

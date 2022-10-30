@@ -11,7 +11,7 @@ class OuterEquipment extends Model
     protected $fillable = [
         'equip_name', 'factory_number', 'factory_name', 'inventory_number', 'numb_vvod', 'purpose',
         'power', 'current', 'voltage', 'role', 'state_tech_condition', 'id_build',
-        'affiliate', 'id_kap_remont', 'id_tehn_obsl_remont', 'id_tro', 'has_zip', 'year_issue', 'year_exploitation'];
+        'affiliate', 'id_kap_remont', 'id_tehn_obsl_remont', 'id_tro', 'has_zip', 'year_issue_date', 'year_exploitation_date'];
 
     public function buildings()
     {

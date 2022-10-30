@@ -3,6 +3,7 @@ import {httpRequest} from './equipment-dao.js'
 import {addCSRF} from './helper.js'
 
 export default class ModalForm {
+    arrLocationFirstLev;
     actionMenu;
     ibpAgGrid;
     agOuterId;
@@ -78,7 +79,7 @@ export default class ModalForm {
 
     createModalEquipLocationList(data) {
         let selectHtml = '';
-        data.forEach(elementLocation => {
+        this.arrLocationFirstLev.forEach(elementLocation => {
             selectHtml += `<option  value="` + elementLocation.location + `" id="` +
                 elementLocation.id + `"> ` + elementLocation.location + `</option>`;
         });
@@ -147,12 +148,16 @@ export default class ModalForm {
     }
 
 
-    async setModalOuterFormHtml() {
+    setModalOuterFormHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
         this.ui.modalForm.modalBody.innerHTML = modalOuterHtml;
         this.ui.modalForm.postUrl = config.api.postOuterEquipAndLocation;
-        this.createModalEquipLocationList(await httpRequest(config.api.getListLocations, 'GET'));
-        this.createModalEquipStateList(await httpRequest(config.api.getListStates, 'GET'));
+        httpRequest(config.api.getListLocations, 'GET').then((data) => {
+            this.createModalEquipLocationList(data);
+        })
+        httpRequest(config.api.getListStates, 'GET').then((data) => {
+            this.createModalEquipStateList(data);
+        })
     }
 }
 

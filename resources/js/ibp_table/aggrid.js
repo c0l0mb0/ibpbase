@@ -4,6 +4,7 @@ import DatePicker from './date-picker.js';
 import CheckboxRenderer from './check-box-render.js';
 import {myExcelXML} from './excel-export.js';
 import {addCSRF} from './helper.js';
+import NotEditableCheckboxRenderer from "./not-editable-cb-render.js";
 
 //ag grid wrapper, first field from DAO has to have the name "id"
 export class IbpAgGrid {
@@ -41,12 +42,13 @@ export class IbpAgGrid {
         this.actionMenu.setExportExcelAction();
     }
 
-    async setGridData() {
-        let data = await httpRequest(this.getDataUrl, 'GET');
-        if (data === null) {
-            throw 'setGridData data is null';
-        }
-        this.gridOptions.api.setRowData(data);
+    setGridData() {
+        httpRequest(this.getDataUrl, 'GET').then((data) => {
+            if (data === null) {
+                throw 'setGridData data is null';
+            }
+            this.gridOptions.api.setRowData(data);
+        });
     }
 
     getSelectedRow() {
@@ -61,10 +63,11 @@ export class IbpAgGrid {
             let selectedRow = this.getSelectedRow();
             let csrf = {};
             csrf = addCSRF(csrf);
-            httpRequest(this.delUrl, 'DELETE', csrf, selectedRow.id);
-            this.actionMenu.hideOneRowAction();
-            this.actionMenu.showInner.style.display = 'none';
-            this.setGridData();
+            httpRequest(this.delUrl, 'DELETE', csrf, selectedRow.id).then(() => {
+                this.actionMenu.hideOneRowAction();
+                this.actionMenu.showInner.style.display = 'none';
+                this.setGridData();
+            });
         };
     }
 
@@ -123,10 +126,17 @@ export class IbpAgGrid {
             }
             excelData.push(tmpArray);
         }
+        //format text "null, false, true values"
         for (let i = 0; i < excelData.length; i++) {
             for (let j = 0; j < excelData[i].length; j++) {
                 if (excelData[i][j] === null) {
                     excelData[i][j] = "";
+                }
+                if (excelData[i][j] === false) {
+                    excelData[i][j] = "нет";
+                }
+                if (excelData[i][j] === true) {
+                    excelData[i][j] = "да";
                 }
             }
         }
@@ -144,7 +154,19 @@ export let agGridParameters = {
         gridOptions: {
             domLayout: 'autoHeight',
             columnDefs: [
-                {headerName: "Место", field: "place_third_lev", tooltipField: 'place_third_lev'},
+                {
+                    headerName: "Объект",
+                    field: "place_first_lev",
+                    minWidth: 100,
+                    tooltipField: 'place_first_lev',
+                    cellEditor: 'agSelectCellEditor',
+                    singleClickEdit: true,
+                    cellEditorParams: {
+                        values: []
+                    }
+                },
+
+                {headerName: "Место", field: "place_third_lev", minWidth: 100, tooltipField: 'place_third_lev'},
                 {headerName: "Имя", field: "equip_name", minWidth: 250, tooltipField: 'equip_name'},
                 {headerName: "Номер", field: "factory_number", tooltipField: 'factory_number'},
                 {headerName: "Производитель", field: "factory_name", tooltipField: 'factory_name'},
@@ -191,7 +213,7 @@ export let agGridParameters = {
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
-                httpRequest(config.api.setOuterEquipmentRowById, "PUT", addCSRF(event.data), event.data.id);
+                httpRequest(config.api.setOuterEquipmentRowById, "PUT", addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
             },
             onRowSelected: function () {
                 agGridParameters.actionMenu.showOneRowAction();
@@ -200,7 +222,7 @@ export let agGridParameters = {
                 params.api.sizeColumnsToFit();
             }
         },
-        agName: 'buildingAndOuterEquip'
+        agName: 'buildingAndOuterEquip',
     },
 
     innerEquipParameters: {
@@ -249,7 +271,7 @@ export let agGridParameters = {
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
-                httpRequest(config.api.setInnerEquipmentRowById, "PUT", addCSRF(event.data), event.data.id);
+                httpRequest(config.api.setInnerEquipmentRowById, "PUT", addCSRF(event.data), event.data.id).catch((reject) => console.log(reject));
             },
             onRowSelected: function () {
                 agGridParameters.actionMenu.deleteTableRow.style.display = 'block';
@@ -276,7 +298,7 @@ export let agGridParameters = {
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
-                httpRequest(config.api.getByIdPostPutByIdDeleteByIdZipEquipment, "PUT", addCSRF(event.data), event.data.id);
+                httpRequest(config.api.getByIdPostPutByIdDeleteByIdZipEquipment, "PUT", addCSRF(event.data), event.data.id).catch((reject) => console.log(reject));
             },
             onRowSelected: function () {
                 agGridParameters.actionMenu.deleteTableRow.style.display = 'block';
@@ -325,7 +347,7 @@ export let agGridParameters = {
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
-                httpRequest(config.api.getByIdPostPutByIdDeleteByIdKapRemont, "PUT", addCSRF(event.data), event.data.id);
+                httpRequest(config.api.getByIdPostPutByIdDeleteByIdKapRemont, "PUT", addCSRF(event.data), event.data.id).catch((reject) => console.log(reject));
             },
             onRowSelected: function () {
                 agGridParameters.actionMenu.deleteTableRow.style.display = 'block';
@@ -377,7 +399,7 @@ export let agGridParameters = {
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
-                httpRequest(config.api.getByIdPostPutByIdDeleteByIdTehnObslRemont, "PUT", addCSRF(event.data), event.data.id);
+                httpRequest(config.api.getByIdPostPutByIdDeleteByIdTehnObslRemont, "PUT", addCSRF(event.data), event.data.id).catch((reject) => console.log(reject));
             },
             onRowSelected: function () {
                 agGridParameters.actionMenu.deleteTableRow.style.display = 'block';
@@ -421,7 +443,7 @@ export let agGridParameters = {
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
-                httpRequest(config.api.getByIdPostPutByIdDeleteByIdPenRen, "PUT", addCSRF(event.data), event.data.id);
+                httpRequest(config.api.getByIdPostPutByIdDeleteByIdPenRen, "PUT", addCSRF(event.data), event.data.id).catch((reject)=>console.log(reject));
             },
             onRowSelected: function () {
                 agGridParameters.actionMenu.deleteTableRow.style.display = 'block';
@@ -453,7 +475,7 @@ export let agGridParameters = {
             },
             enableBrowserTooltips: true,
             onCellValueChanged: function (event) {
-                httpRequest(config.api.getByIdPostPutByIdDeleteByIdTro, "PUT", addCSRF(event.data), event.data.id);
+                httpRequest(config.api.getByIdPostPutByIdDeleteByIdTro, "PUT", addCSRF(event.data), event.data.id).catch((reject)=>console.log(reject));
             },
             onRowSelected: function () {
                 agGridParameters.actionMenu.deleteTableRow.style.display = 'block';
@@ -484,9 +506,15 @@ export let agGridParameters = {
                 {headerName: "ДВ ссылка", field: "dv_link", tooltipField: 'equip_name'},
                 {headerName: "ВОР", field: "vor", tooltipField: 'equip_name'},
                 {headerName: "ВОР ссылка", field: "vor_link", tooltipField: 'equip_name'},
-                {headerName: "Включен в план КР", field: "include_kr_plan", tooltipField: 'equip_name',},
+                {
+                    headerName: "Включен в план КР", field: "include_kr_plan",
+                    tooltipField: 'equip_name', cellRenderer: NotEditableCheckboxRenderer
+                },
                 {headerName: "Включен в план КР ссылка", field: "include_kr_plan_link", tooltipField: 'equip_name'},
-                {headerName: "Выполнен КР", field: "done_kr_plan", tooltipField: 'equip_name',},
+                {
+                    headerName: "Выполнен КР", field: "done_kr_plan", tooltipField: 'equip_name',
+                    cellRenderer: NotEditableCheckboxRenderer
+                },
                 {headerName: "Выполнен КР ссылка", field: "done_kr_plan_link", tooltipField: 'equip_name'},
 
             ],
@@ -528,13 +556,16 @@ export let agGridParameters = {
                 {headerName: "ВОР ссылка", field: "vor_link", tooltipField: 'vor_link'},
                 {
                     headerName: "Вкл.в план ТОиР", field: "include_toir_plan",
-                    tooltipField: 'include_toir_plan', cellRenderer: CheckboxRenderer
+                    tooltipField: 'include_toir_plan', cellRenderer: NotEditableCheckboxRenderer
                 },
                 {
                     headerName: "Вкл.в план ТОиР ссылка", field: "include_toir_plan_link",
                     tooltipField: 'include_toir_plan_link'
                 },
-                {headerName: "Выполнен ТОиР", field: "done_toir_plan", tooltipField: 'done_toir_plan',},
+                {
+                    headerName: "Выполнен ТОиР", field: "done_toir_plan", tooltipField: 'done_toir_plan',
+                    cellRenderer: NotEditableCheckboxRenderer
+                },
                 {headerName: "Выполнен ТОиР ссылка", field: "done_toir_plan_link", tooltipField: 'done_toir_plan_link'},
 
             ],
@@ -572,15 +603,19 @@ export let agGridParameters = {
                     headerName: "Вкл.в ПЭН/РЭН",
                     field: "included_pen_ren",
                     tooltipField: 'included_pen_ren',
-                    cellRenderer: CheckboxRenderer
+                    cellRenderer: NotEditableCheckboxRenderer
                 },
                 {headerName: "Причина исключения", field: "reason_exclude", tooltipField: 'reason_exclude'},
-                {headerName: "Причина искл. ссылка", field: "reason_exclude_link", tooltipField: 'reason_exclude_link'},
+                {
+                    headerName: "Причина искл. ссылка",
+                    field: "reason_exclude_link",
+                    tooltipField: 'reason_exclude_link',
+                },
                 {
                     headerName: "Поставка выполнена",
                     field: "delivery_ibp_done",
                     tooltipField: 'delivery_ibp_done',
-                    cellRenderer: CheckboxRenderer
+                    cellRenderer: NotEditableCheckboxRenderer
                 },
                 {headerName: "Поставка год", field: "delivery_ibp_year", tooltipField: 'delivery_ibp_year'},
                 {headerName: "Примечание", field: "comments_pen_ren", tooltipField: 'comments_pen_ren'},

@@ -8,9 +8,10 @@
     {{--    CSRF Token--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Вход</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/libs/bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/table/table.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/table/flatpickr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/libs/flatpickr.min.css') }}">
 
 </head>
 <body>
@@ -43,9 +44,6 @@
                     <a class="sidebar__show-tro" href="#">Акты ТРО</a>
                 </li>
                 <li>
-                    <a href="#">График ТО</a>
-                </li>
-                <li>
                     <a class="sidebar-edit_zip" href="#">ЗИП</a>
                 </li>
             </ul>
@@ -56,83 +54,69 @@
     <div id="content">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
+            <div class="container-fluid navbar-container">
 
                 <button type="button" id="sidebarCollapse" class="btn btn-info">
                     <i class="fas fa-align-left"></i>
                     <span>Меню</span>
                 </button>
                 <div class="row-menue">
-                    <button type="button" class="btn new-table-row" data-bs-toggle="modal" data-bs-trigger="hover"
+                    <button type="button" class="btn new-table-row action-menu-btn" data-bs-toggle="modal"
+                            data-bs-trigger="hover"
                             data-bs-placement="bottom" title="Добавить" data-bs-target="#modal__new-entry">
                         <img src="{{ asset('icon/plus-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn show-last-outer" data-bs-toggle="tooltip"
+                    <button type="button" class="btn show-last-outer action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom"
                             title="Оборудование">
                         <img src="{{ asset('icon/outer.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn delete-table-row" data-bs-toggle="tooltip"
+                    <button type="button" class="btn delete-table-row action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Удалить">
                         <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
                     </button>
                     <div class="dropdown">
-                        <button class="btn dropdown-toggle" type="button" id="dropdown-menu-button-locations"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn dropdown-toggle action-menu-btn" type="button"
+                                id="dropdown-menu-button-locations"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Объекты
                         </button>
                         <ul class="dropdown-menu" id="action-menu-dropdown-locations"
                             aria-labelledby="dropdownMenuBuildings"></ul>
                     </div>
-                    <button type="button" class="btn show-inner" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    <button type="button" class="btn show-inner action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
                             title="Элементы">
                         <img src="{{ asset('icon/chip-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn show-cap-remont" data-bs-toggle="tooltip"
+                    <button type="button" class="btn show-cap-remont" action-menu-btn data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Кап. ремонт">
                         <img src="{{ asset('icon/wrench-adjustable-circle.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn show-toir" data-bs-toggle="tooltip"
+                    <button type="button" class="btn show-toir action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="ТОиР">
                         <img src="{{ asset('icon/tools.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn show-pen-ren" data-bs-toggle="tooltip"
+                    <button type="button" class="btn show-pen-ren action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="ПЭН/РЭН АКБ">
                         <img src="{{ asset('icon/card-list.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn show-tro" data-bs-toggle="tooltip"
+                    <button type="button" class="btn show-tro action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Акт ТРО">
                         <img src="{{ asset('icon/text-indent-left.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn excel-export" data-bs-toggle="tooltip"
+                    <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Экспорт в Excel">
                         <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
                     </button>
-                    <div class="dropdown">
-                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuView"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            Вид
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Локация</a></li>
-                            <li><a class="dropdown-item" href="#">Параметры</a></li>
-                            <li><a class="dropdown-item" href="#">Все поля</a></li>
-                        </ul>
-                    </div>
                 </div>
-                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fas fa-align-justify"></i>
-                </button>
+                <div class="justify-content-end navbar-btn-logout-wrapper">
+                    <button type="button" class="btn logout action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="Выйти">выйти
+                    </button>
+                </div>
 
-                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/logout">выйти</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </nav>
         <div id="app" class="scroll">
@@ -173,11 +157,18 @@
     </div>
 </div>
 
-<script src="{{ asset('js/table/ag-grid-community.min.js') }}"></script>
-<script src="{{ asset('js/table/flatpickr.js') }}"></script>
-<script src="{{ asset('js/table/ru.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<script type="module" src="{{ asset('js/table/app.js') }}"></script>
+
+<script src="{{ asset('js/libs/ag-grid-community-ie11.min.js') }}"></script>
+
+<script src="{{ asset('js/libs/flatpickr.js') }}"></script>
+<script src="{{ asset('js/libs/ru.js') }}"></script>
+
+<script src="{{ asset('js/libs/jquery-3.2.1.slim.min.js') }}"></script>
+<script src="{{ asset('js/libs/popper.min.js') }}"></script>
+<script src="{{ asset('js/libs/bootstrap4.min.js') }}"></script>
+
+
+<script src="{{ asset('js/ibp_table/ibp-table.js') }}"></script>
 
 </body>
 </html>

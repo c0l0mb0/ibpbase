@@ -1,7 +1,7 @@
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #fafafa;
-}
+/*body {*/
+/*    font-family: 'Poppins', sans-serif;*/
+/*    background: #fafafa;*/
+/*}*/
 
 p {
     font-family: sans-serif;
@@ -46,6 +46,20 @@ a:focus {
 #page-title {
     font-size: 17px;
     margin-top: 7px;
+}
+/* ---------------------------------------------------
+    ACTION MENU STYLE
+----------------------------------------------------- */
+.navbar-btn-logout-wrapper {
+    flex-grow: 1;
+    display: flex;
+}
+.action-menu-btn {
+    background-color: transparent;
+}
+
+.action-menu-btn:hover {
+    background-color:rgba(32,33,36,0.059);
 }
 
 /* ---------------------------------------------------

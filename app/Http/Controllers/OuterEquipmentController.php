@@ -25,7 +25,7 @@ class OuterEquipmentController extends Controller
     {
         $locationFromLocationList = ListLocations::find($id)->location;
         $outerEquipment = DB::table('outer_equipment')
-            ->select(DB::raw('outer_equipment.id as id, place_third_lev,equip_name,factory_number,factory_name,
+            ->select(DB::raw('outer_equipment.id as id, place_first_lev, place_third_lev,equip_name,factory_number,factory_name,
             inventory_number,affiliate,numb_vvod,purpose,year_issue_date,year_exploitation_date,power,current,
             has_zip,state_tech_condition '))
             ->leftJoin('buildings', 'outer_equipment.id_build', '=', 'buildings.id')
@@ -134,12 +134,18 @@ class OuterEquipmentController extends Controller
     public function update($id, Request $request)
     {
         $this->validate($request, [
-            'factory_number' => 'required'
+            'factory_number' => 'required',
+            'id' => 'required',
+            'place_first_lev' => 'required',
         ]);
         $outerEquipment = OuterEquipment::find($id);
 
-        $outerEquipment->update($request->all());
+        $building = Buildings::find($outerEquipment->id_build);
 
+        $outerEquipment->update($request->all());
+        $building->place_first_lev = $request->place_first_lev;
+        $building->place_third_lev = $request->place_third_lev;
+        $building->save();
         return response()->json($outerEquipment);
     }
 

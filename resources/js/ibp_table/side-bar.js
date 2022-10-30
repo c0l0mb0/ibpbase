@@ -4,6 +4,7 @@ import {changePageTitle} from './helper.js'
 
 
 export default class SideBar {
+    arrLocationFirstLev;
     ibpAgGrid;
     actionMenu;
     modalForm;

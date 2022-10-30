@@ -10,3 +10,10 @@ export function addCSRF(objectData) {
         return objectData;
     }
 }
+
+function isIE11() {
+    let ua = window.navigator.userAgent;
+    return ua.indexOf('Trident/') > 0;
+}
+
+export let isIE11browser = isIE11();
