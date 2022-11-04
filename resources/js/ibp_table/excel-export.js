@@ -5,12 +5,11 @@ export let myExcelXML = (function () {
         'xmlns:x="urn:schemas-microsoft-com:office:excel" ' +
         'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40">';
     const WorkbookEnd = '</ss:Workbook>';
-    let fs, SheetName = 'SHEET 1',
-        styleID = 1, columnWidth = 80,
-        fileName = "data", uri, link;
+    let fs, SheetName = 'SHEET 1', styleID = 1, columnWidth = 80, fileName = "data", uri, link;
 
-     class myExcelXML {
-        constructor(o) {
+    class myExcelXML {
+        constructor(o, tableName) {
+            fileName = tableName + ".xls";
             let respArray = o;
             let finalDataArray = [];
 
@@ -24,18 +23,28 @@ export let myExcelXML = (function () {
 
         downLoad() {
             const Worksheet = myXMLWorkSheet(SheetName, fs);
-
             Workbook = WorkbookStart + Worksheet + WorkbookEnd;
-
-            uri = 'data:text/xls;charset=utf-8,' + encodeURIComponent(Workbook);
-            link = document.createElement("a");
-            link.href = uri;
-            link.style = "visibility:hidden";
-            link.download = fileName + ".xls";
-
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            let fileNameToDownload = fileName;
+            let blob = new Blob([Workbook], {type: 'text/xls'});
+            if (window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveBlob(blob, fileNameToDownload);
+            } else {
+                let elem = window.document.createElement('a');
+                elem.href = window.URL.createObjectURL(blob);
+                elem.download = fileNameToDownload;
+                document.body.appendChild(elem);
+                elem.click();
+                document.body.removeChild(elem);
+            }
+            // uri = 'data:text/xls;charset=utf-8,' + encodeURIComponent(Workbook);
+            // link = document.createElement("a");
+            // link.href = uri;
+            // // console.log(uri)
+            // // link.style.display = "none";
+            // link.download = fileName + ".xls";
+            // document.body.appendChild(link);
+            // link.click();
+            // // document.body.removeChild(link);
         }
 
         get fileName() {

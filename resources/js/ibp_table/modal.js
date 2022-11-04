@@ -26,7 +26,8 @@ export default class ModalForm {
 
 
     setFormSubmitHandler() {
-        var _this = this;
+        let _this = this;
+
         this.ui.modalForm.form.addEventListener('submit', function (event) {
             event.preventDefault();
             let inputValues = _this.getInputsArr();
@@ -56,13 +57,18 @@ export default class ModalForm {
 
     getInputsArr() {
         let data = {};
-        let formData = new FormData(this.ui.modalForm.form);
-        for (const [key, value] of formData) {
-            if (value !== '') {
-                data[key] = value;
+        // let formData = new FormData(this.ui.modalForm.form); ie11 compatibility
+        let formData = $('#form__new-entry').serializeArray();
+        // for (const [key, value] of formData) {
+        //     if (value !== '') {
+        //         data[key] = value;
+        //     }
+        // }
+        formData.forEach(function (arrayItem) {
+            if (arrayItem.value !== '') {
+                data[arrayItem.name] = arrayItem.value;
             }
-        }
-
+        });
         if (this.agOuterId !== undefined && (this.ibpAgGrid.agName === "innerEquip" ||
             this.ibpAgGrid.agName === "kapRemont" || this.ibpAgGrid.agName === "tehnObslRemont" ||
             this.ibpAgGrid.agName === "penRen" || this.ibpAgGrid.agName === "tro")) {
@@ -73,8 +79,9 @@ export default class ModalForm {
     }
 
     hideModal() {
-        let modal = bootstrap.Modal.getInstance(this.ui.modalForm.modal)
-        modal.hide()
+        // let modal = bootstrap.Modal.getInstance(this.ui.modalForm.modal)
+        // modal.hide()
+        $('#modal__new-entry').modal('hide');//ie11 compatibility
     }
 
     createModalEquipLocationList(data) {
@@ -168,7 +175,7 @@ const modalOuterHtml = `
                                 <label for="place_first_lev" class="col-form-label">Расположение</label>
                             </div>
                             <div class="col-9">
-                                <select class="form-select" id="place_first_lev" name="place_first_lev">
+                                <select class="form-control" id="place_first_lev" name="place_first_lev">
                                 </select>
                             </div>
                         </div>
@@ -281,7 +288,7 @@ const modalOuterHtml = `
                                 <label for="state_tech_condition" class="col-form-label">Состояние</label>
                             </div>
                             <div class="col-9">
-                                <select class="form-select" id="state_tech_condition" name="state_tech_condition">
+                                <select class="form-control" id="state_tech_condition" name="state_tech_condition">
                                 </select>
                             </div>
                         </div>`;

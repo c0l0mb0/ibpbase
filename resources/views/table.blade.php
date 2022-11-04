@@ -61,9 +61,8 @@
                     <span>Меню</span>
                 </button>
                 <div class="row-menue">
-                    <button type="button" class="btn new-table-row action-menu-btn" data-bs-toggle="modal"
-                            data-bs-trigger="hover"
-                            data-bs-placement="bottom" title="Добавить" data-bs-target="#modal__new-entry">
+                    <button type="button" class="btn new-table-row action-menu-btn" data-toggle="modal"
+                             title="Добавить" data-target="#modal__new-entry">
                         <img src="{{ asset('icon/plus-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn show-last-outer action-menu-btn" data-bs-toggle="tooltip"
@@ -89,7 +88,7 @@
                             title="Элементы">
                         <img src="{{ asset('icon/chip-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn show-cap-remont" action-menu-btn data-bs-toggle="tooltip"
+                    <button type="button" class="btn show-cap-remont action-menu-btn" action-menu-btn data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Кап. ремонт">
                         <img src="{{ asset('icon/wrench-adjustable-circle.svg') }}" class="row-menue__icon">
                     </button>
@@ -116,18 +115,14 @@
                             title="Выйти">выйти
                     </button>
                 </div>
-
             </div>
         </nav>
         <div id="app" class="scroll">
             <div class='app-container'>
-
                 <div class='page-header'>
                     <h1 id='page-title'></h1>
                 </div>
-
                 <div id='page-content'></div>
-
             </div>
         </div>
     </div>
@@ -138,7 +133,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modal__caption">Добавить</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <form class="modal-form needs-validation" id="form__new-entry">
                         <div class="modal__form__body"></div>
@@ -147,7 +144,7 @@
                             </mark>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                             <button type="submit" class="btn btn-primary modal__sbmit">Сохранить</button>
                         </div>
                     </form>

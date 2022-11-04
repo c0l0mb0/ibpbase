@@ -50,11 +50,3 @@ actionMenu.showTro = document.querySelector('.show-tro');
 actionMenu.exportExcel = document.querySelector('.excel-export');
 actionMenu.listLocationsUrl = config.api.getListLocations;
 actionMenu.hideALl();
-
-document.getElementById('dropdownMenuView').style.display = 'none';
-
-
-
-
-
-

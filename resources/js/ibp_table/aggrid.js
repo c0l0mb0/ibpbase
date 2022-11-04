@@ -1,10 +1,11 @@
-import {httpRequest} from './equipment-dao.js'
-import {config} from './equipment-dao.js'
-import DatePicker from './date-picker.js';
-import CheckboxRenderer from './check-box-render.js';
+import {config, httpRequest} from './equipment-dao.js'
 import {myExcelXML} from './excel-export.js';
 import {addCSRF} from './helper.js';
+import DatePicker from "./date-picker.js";
+import CheckboxRenderer from "./check-box-render.js";
 import NotEditableCheckboxRenderer from "./not-editable-cb-render.js";
+
+
 
 //ag grid wrapper, first field from DAO has to have the name "id"
 export class IbpAgGrid {
@@ -142,7 +143,7 @@ export class IbpAgGrid {
         }
 
         excelData.unshift(agHeaders);
-        let myTestXML = new myExcelXML(excelData);
+        let myTestXML = new myExcelXML(excelData,this.agName);
         myTestXML.downLoad();
     }
 }

@@ -1,6 +1,6 @@
-import {config} from './equipment-dao.js'
+import {config} from './equipment-dao.js';
 import {changePageTitle} from './helper.js';
-import * as aggrid from './aggrid.js'
+import * as aggrid from './aggrid.js';
 
 export default class ActionMenu {
     arrLocationFirstLev;
@@ -195,12 +195,6 @@ export default class ActionMenu {
 
     ////filter////
     createLocationFilter() {
-        // if (this.listLocationsUrl !== undefined) {
-        //     httpRequest(this.listLocationsUrl, 'GET').then((data) => {
-        //         this.createListForLocationFilter(data);
-        //         this.setLocationFilterOnClickAction();
-        //     });
-        // }
         this.createListForLocationFilter(this.arrLocationFirstLev);
         this.setLocationFilterOnClickAction();
     }

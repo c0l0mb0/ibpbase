@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
     mode:'development',
+    watch: true,
     entry: path.resolve(__dirname, './resources/js/ibp_table/app.js'),
     output: {
         filename: 'ibp-table.js',
