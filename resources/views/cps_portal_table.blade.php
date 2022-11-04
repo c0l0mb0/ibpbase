@@ -21,30 +21,18 @@
         <div class="sidebar-container">
             <div class="sidebar-header">
                 <div class="sidebar__icon">
-                    <img src="{{ asset('icon/battery_icon.png') }}" alt="" aria-hidden="true">
-                </div>
-                <div class="sidebar__label">
-                    <h4>База ИБП</h4>
+                    <img src="{{ asset('icon/sensor.png') }}" alt="" aria-hidden="true">
                 </div>
             </div>
             <ul class="list-unstyled components">
                 <li>
-                    <a class="sidebar-edit_equip" href="#">Приборы</a>
+                    <a class="sidebar-edit_equip" href="#">Обрудование</a>
                 </li>
                 <li>
-                    <a class="sidebar__show-kap-remont" href="#">Капремонт</a>
+                    <a class="sidebar__show-kap-remont" href="#">ЗИП</a>
                 </li>
                 <li>
-                    <a class="sidebar__show-tehn-obsl-remont" href="#">ТОиР</a>
-                </li>
-                <li>
-                    <a class="sidebar__show-pen-ren" href="#">ПЭН/РЭН АКБ</a>
-                </li>
-                <li>
-                    <a class="sidebar__show-tro" href="#">Акты ТРО</a>
-                </li>
-                <li>
-                    <a class="sidebar-edit_zip" href="#">ЗИП</a>
+                    <a class="sidebar__show-tehn-obsl-remont" href="#">ПожИнструктаж</a>
                 </li>
             </ul>
         </div>
@@ -62,51 +50,12 @@
                 </button>
                 <div class="row-menue">
                     <button type="button" class="btn new-table-row action-menu-btn" data-toggle="modal"
-                             title="Добавить" data-target="#modal__new-entry">
+                            title="Добавить" data-target="#modal__new-entry">
                         <img src="{{ asset('icon/plus-svgrepo-com.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn show-last-outer action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom"
-                            title="Оборудование">
-                        <img src="{{ asset('icon/outer.svg') }}" class="row-menue__icon">
                     </button>
                     <button type="button" class="btn delete-table-row action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Удалить">
                         <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
-                    </button>
-                    <div class="dropdown">
-                        <button class="btn dropdown-toggle action-menu-btn" type="button"
-                                id="dropdown-menu-button-locations"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Объекты
-                        </button>
-                        <ul class="dropdown-menu" id="action-menu-dropdown-locations"
-                            aria-labelledby="dropdownMenuBuildings"></ul>
-                    </div>
-                    <button type="button" class="btn show-inner action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom"
-                            title="Элементы">
-                        <img src="{{ asset('icon/chip-svgrepo-com.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn show-cap-remont action-menu-btn" action-menu-btn data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Кап. ремонт">
-                        <img src="{{ asset('icon/wrench-adjustable-circle.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn show-toir action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="ТОиР">
-                        <img src="{{ asset('icon/tools.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn show-pen-ren action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="ПЭН/РЭН АКБ">
-                        <img src="{{ asset('icon/card-list.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn show-tro action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Акт ТРО">
-                        <img src="{{ asset('icon/text-indent-left.svg') }}" class="row-menue__icon">
-                    </button>
-                    <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Экспорт в Excel">
-                        <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
                     </button>
                 </div>
                 <div class="justify-content-end navbar-btn-logout-wrapper">
@@ -165,7 +114,7 @@
 <script src="{{ asset('js/libs/bootstrap4.min.js') }}"></script>
 
 
-<script src="{{ asset('js/ibp_table/ibp_table.js') }}"></script>
+<script src="{{ asset('js/ibp_table/cps_portal.js') }}"></script>
 
 </body>
 </html>

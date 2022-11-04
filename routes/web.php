@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('user.')->group(function () {
     Route::view('/table', 'table')->middleware('auth')->name('table');
-    Route::view('/cpstable', 'cps_table')->middleware('auth')->name('cps_table');
+    Route::view('/cpsportal', 'cps_portal_table')->middleware('auth')->name('cpsportal');
 
     Route::get('/login', [\App\Http\Controllers\LoginController::class, 'getLoginPage'])->name('login');
 

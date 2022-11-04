@@ -1,11 +1,15 @@
 const path = require('path');
 
 module.exports = {
-    mode:'development',
+    mode: 'development',
     watch: true,
-    entry: path.resolve(__dirname, './resources/js/ibp_table/app.js'),
+
+    entry: {
+        ibp_table: path.resolve(__dirname, './resources/js/ibp_table/app.js'),
+        cps_portal: path.resolve(__dirname, './resources/js/cps_portal_table/app.js'),
+    },
     output: {
-        filename: 'ibp-table.js',
+        filename: '[name].js',
         environment: {
             arrowFunction: false,
         },
