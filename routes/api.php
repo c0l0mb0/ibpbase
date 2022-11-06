@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BuildingsController;
+use App\Http\Controllers\FireInstrController;
 use App\Http\Controllers\InnerEquipmentController;
 use App\Http\Controllers\KapRemontController;
 use App\Http\Controllers\ListLocationsController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\OuterEquipmentController;
 use App\Http\Controllers\PenRenController;
 use App\Http\Controllers\TehnObslRemontController;
 use App\Http\Controllers\TroController;
+use App\Http\Controllers\WorkersController;
 use App\Http\Controllers\ZipEquipmentController;
 use Illuminate\Support\Facades\Route;
 
@@ -88,6 +90,17 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('zip', [ZipEquipmentController::class, 'create']);
     Route::put('zip/{id}', [ZipEquipmentController::class, 'update']);
     Route::delete('zip/{id}', [ZipEquipmentController::class, 'destroy']);
+
+    Route::get('workersall', [WorkersController::class, 'index']);
+    Route::post('workers', [WorkersController::class, 'create']);
+    Route::put('workers/{id}', [WorkersController::class, 'update']);
+    Route::delete('workers/{id}', [WorkersController::class, 'destroy']);
+
+    Route::get('fireinstrall', [FireInstrController::class, 'index']);
+    Route::post('fireinstr', [FireInstrController::class, 'create']);
+    Route::put('fireinstr/{id}', [FireInstrController::class, 'update']);
+    Route::delete('fireinstr/{id}', [FireInstrController::class, 'destroy']);
+
 
 });
 

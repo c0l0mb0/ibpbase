@@ -26,13 +26,16 @@
             </div>
             <ul class="list-unstyled components">
                 <li>
-                    <a class="sidebar-edit_equip" href="#">Обрудование</a>
+                    <a class="sidebar__edit-equip" href="#">Обрудование</a>
                 </li>
                 <li>
-                    <a class="sidebar__show-kap-remont" href="#">ЗИП</a>
+                    <a class="sidebar__edit-zip" href="#">ЗИП</a>
                 </li>
                 <li>
-                    <a class="sidebar__show-tehn-obsl-remont" href="#">ПожИнструктаж</a>
+                    <a class="sidebar__edit-fire_instr" href="#">ПожИнструктаж</a>
+                </li>
+                <li>
+                    <a class="sidebar__edit-staff" href="#">Персонал</a>
                 </li>
             </ul>
         </div>
