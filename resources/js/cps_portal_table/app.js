@@ -3,6 +3,7 @@ import SideBar from './side-bar.js'
 import ModalForm from './modal.js'
 import {agGridParameters}  from "./ag-grid-parameters.js";
 
+
 let actionMenu = new ActionMenu();
 let modalForm = new ModalForm();
 let sideBar = new SideBar();
@@ -19,5 +20,7 @@ agGridParameters.actionMenu = actionMenu;
 //assign links to buttons
 actionMenu.newTableRow = document.querySelector('.new-table-row');
 actionMenu.deleteTableRow = document.querySelector('.delete-table-row');
+actionMenu.exportExcel = document.querySelector('.excel-export');
+actionMenu.fireExamPlusSix = document.querySelector('.plus-six-month');
 
 actionMenu.hideALl();

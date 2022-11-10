@@ -60,13 +60,19 @@
                             data-bs-placement="bottom" title="Удалить">
                         <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
                     </button>
-                </div>
-                <div class="justify-content-end navbar-btn-logout-wrapper">
-                    <button type="button" class="btn logout action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom"
-                            title="Выйти">выйти
+                    <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Экспорт в Excel">
+                        <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn plus-six-month action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="последний экзамен + 6 месяцев">
+                        <img src="{{ asset('icon/plus-six.svg') }}" class="row-menue__icon">
                     </button>
                 </div>
+                <div class="justify-content-end navbar-btn-logout-wrapper">
+                    <a class="btn action-menu-btn" href="{{ route('user.logout') }}">выйти</a>
+                </div>
+
             </div>
         </nav>
         <div id="app" class="scroll">

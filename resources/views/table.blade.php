@@ -110,10 +110,7 @@
                     </button>
                 </div>
                 <div class="justify-content-end navbar-btn-logout-wrapper">
-                    <button type="button" class="btn logout action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom"
-                            title="Выйти">выйти
-                    </button>
+                    <a class="btn action-menu-btn" href="{{ route('user.logout') }}">выйти</a>
                 </div>
             </div>
         </nav>

@@ -20,34 +20,26 @@ export default class SideBar {
                 agGridParameters.workersParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            // this.modalForm.setModalOuterFormHtml();
-            //
-            // this.actionMenu.setEditInnerAction();
-            // this.actionMenu.setEditKapRemontAction();
-            // this.actionMenu.setEditTehnObslRemontAction();
-            // this.actionMenu.setEditPenRenAction();
-            // this.actionMenu.setEditTroAction();
-            //
-            // this.actionMenu.createLocationFilter();
+            this.actionMenu.hideALl();
+            this.modalForm.setModalWorkersFormHtml();
+            this.actionMenu.showNewTableRowButton();
+            this.actionMenu.showExcelExportButton();
             changePageTitle("Работники");
         };
 
         document.querySelector('.sidebar__edit-fire_instr').onclick = () => {
-            this.tableAgGrid = new aggrid.IbpAgGrid(aggrid.agGridParameters.buildingAndOuterEquipParameters.gridOptions,
-                config.api.getDataBuildingAndOuter, config.api.deleteOuterEquipAndItsLocation,
-                aggrid.agGridParameters.buildingAndOuterEquipParameters.agName, this.actionMenu);
+            this.tableAgGrid = new TableAgGrid(agGridParameters.fireInstrParameters.gridOptions,
+                config.api.getWorkersALl, config.api.postPutDeleteWorkers,
+                agGridParameters.fireInstrParameters.agName, this.actionMenu);
             this.actionMenu.tableAgGrid = this.tableAgGrid
             this.modalForm.tableAgGrid = this.tableAgGrid;
-            this.modalForm.setModalOuterFormHtml();
+            this.actionMenu.hideALl();
+            this.actionMenu.setRowActionForNotEditableGrid();
+            this.actionMenu.hideOneRowAction();
+            this.actionMenu.showExcelExportButton();
+            this.actionMenu.setFireExamPlusSixAction();
 
-            this.actionMenu.setEditInnerAction();
-            this.actionMenu.setEditKapRemontAction();
-            this.actionMenu.setEditTehnObslRemontAction();
-            this.actionMenu.setEditPenRenAction();
-            this.actionMenu.setEditTroAction();
-
-            this.actionMenu.createLocationFilter();
-            changePageTitle("Противопожарные Инструктажи");
+            changePageTitle("Пожинструктаж");
         };
     }
 }

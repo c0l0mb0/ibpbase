@@ -21,6 +21,8 @@ Route::name('user.')->group(function () {
 
     Route::get('/login', [\App\Http\Controllers\LoginController::class, 'getLoginPage'])->name('login');
 
+    Route::post('/getpasshash', [\App\Http\Controllers\PasswordController::class, 'getNewPasswordHash'])->name('getPassHash');
+
     Route::post('/login', [\App\Http\Controllers\LoginController::class, 'authenticate']);
 
     Route::get('/logout', function () {

@@ -9,9 +9,7 @@ export var config = {
     api: {
         getWorkersALl:'/api/workersall',
         postPutDeleteWorkers: '/api/workers',
-
-        getFireIndtrALl:'/api/fireinstrall',
-        postPutDeleteFireIndtr: '/api/fireinstr',
+        postWorkersAddSixMonth: '/api/workers-add-six-month',
     }
 };
 

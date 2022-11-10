@@ -94,12 +94,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('workersall', [WorkersController::class, 'index']);
     Route::post('workers', [WorkersController::class, 'create']);
     Route::put('workers/{id}', [WorkersController::class, 'update']);
+    Route::post('workers-add-six-month', [WorkersController::class, 'addSixMonthFromLastDateToNextDate']);
     Route::delete('workers/{id}', [WorkersController::class, 'destroy']);
-
-    Route::get('fireinstrall', [FireInstrController::class, 'index']);
-    Route::post('fireinstr', [FireInstrController::class, 'create']);
-    Route::put('fireinstr/{id}', [FireInstrController::class, 'update']);
-    Route::delete('fireinstr/{id}', [FireInstrController::class, 'destroy']);
 
 
 });

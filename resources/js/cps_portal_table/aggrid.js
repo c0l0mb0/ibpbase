@@ -1,5 +1,5 @@
 import {httpRequest} from './cps-portal-dao.js'
-import {myExcelXML} from './excel-export.js';
+import {myExcelXML} from './ag_grid_classes/excel-export.js';
 import {addCSRF} from './helper.js';
 
 //ag grid wrapper, first field from DAO has to have the name "id". constructor(gridOptions, getDataUrl, delUrl, agName, actionMenu)
@@ -29,10 +29,6 @@ export default class TableAgGrid {
         this.setDeleteButtonAction();
 
         this.actionMenu.hideOneRowAction();
-        this.actionMenu.returnToOuter.style.display = 'none';
-        this.actionMenu.newTableRow.style.display = 'block';
-        this.actionMenu.listLocationsButton.style.display = 'block';
-        this.actionMenu.exportExcel.style.display = 'block';
 
         this.isReady = true;
         this.actionMenu.setExportExcelAction();
@@ -54,6 +50,14 @@ export default class TableAgGrid {
         }
     }
 
+    selectRowByInternalId() {
+
+    }
+
+    getAgGridInternalRowId() {
+
+    }
+
     setDeleteButtonAction() {
         this.actionMenu.deleteTableRow.onclick = () => {
             let selectedRow = this.getSelectedRow();
@@ -61,13 +65,13 @@ export default class TableAgGrid {
             csrf = addCSRF(csrf);
             httpRequest(this.delUrl, 'DELETE', csrf, selectedRow.id).then(() => {
                 this.actionMenu.hideOneRowAction();
-                this.actionMenu.showInner.style.display = 'none';
                 this.setGridData();
             });
         };
     }
 
     setGridCloseObserver() {
+
         const observer = new MutationObserver(function (mutations_list) {
             //if another one mutation observer has been started
             if (mutations_list.length > 1) {
@@ -138,7 +142,7 @@ export default class TableAgGrid {
         }
 
         excelData.unshift(agHeaders);
-        let myTestXML = new myExcelXML(excelData,this.agName);
+        let myTestXML = new myExcelXML(excelData, this.agName);
         myTestXML.downLoad();
     }
 }
