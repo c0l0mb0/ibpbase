@@ -9,6 +9,8 @@ class CpsObjApp extends Model
 {
     use HasFactory;
 
+    protected $table = 'cps_obj_app';
+
     protected $fillable = [
          'id_obj', 'id_app', 'quantity', 'Bit_coincidence', 'Cel_January_gray', 'Cel_February_gray', 'Cel_March_gray',
         'Cel_April_gray', 'Cel_May_gray', 'Cel_June_gray', 'Cel_July_gray', 'Cel_August_gray', 'Cel_September_gray',

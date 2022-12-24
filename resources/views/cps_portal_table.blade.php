@@ -29,7 +29,7 @@
                     <a class="sidebar__edit-equip" href="#">Обрудование</a>
                 </li>
                 <li>
-                    <a class="sidebar__edit-zip" href="#">ЗИП</a>
+                    <a class="sidebar__edit-buildings" href="#">Здания</a>
                 </li>
                 <li>
                     <a class="sidebar__edit-fire_instr" href="#">ПожИнструктаж</a>
@@ -56,17 +56,30 @@
                             title="Добавить" data-target="#modal__new-entry">
                         <img src="{{ asset('icon/plus-svgrepo-com.svg') }}" class="row-menue__icon">
                     </button>
+                    <button type="button" class="btn edit-table-row action-menu-btn" data-toggle="modal"
+                            title="изменить прибор" data-target="#modal__new-entry">
+                        <img src="{{ asset('icon/edit-svgrepo-com.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn return-buildings action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="вернуться к зданиям">
+                        <img src="{{ asset('icon/outer.svg') }}" class="row-menue__icon">
+                    </button>
                     <button type="button" class="btn delete-table-row action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Удалить">
                         <img src="{{ asset('icon/trash.svg') }}" class="row-menue__icon">
                     </button>
-                    <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Экспорт в Excel">
-                        <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
-                    </button>
                     <button type="button" class="btn plus-six-month action-menu-btn" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="последний экзамен + 6 месяцев">
                         <img src="{{ asset('icon/plus-six.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn inner-equip action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="оборудование">
+                        <img src="{{ asset('icon/chip-svgrepo-com.svg') }}" class="row-menue__icon">
+                    </button>
+                    <button type="button" class="btn excel-export action-menu-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Экспорт в Excel">
+                        <img src="{{ asset('icon/excel.svg') }}" class="row-menue__icon">
                     </button>
                 </div>
                 <div class="justify-content-end navbar-btn-logout-wrapper">
@@ -75,7 +88,7 @@
 
             </div>
         </nav>
-        <div id="app" class="scroll">
+        <div id="app">
             <div class='app-container'>
                 <div class='page-header'>
                     <h1 id='page-title'></h1>

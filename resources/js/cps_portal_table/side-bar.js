@@ -22,8 +22,7 @@ export default class SideBar {
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.hideALl();
             this.modalForm.setModalWorkersFormHtml();
-            this.actionMenu.showNewTableRowButton();
-            this.actionMenu.showExcelExportButton();
+            this.actionMenu.showPlusAndExcelButton();
             changePageTitle("Работники");
         };
 
@@ -34,12 +33,35 @@ export default class SideBar {
             this.actionMenu.tableAgGrid = this.tableAgGrid
             this.modalForm.tableAgGrid = this.tableAgGrid;
             this.actionMenu.hideALl();
-            this.actionMenu.setRowActionForNotEditableGrid();
-            this.actionMenu.hideOneRowAction();
-            this.actionMenu.showExcelExportButton();
+            this.actionMenu.showExcelButton();
             this.actionMenu.setFireExamPlusSixAction();
 
             changePageTitle("Пожинструктаж");
+        };
+
+        document.querySelector('.sidebar__edit-buildings').onclick = () => {
+            this.tableAgGrid = new TableAgGrid(agGridParameters.buildingsParameters.gridOptions,
+                config.api.getBuildingsALl, config.api.postPutDeleteBuildings,
+                agGridParameters.buildingsParameters.agName, this.actionMenu);
+            this.actionMenu.tableAgGrid = this.tableAgGrid
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.actionMenu.hideALl();
+            this.modalForm.setModalCpsBuildingsFormHtml();
+            this.actionMenu.showPlusAndExcelButton();
+            this.actionMenu.setEditInnerAction();
+            changePageTitle("Здания");
+        };
+
+        document.querySelector('.sidebar__edit-equip').onclick = () => {
+            this.tableAgGrid = new TableAgGrid(agGridParameters.equipmentParameters.gridOptions,
+                config.api.getEquipmentALl, config.api.postPutDeleteEquipment,
+                agGridParameters.equipmentParameters.agName, this.actionMenu);
+            this.actionMenu.tableAgGrid = this.tableAgGrid
+            this.modalForm.tableAgGrid = this.tableAgGrid;
+            this.actionMenu.hideALl();
+            this.modalForm.setModalCpsEquipmentFormHtml();
+            this.actionMenu.showPlusAndExcelButton();
+            changePageTitle("Оборудование");
         };
     }
 }

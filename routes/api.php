@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\BuildingsController;
+use App\Http\Controllers\CpsBuildingsController;
+use App\Http\Controllers\CpsEquipmentController;
+use App\Http\Controllers\CpsObjAppController;
 use App\Http\Controllers\FireInstrController;
 use App\Http\Controllers\InnerEquipmentController;
 use App\Http\Controllers\KapRemontController;
@@ -97,6 +100,19 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('workers-add-six-month', [WorkersController::class, 'addSixMonthFromLastDateToNextDate']);
     Route::delete('workers/{id}', [WorkersController::class, 'destroy']);
 
+    Route::get('cps-buildings-all', [CpsBuildingsController::class, 'index']);
+    Route::post('cps-buildings', [CpsBuildingsController::class, 'create']);
+    Route::put('cps-buildings/{id}', [CpsBuildingsController::class, 'update']);
+    Route::delete('cps-buildings/{id}', [CpsBuildingsController::class, 'destroy']);
+
+    Route::get('cps-equipment-all', [CpsEquipmentController::class, 'index']);
+    Route::post('cps-equipment', [CpsEquipmentController::class, 'create']);
+    Route::put('cps-equipment/{id}', [CpsEquipmentController::class, 'update']);
+    Route::delete('cps-equipment/{id}', [CpsEquipmentController::class, 'destroy']);
+
+    Route::get('cps-equipment-buildings/{id}', [CpsObjAppController::class, 'index']);
+    Route::put('cps-equipment-buildings/{id}', [CpsObjAppController::class, 'update']);
+    Route::delete('cps-equipment-buildings/{id}', [CpsObjAppController::class, 'destroy']);
 
 });
 

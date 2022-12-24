@@ -27,9 +27,6 @@ export default class TableAgGrid {
         this.setGridData();
         this.setGridCloseObserver();
         this.setDeleteButtonAction();
-
-        this.actionMenu.hideOneRowAction();
-
         this.isReady = true;
         this.actionMenu.setExportExcelAction();
     }
@@ -64,7 +61,7 @@ export default class TableAgGrid {
             let csrf = {};
             csrf = addCSRF(csrf);
             httpRequest(this.delUrl, 'DELETE', csrf, selectedRow.id).then(() => {
-                this.actionMenu.hideOneRowAction();
+                this.actionMenu.hideAllOneRowAction();
                 this.setGridData();
             });
         };

@@ -35,11 +35,12 @@ class LoginController extends Controller
         ]);
     }
 
+
     public function getLoginPage ()
     {
         if (Auth::check()) {
             if (Auth::user()->user_name == 'cpsaf') {
-                return redirect(route('user.cps_table'));
+                return redirect(route('user.cpsportal'));
             }
             if (Auth::user()->user_name == 'cps' || Auth::user()->user_name == 'coir') {
                 return redirect(route('user.table'));

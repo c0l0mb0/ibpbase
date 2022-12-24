@@ -1,10 +1,15 @@
 import {config} from './cps-portal-dao.js'
 import {httpRequest} from './cps-portal-dao.js'
 import {addCSRF} from './helper.js'
+import ModalAggrid from "./modal-aggrid.js";
+import {agGridParameters} from "./ag-grid-parameters";
 
 export default class ModalForm {
     actionMenu;
     tableAgGrid;
+    agBuildingId;
+    agBuildingName;
+    modalTableAgGrid;
     ui = {
         modalForm: {
             caption: document.getElementById('modal__caption'),
@@ -15,6 +20,7 @@ export default class ModalForm {
         },
         modalContainer: document.querySelector('.modal-container'),
         showModalButton: document.querySelector('.new-table-row'),
+        modalDialog: document.querySelector('.modal-dialog'),
         postUrl: undefined
     };
 
@@ -34,7 +40,7 @@ export default class ModalForm {
                 _this.hideModal();
                 event.target.reset();
                 _this.tableAgGrid.setGridData();
-                _this.actionMenu.hideOneRowAction();
+                _this.actionMenu.hideAllOneRowAction();
             }).catch((e) => {
                 _this._hideError();
                 _this._showError(e);
@@ -85,13 +91,53 @@ export default class ModalForm {
         document.getElementById('state_tech_condition').innerHTML = selectHtml;
     }
 
+    setModalStyleToNormal() {
+        this.ui.modalDialog.style.maxWidth = '400px';
+    }
+
+    setModalStyleToAggrid() {
+        this.ui.modalDialog.style.maxWidth = '900px';
+    }
+
     setModalWorkersFormHtml() {
         this.ui.modalForm.caption.innerHTML = 'Добавить работника';
         this.ui.modalForm.modalBody.innerHTML = modalNewWorker;
         this.ui.modalForm.postUrl = config.api.postPutDeleteWorkers;
     }
 
+    setModalCpsBuildingsFormHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить здание';
+        this.ui.modalForm.modalBody.innerHTML = modalNewBuilding;
+        this.ui.modalForm.postUrl = config.api.postPutDeleteBuildings;
+    }
+
+    setModalCpsEquipmentFormHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить оборудование';
+        this.ui.modalForm.modalBody.innerHTML = modalNewEquipment;
+        this.ui.modalForm.postUrl = config.api.postPutDeleteEquipment;
+    }
+
+    setModalNewEquipmentInBuildingHtml() {
+        this.ui.modalForm.caption.innerHTML = 'Добавить оборудование в ' + this.agBuildingName;
+        this.ui.modalForm.modalBody.innerHTML = modalNewEquipmentInBuilding;
+        this.setModalStyleToAggrid();
+        this.modalTableAgGrid = new ModalAggrid(agGridParameters.equipmentForChooseParameters.gridOptions,
+            config.api.getEquipmentALl, agGridParameters.equipmentForChooseParameters.agName);
+    }
 }
+
+const modalNewEquipmentInBuilding = `
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="equip_search" class="col-form-label">Поиск</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="equip_search"  name="equip_search">
+                            </div>
+                        </div>
+                        <div class="modal-aggrid-wrapper">
+                            <div id="modal-aggrid" style="width: 100%; height: 100%;"></div>
+                        </div>`;
 
 
 const modalNewWorker = `
@@ -117,5 +163,104 @@ const modalNewWorker = `
                             </div>
                             <div class="col-9">
                                 <input type="text" class="form-control" id="worker_position" name="worker_position">
+                            </div>
+                        </div>`;
+
+const modalNewBuilding = `
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="area" class="col-form-label">Участок</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="area" required name="area">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="group_1" class="col-form-label">Группа</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="group_1" required name="group_1">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="group_2" class="col-form-label">Подгруппа</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="group_2"  name="group_2">
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="shed" class="col-form-label">Здание</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="shed" required name="shed">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="Queue" class="col-form-label">Очередь</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="Queue"  name="Queue">
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="affiliate" class="col-form-label">Филиал</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="affiliate" required name="affiliate">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="type_aups" class="col-form-label">ТипАУПС</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="type_aups" required name="type_aups">
+                            </div>
+                        </div>`;
+const modalNewEquipment = `
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="app_name" class="col-form-label">Название</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="app_name" required name="app_name">
+                            </div>
+                        </div>
+                         <div class="row p-2">
+                            <div class="col-3">
+                                <label for="kind_app" class="col-form-label">ТипОбобщенный</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="kind_app" required name="kind_app">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="kind_app_second" class="col-form-label">Тип</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="kind_app_second" required name="kind_app_second">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="kind_signal" class="col-form-label">ТипСигнала</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="kind_signal" required name="kind_signal">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="brand_name" class="col-form-label">Производитель</label>
+                            </div>
+                            <div class="col-9">
+                                 <input type="text" class="form-control" id="brand_name" required name="brand_name">
                             </div>
                         </div>`;

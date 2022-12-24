@@ -10,6 +10,11 @@ export var config = {
         getWorkersALl:'/api/workersall',
         postPutDeleteWorkers: '/api/workers',
         postWorkersAddSixMonth: '/api/workers-add-six-month',
+        getBuildingsALl:'/api/cps-buildings-all',
+        postPutDeleteBuildings: '/api/cps-buildings',
+        getEquipmentALl:'/api/cps-equipment-all',
+        postPutDeleteEquipment: '/api/cps-equipment',
+        getPutDeleteEquipmentInBuilding: '/api/cps-equipment-buildings',
     }
 };
 

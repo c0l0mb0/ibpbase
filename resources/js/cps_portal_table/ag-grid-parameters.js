@@ -1,6 +1,6 @@
 import DatePicker from "./ag_grid_classes/date-picker";
 import {config, httpRequest} from "./cps-portal-dao";
-import {addCSRF, dateFormatter} from "./helper";
+import {addCSRF} from "./helper";
 import NumericCellEditor from "./ag_grid_classes/numericCellEditor.js";
 
 export let agGridParameters = {
@@ -8,9 +8,8 @@ export let agGridParameters = {
     actionMenu: undefined,
     workersParameters: {
         gridOptions: {
-            domLayout: 'autoHeight',
             columnDefs: [
-                {headerName: "ФИО", field: "fio", minWidth: 100, tooltipField: 'fio',sortable: true},
+                {headerName: "ФИО", field: "fio", minWidth: 100, tooltipField: 'fio', sortable: true},
                 {
                     headerName: "N табеля",
                     field: "tab_nom",
@@ -31,7 +30,7 @@ export let agGridParameters = {
                     addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
             },
             onRowSelected: function () {
-                agGridParameters.actionMenu.showOneRowAction();
+                agGridParameters.actionMenu.showDelButton();
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
@@ -41,7 +40,6 @@ export let agGridParameters = {
     },
     fireInstrParameters: {
         gridOptions: {
-            domLayout: 'autoHeight',
             columnDefs: [
                 {
                     headerName: "ФИО",
@@ -105,12 +103,163 @@ export let agGridParameters = {
                 httpRequest(config.api.postPutDeleteWorkers, "PUT", addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
             },
             onRowSelected: function () {
-                agGridParameters.actionMenu.showPlusSixMonthButton();
+                agGridParameters.actionMenu.showPlusSixButton();
             },
             onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
             }
         },
         agName: 'fireInstr',
+    },
+    buildingsParameters: {
+        gridOptions: {
+            columnDefs: [
+                {headerName: "Участок", field: "area", minWidth: 100, tooltipField: 'area', sortable: true},
+                {headerName: "Группа", field: "group_1", minWidth: 100, tooltipField: 'group_1', sortable: true},
+                {headerName: "Подгруппа", field: "group_2", minWidth: 100, tooltipField: 'group_2', sortable: true},
+                {headerName: "Здание", field: "shed", minWidth: 100, tooltipField: 'shed', sortable: true},
+                {headerName: "Очередь", field: "Queue", minWidth: 100, tooltipField: 'Queue', sortable: true},
+                {headerName: "Филиал", field: "affiliate", minWidth: 100, tooltipField: 'affiliate', sortable: true},
+                {headerName: "ТипАУПС", field: "type_aups", minWidth: 100, tooltipField: 'type_aups', sortable: true},
+
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                editable: true,
+            },
+            enableBrowserTooltips: true,
+            onCellValueChanged: function (event) {
+                httpRequest(config.api.postPutDeleteBuildings, "PUT",
+                    addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
+            },
+            onRowSelected: function () {
+                agGridParameters.actionMenu.showDelButton();
+                agGridParameters.actionMenu.showGoToEquipButton();
+            },
+            onFirstDataRendered: (params) => {
+                params.api.sizeColumnsToFit();
+            }
+        },
+        agName: 'cps_buildings',
+    },
+    equipmentParameters: {
+        gridOptions: {
+            columnDefs: [
+                {headerName: "Название", field: "app_name", minWidth: 100, tooltipField: 'area', sortable: true},
+                {
+                    headerName: "ТипОбобщенный",
+                    field: "kind_app",
+                    minWidth: 100,
+                    tooltipField: 'group_2',
+                    sortable: true
+                },
+                {headerName: "Тип", field: "kind_app_second", minWidth: 100, tooltipField: 'shed', sortable: true},
+                {
+                    headerName: "Сигнал",
+                    field: "kind_signal",
+                    minWidth: 100,
+                    tooltipField: 'group_1',
+                    sortable: true
+                },
+                {
+                    headerName: "Производитель",
+                    field: "brand_name",
+                    minWidth: 100,
+                    tooltipField: 'Queue',
+                    sortable: true
+                },
+
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                editable: true,
+            },
+            enableBrowserTooltips: true,
+            onCellValueChanged: function (event) {
+                httpRequest(config.api.postPutDeleteEquipment, "PUT",
+                    addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
+            },
+            onRowSelected: function () {
+                agGridParameters.actionMenu.showDelButton();
+            },
+            onFirstDataRendered: (params) => {
+                params.api.sizeColumnsToFit();
+            }
+        },
+        agName: 'cps_equipment',
+    },
+    equipmentInBuildingsParameters: {
+        gridOptions: {
+            columnDefs: [
+                {
+                    headerName: "Название",
+                    field: "app_name",
+                    minWidth: 100,
+                    tooltipField: 'app_name',
+                    sortable: true,
+                    editable: false,
+                },
+                {headerName: "Количество", field: "quantity", minWidth: 100, tooltipField: 'quantity', sortable: true},
+                {headerName: "Измерение", field: "measure", minWidth: 100, tooltipField: 'measure', sortable: true},
+                {headerName: "Год", field: "app_year", minWidth: 100, tooltipField: 'app_year', sortable: true},
+
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                editable: true,
+            },
+            enableBrowserTooltips: true,
+            onCellValueChanged: function (event) {
+                httpRequest(config.api.getPutDeleteEquipmentInBuilding, "PUT",
+                    addCSRF(event.data), event.data.id).catch((rejected) => console.log(rejected));
+            },
+            onRowSelected: function () {
+                agGridParameters.actionMenu.showDelButton();
+                agGridParameters.actionMenu.showReturnToBuildingsButton();
+                agGridParameters.actionMenu.showEditButton();
+            },
+            onFirstDataRendered: (params) => {
+                params.api.sizeColumnsToFit();
+            }
+        },
+        agName: 'equipmentInBuildings',
+    },
+    equipmentForChooseParameters: {
+        gridOptions: {
+            columnDefs: [
+                {headerName: "Название", field: "app_name", minWidth: 350, tooltipField: 'area', sortable: true},
+                {
+                    headerName: "Тип",
+                    field: "kind_app",
+                    minWidth: 60,
+                    tooltipField: 'group_2',
+                    sortable: true
+                },
+                {headerName: "ТипОбобщенный", field: "kind_app_second", minWidth: 60, tooltipField: 'shed', sortable: true},
+                {
+                    headerName: "Сигнал",
+                    field: "kind_signal",
+                    maxWidth: 120,
+                    tooltipField: 'group_1',
+                    sortable: true
+                },
+            ],
+            rowSelection: 'single',
+            defaultColDef: {
+                resizable: true,
+                editable: false,
+            },
+            enableBrowserTooltips: true,
+            onRowSelected: function () {
+                // agGridParameters.actionMenu.showDelButton();
+            },
+            // onFirstDataRendered: (params) => {
+            //     params.api.sizeColumnsToFit();
+            // }
+        },
+        agName: 'cps_equipment_for_choose',
     },
 }

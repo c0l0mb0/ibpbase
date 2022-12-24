@@ -19,6 +19,7 @@ Route::name('user.')->group(function () {
     Route::view('/table', 'table')->middleware('auth')->name('table');
     Route::view('/cpsportal', 'cps_portal_table')->middleware('auth')->name('cpsportal');
 
+//    Route::get('/getdates', [\App\Http\Controllers\WorkersController::class, 'indexWorkersWithOneWeekToExam']);
     Route::get('/login', [\App\Http\Controllers\LoginController::class, 'getLoginPage'])->name('login');
 
     Route::post('/getpasshash', [\App\Http\Controllers\PasswordController::class, 'getNewPasswordHash'])->name('getPassHash');
